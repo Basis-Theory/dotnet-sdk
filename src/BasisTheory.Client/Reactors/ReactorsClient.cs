@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using BasisTheory.Client.Core;
+using BasisTheory.Client.Reactors;
 
 #nullable enable
 
@@ -15,7 +16,10 @@ public partial class ReactorsClient
     internal ReactorsClient(RawClient client)
     {
         _client = client;
+        Results = new ResultsClient(_client);
     }
+
+    public ResultsClient Results { get; }
 
     /// <example>
     /// <code>
@@ -135,7 +139,9 @@ public partial class ReactorsClient
             switch (response.StatusCode)
             {
                 case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
@@ -255,7 +261,9 @@ public partial class ReactorsClient
             switch (response.StatusCode)
             {
                 case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
@@ -361,7 +369,9 @@ public partial class ReactorsClient
             switch (response.StatusCode)
             {
                 case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
@@ -385,10 +395,79 @@ public partial class ReactorsClient
 
     /// <example>
     /// <code>
-    /// await client.Reactors.ReactAsync("id", new ReactRequestAsync());
+    /// await client.Reactors.ReactAsync("id", new ReactRequest());
     /// </code>
     /// </example>
     public async Task<ReactResponse> ReactAsync(
+        string id,
+        ReactRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                BaseUrl = _client.Options.BaseUrl,
+                Method = HttpMethod.Post,
+                Path = $"reactors/{id}/react",
+                Body = request,
+                Options = options,
+            },
+            cancellationToken
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            try
+            {
+                return JsonUtils.Deserialize<ReactResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryException("Failed to deserialize response", e);
+            }
+        }
+
+        try
+        {
+            switch (response.StatusCode)
+            {
+                case 400:
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
+                case 401:
+                    throw new UnauthorizedError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
+                case 403:
+                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
+                case 404:
+                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+                case 422:
+                    throw new UnprocessableEntityError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
+            }
+        }
+        catch (JsonException)
+        {
+            // unable to map error response, throwing generic error
+        }
+        throw new BasisTheoryApiException(
+            $"Error with status code {response.StatusCode}",
+            response.StatusCode,
+            responseBody
+        );
+    }
+
+    /// <example>
+    /// <code>
+    /// await client.Reactors.ReactAsyncAsync("id", new ReactRequestAsync());
+    /// </code>
+    /// </example>
+    public async Task<ReactResponse> ReactAsyncAsync(
         string id,
         ReactRequestAsync request,
         RequestOptions? options = null,
@@ -424,7 +503,9 @@ public partial class ReactorsClient
             switch (response.StatusCode)
             {
                 case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
@@ -434,69 +515,9 @@ public partial class ReactorsClient
                 case 404:
                     throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
                 case 422:
-                    throw new UnprocessableEntityError(JsonUtils.Deserialize<object>(responseBody));
-            }
-        }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new BasisTheoryApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
-    }
-
-    /// <example>
-    /// <code>
-    /// await client.Reactors.ResultGetbyidAsync("id", "requestId");
-    /// </code>
-    /// </example>
-    public async Task<object> ResultGetbyidAsync(
-        string id,
-        string requestId,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Get,
-                Path = $"reactors/{id}/results/{requestId}",
-                Options = options,
-            },
-            cancellationToken
-        );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            try
-            {
-                return JsonUtils.Deserialize<object>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        try
-        {
-            switch (response.StatusCode)
-            {
-                case 401:
-                    throw new UnauthorizedError(
+                    throw new UnprocessableEntityError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
                     );
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
-                case 404:
-                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-                case 422:
-                    throw new UnprocessableEntityError(JsonUtils.Deserialize<object>(responseBody));
             }
         }
         catch (JsonException)

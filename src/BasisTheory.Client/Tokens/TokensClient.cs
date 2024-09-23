@@ -159,7 +159,9 @@ public partial class TokensClient
             switch (response.StatusCode)
             {
                 case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
@@ -167,7 +169,7 @@ public partial class TokensClient
                 case 403:
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
                 case 409:
-                    throw new ConflictError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new ConflictError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
             }
         }
         catch (JsonException)
@@ -221,7 +223,9 @@ public partial class TokensClient
             switch (response.StatusCode)
             {
                 case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
@@ -331,7 +335,9 @@ public partial class TokensClient
             switch (response.StatusCode)
             {
                 case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
@@ -394,7 +400,9 @@ public partial class TokensClient
             switch (response.StatusCode)
             {
                 case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
@@ -404,7 +412,7 @@ public partial class TokensClient
                 case 404:
                     throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
                 case 409:
-                    throw new ConflictError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new ConflictError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
             }
         }
         catch (JsonException)
@@ -525,7 +533,9 @@ public partial class TokensClient
             switch (response.StatusCode)
             {
                 case 400:
-                    throw new BadRequestError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)

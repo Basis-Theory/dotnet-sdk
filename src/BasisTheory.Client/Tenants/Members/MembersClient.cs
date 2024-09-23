@@ -193,7 +193,9 @@ public partial class MembersClient
                 case 404:
                     throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
                 case 422:
-                    throw new UnprocessableEntityError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new UnprocessableEntityError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
             }
         }
         catch (JsonException)

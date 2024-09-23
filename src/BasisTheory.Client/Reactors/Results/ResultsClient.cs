@@ -1,29 +1,30 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
-using System.Threading.Tasks;
+using BasisTheory.Client;
 using BasisTheory.Client.Core;
 
 #nullable enable
 
-namespace BasisTheory.Client;
+namespace BasisTheory.Client.Reactors;
 
-public partial class DetokenizeClient
+public partial class ResultsClient
 {
     private RawClient _client;
 
-    internal DetokenizeClient(RawClient client)
+    internal ResultsClient(RawClient client)
     {
         _client = client;
     }
 
     /// <example>
     /// <code>
-    /// await client.Detokenize.DetokenizeAsync(new Dictionary<object, object?>() { { "key", "value" } });
+    /// await client.Reactors.Results.GetAsync("id", "requestId");
     /// </code>
     /// </example>
-    public async Task DetokenizeAsync(
-        object request,
+    public async Task<object> GetAsync(
+        string id,
+        string requestId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -32,34 +33,41 @@ public partial class DetokenizeClient
             new RawClient.JsonApiRequest
             {
                 BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Post,
-                Path = "detokenize",
-                Body = request,
+                Method = HttpMethod.Get,
+                Path = $"reactors/{id}/results/{requestId}",
                 Options = options,
             },
             cancellationToken
         );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
-            return;
+            try
+            {
+                return JsonUtils.Deserialize<object>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryException("Failed to deserialize response", e);
+            }
         }
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+
         try
         {
             switch (response.StatusCode)
             {
-                case 400:
-                    throw new BadRequestError(
-                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
                     );
                 case 403:
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
-                case 409:
-                    throw new ConflictError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
+                case 404:
+                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+                case 422:
+                    throw new UnprocessableEntityError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
             }
         }
         catch (JsonException)
