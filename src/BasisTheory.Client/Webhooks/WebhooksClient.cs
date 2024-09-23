@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using BasisTheory.Client.Core;
+using BasisTheory.Client.Webhooks;
 
 #nullable enable
 
@@ -15,60 +16,23 @@ public partial class WebhooksClient
     internal WebhooksClient(RawClient client)
     {
         _client = client;
+        Events = new EventsClient(_client);
+        SigningKey = new SigningKeyClient(_client);
     }
 
-    /// <summary>
-    /// Return a list of available event types
-    /// </summary>
-    /// <example>
-    /// <code>
-    /// await client.Webhooks.GetAListOfEventsAsync();
-    /// </code>
-    /// </example>
-    public async Task<IEnumerable<string>> GetAListOfEventsAsync(
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Get,
-                Path = "webhooks/event-types",
-                Options = options,
-            },
-            cancellationToken
-        );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            try
-            {
-                return JsonUtils.Deserialize<IEnumerable<string>>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
+    public EventsClient Events { get; }
 
-        throw new BasisTheoryApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
-    }
+    public SigningKeyClient SigningKey { get; }
 
     /// <summary>
     /// Simple endpoint that can be utilized to verify the application is running
     /// </summary>
     /// <example>
     /// <code>
-    /// await client.Webhooks.PingEndpointAsync();
+    /// await client.Webhooks.PingAsync();
     /// </code>
     /// </example>
-    public async Task PingEndpointAsync(
+    public async Task PingAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -96,49 +60,14 @@ public partial class WebhooksClient
     }
 
     /// <summary>
-    /// Returns the signing key
-    /// </summary>
-    /// <example>
-    /// <code>
-    /// await client.Webhooks.SigningKeyAsync();
-    /// </code>
-    /// </example>
-    public async Task<string> SigningKeyAsync(
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Get,
-                Path = "webhooks/signing-key",
-                Options = options,
-            },
-            cancellationToken
-        );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            return responseBody;
-        }
-        throw new BasisTheoryApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
-    }
-
-    /// <summary>
     /// Returns the webhook
     /// </summary>
     /// <example>
     /// <code>
-    /// await client.Webhooks.GetASpecificWebhookAsync("id");
+    /// await client.Webhooks.GetAsync("id");
     /// </code>
     /// </example>
-    public async Task<WebhookResponse> GetASpecificWebhookAsync(
+    public async Task<WebhookResponse> GetAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -167,6 +96,22 @@ public partial class WebhooksClient
             }
         }
 
+        try
+        {
+            switch (response.StatusCode)
+            {
+                case 401:
+                    throw new UnauthorizedError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
+                case 403:
+                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
+            }
+        }
+        catch (JsonException)
+        {
+            // unable to map error response, throwing generic error
+        }
         throw new BasisTheoryApiException(
             $"Error with status code {response.StatusCode}",
             response.StatusCode,
@@ -179,20 +124,20 @@ public partial class WebhooksClient
     /// </summary>
     /// <example>
     /// <code>
-    /// await client.Webhooks.UpdateAnExistingWebhookAsync(
+    /// await client.Webhooks.UpdateAsync(
     ///     "id",
-    ///     new WebhookCreateRequest
+    ///     new WebhookUpdateRequest
     ///     {
-    ///         Name = "webhook-create",
+    ///         Name = "webhook-update",
     ///         Url = "http://www.example.com",
-    ///         Events = new List<string>() { "token:create" },
+    ///         Events = new List<string>() { "token:created" },
     ///     }
     /// );
     /// </code>
     /// </example>
-    public async Task<WebhookResponse> UpdateAnExistingWebhookAsync(
+    public async Task<WebhookResponse> UpdateAsync(
         string id,
-        WebhookCreateRequest request,
+        WebhookUpdateRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -225,10 +170,20 @@ public partial class WebhooksClient
         {
             switch (response.StatusCode)
             {
+                case 400:
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
+                case 401:
+                    throw new UnauthorizedError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
+                case 403:
+                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
                 case 404:
                     throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
                 case 409:
-                    throw new ConflictError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new ConflictError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
             }
         }
         catch (JsonException)
@@ -247,10 +202,10 @@ public partial class WebhooksClient
     /// </summary>
     /// <example>
     /// <code>
-    /// await client.Webhooks.DeleteANewWebhookAsync("id");
+    /// await client.Webhooks.DeleteAsync("id");
     /// </code>
     /// </example>
-    public async Task DeleteANewWebhookAsync(
+    public async Task DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -275,10 +230,20 @@ public partial class WebhooksClient
         {
             switch (response.StatusCode)
             {
+                case 400:
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
+                case 401:
+                    throw new UnauthorizedError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
+                case 403:
+                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
                 case 404:
                     throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
                 case 409:
-                    throw new ConflictError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new ConflictError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
             }
         }
         catch (JsonException)
@@ -297,10 +262,10 @@ public partial class WebhooksClient
     /// </summary>
     /// <example>
     /// <code>
-    /// await client.Webhooks.GetAListOfWebhooksAsync();
+    /// await client.Webhooks.ListAsync();
     /// </code>
     /// </example>
-    public async Task<WebhookListResponse> GetAListOfWebhooksAsync(
+    public async Task<WebhookListResponse> ListAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -328,6 +293,22 @@ public partial class WebhooksClient
             }
         }
 
+        try
+        {
+            switch (response.StatusCode)
+            {
+                case 401:
+                    throw new UnauthorizedError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
+                case 403:
+                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
+            }
+        }
+        catch (JsonException)
+        {
+            // unable to map error response, throwing generic error
+        }
         throw new BasisTheoryApiException(
             $"Error with status code {response.StatusCode}",
             response.StatusCode,
@@ -340,17 +321,17 @@ public partial class WebhooksClient
     /// </summary>
     /// <example>
     /// <code>
-    /// await client.Webhooks.CreateANewWebhookAsync(
+    /// await client.Webhooks.CreateAsync(
     ///     new WebhookCreateRequest
     ///     {
     ///         Name = "webhook-create",
     ///         Url = "http://www.example.com",
-    ///         Events = new List<string>() { "token:create" },
+    ///         Events = new List<string>() { "token:created" },
     ///     }
     /// );
     /// </code>
     /// </example>
-    public async Task<WebhookResponse> CreateANewWebhookAsync(
+    public async Task<WebhookResponse> CreateAsync(
         WebhookCreateRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -384,8 +365,20 @@ public partial class WebhooksClient
         {
             switch (response.StatusCode)
             {
+                case 400:
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
+                case 401:
+                    throw new UnauthorizedError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
+                case 403:
+                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
                 case 422:
-                    throw new UnprocessableEntityError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new UnprocessableEntityError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
             }
         }
         catch (JsonException)

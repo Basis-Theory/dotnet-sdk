@@ -1407,7 +1407,7 @@ await client.Reactors.PatchAsync("id", new PatchReactorRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsync</a>(id, ReactRequestAsync { ... }) -> ReactResponse</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsync</a>(id, ReactRequest { ... }) -> ReactResponse</code></summary>
 <dl>
 <dd>
 
@@ -1420,7 +1420,55 @@ await client.Reactors.PatchAsync("id", new PatchReactorRequest());
 <dd>
 
 ```csharp
-await client.Reactors.ReactAsync("id", new ReactRequestAsync());
+await client.Reactors.ReactAsync("id", new ReactRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `ReactRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsyncAsync</a>(id, ReactRequestAsync { ... }) -> ReactResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Reactors.ReactAsyncAsync("id", new ReactRequestAsync());
 ```
 </dd>
 </dl>
@@ -1444,54 +1492,6 @@ await client.Reactors.ReactAsync("id", new ReactRequestAsync());
 <dd>
 
 **request:** `ReactRequestAsync` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ResultGetbyidAsync</a>(id, requestId) -> object</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Reactors.ResultGetbyidAsync("id", "requestId");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestId:** `string` 
     
 </dd>
 </dl>
@@ -2129,46 +2129,7 @@ await client.Tokens.SearchV2Async(new SearchTokensRequestV2());
 </details>
 
 ## Webhooks
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">GetAListOfEventsAsync</a>() -> IEnumerable<string></code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Return a list of available event types
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Webhooks.GetAListOfEventsAsync();
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">PingEndpointAsync</a>()</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">PingAsync</a>()</code></summary>
 <dl>
 <dd>
 
@@ -2195,7 +2156,7 @@ Simple endpoint that can be utilized to verify the application is running
 <dd>
 
 ```csharp
-await client.Webhooks.PingEndpointAsync();
+await client.Webhooks.PingAsync();
 ```
 </dd>
 </dl>
@@ -2207,46 +2168,7 @@ await client.Webhooks.PingEndpointAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">SigningKeyAsync</a>() -> string</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Returns the signing key
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Webhooks.SigningKeyAsync();
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">GetASpecificWebhookAsync</a>(id) -> WebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">GetAsync</a>(id) -> WebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -2273,7 +2195,7 @@ Returns the webhook
 <dd>
 
 ```csharp
-await client.Webhooks.GetASpecificWebhookAsync("id");
+await client.Webhooks.GetAsync("id");
 ```
 </dd>
 </dl>
@@ -2300,7 +2222,7 @@ await client.Webhooks.GetASpecificWebhookAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">UpdateAnExistingWebhookAsync</a>(id, WebhookCreateRequest { ... }) -> WebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">UpdateAsync</a>(id, WebhookUpdateRequest { ... }) -> WebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -2327,13 +2249,13 @@ Update a new webhook
 <dd>
 
 ```csharp
-await client.Webhooks.UpdateAnExistingWebhookAsync(
+await client.Webhooks.UpdateAsync(
     "id",
-    new WebhookCreateRequest
+    new WebhookUpdateRequest
     {
-        Name = "webhook-create",
+        Name = "webhook-update",
         Url = "http://www.example.com",
-        Events = new List<string>() { "token:create" },
+        Events = new List<string>() { "token:created" },
     }
 );
 ```
@@ -2358,7 +2280,7 @@ await client.Webhooks.UpdateAnExistingWebhookAsync(
 <dl>
 <dd>
 
-**request:** `WebhookCreateRequest` 
+**request:** `WebhookUpdateRequest` 
     
 </dd>
 </dl>
@@ -2370,7 +2292,7 @@ await client.Webhooks.UpdateAnExistingWebhookAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">DeleteANewWebhookAsync</a>(id)</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">DeleteAsync</a>(id)</code></summary>
 <dl>
 <dd>
 
@@ -2397,7 +2319,7 @@ Delete a new webhook
 <dd>
 
 ```csharp
-await client.Webhooks.DeleteANewWebhookAsync("id");
+await client.Webhooks.DeleteAsync("id");
 ```
 </dd>
 </dl>
@@ -2424,7 +2346,7 @@ await client.Webhooks.DeleteANewWebhookAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">GetAListOfWebhooksAsync</a>() -> WebhookListResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">ListAsync</a>() -> WebhookListResponse</code></summary>
 <dl>
 <dd>
 
@@ -2451,7 +2373,7 @@ Returns the configured webhooks
 <dd>
 
 ```csharp
-await client.Webhooks.GetAListOfWebhooksAsync();
+await client.Webhooks.ListAsync();
 ```
 </dd>
 </dl>
@@ -2463,7 +2385,7 @@ await client.Webhooks.GetAListOfWebhooksAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">CreateANewWebhookAsync</a>(WebhookCreateRequest { ... }) -> WebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">CreateAsync</a>(WebhookCreateRequest { ... }) -> WebhookResponse</code></summary>
 <dl>
 <dd>
 
@@ -2490,12 +2412,12 @@ Create a new webhook
 <dd>
 
 ```csharp
-await client.Webhooks.CreateANewWebhookAsync(
+await client.Webhooks.CreateAsync(
     new WebhookCreateRequest
     {
         Name = "webhook-create",
         Url = "http://www.example.com",
-        Events = new List<string>() { "token:create" },
+        Events = new List<string>() { "token:created" },
     }
 );
 ```
@@ -2513,6 +2435,55 @@ await client.Webhooks.CreateANewWebhookAsync(
 <dd>
 
 **request:** `WebhookCreateRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Reactors Results
+<details><summary><code>client.Reactors.Results.<a href="/src/BasisTheory.Client/Reactors/Results/ResultsClient.cs">GetAsync</a>(id, requestId) -> object</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Reactors.Results.GetAsync("id", "requestId");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestId:** `string` 
     
 </dd>
 </dl>
@@ -2994,6 +2965,86 @@ await client.Tenants.Self.UpdateAsync(new UpdateTenantRequest { Name = "name" })
 
 ```csharp
 await client.Tenants.Self.DeleteAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Webhooks Events
+<details><summary><code>client.Webhooks.Events.<a href="/src/BasisTheory.Client/Webhooks/Events/EventsClient.cs">ListAsync</a>() -> IEnumerable<string></code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Return a list of available event types
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Webhooks.Events.ListAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Webhooks SigningKey
+<details><summary><code>client.Webhooks.SigningKey.<a href="/src/BasisTheory.Client/Webhooks/SigningKey/SigningKeyClient.cs">GetAsync</a>() -> string</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Returns the signing key
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Webhooks.SigningKey.GetAsync();
 ```
 </dd>
 </dl>

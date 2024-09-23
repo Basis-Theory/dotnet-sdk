@@ -126,7 +126,9 @@ public partial class ApplicationKeysClient
                 case 403:
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
                 case 422:
-                    throw new UnprocessableEntityError(JsonUtils.Deserialize<object>(responseBody));
+                    throw new UnprocessableEntityError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
             }
         }
         catch (JsonException)

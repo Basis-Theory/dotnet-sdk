@@ -1,29 +1,31 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
-using System.Threading.Tasks;
+using BasisTheory.Client;
 using BasisTheory.Client.Core;
 
 #nullable enable
 
-namespace BasisTheory.Client;
+namespace BasisTheory.Client.Webhooks;
 
-public partial class DetokenizeClient
+public partial class EventsClient
 {
     private RawClient _client;
 
-    internal DetokenizeClient(RawClient client)
+    internal EventsClient(RawClient client)
     {
         _client = client;
     }
 
+    /// <summary>
+    /// Return a list of available event types
+    /// </summary>
     /// <example>
     /// <code>
-    /// await client.Detokenize.DetokenizeAsync(new Dictionary<object, object?>() { { "key", "value" } });
+    /// await client.Webhooks.Events.ListAsync();
     /// </code>
     /// </example>
-    public async Task DetokenizeAsync(
-        object request,
+    public async Task<IEnumerable<string>> ListAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -32,34 +34,35 @@ public partial class DetokenizeClient
             new RawClient.JsonApiRequest
             {
                 BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Post,
-                Path = "detokenize",
-                Body = request,
+                Method = HttpMethod.Get,
+                Path = "webhooks/event-types",
                 Options = options,
             },
             cancellationToken
         );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
-            return;
+            try
+            {
+                return JsonUtils.Deserialize<IEnumerable<string>>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryException("Failed to deserialize response", e);
+            }
         }
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+
         try
         {
             switch (response.StatusCode)
             {
-                case 400:
-                    throw new BadRequestError(
-                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
                     );
                 case 403:
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
-                case 409:
-                    throw new ConflictError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
             }
         }
         catch (JsonException)

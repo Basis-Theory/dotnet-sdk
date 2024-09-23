@@ -22,7 +22,7 @@ public partial class BasisTheory
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "BasisTheory.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "BasisTheory.Client/0.0.0" },
+                { "User-Agent", "BasisTheory.Client/0.0.1" },
             }
         );
         clientOptions ??= new ClientOptions();
