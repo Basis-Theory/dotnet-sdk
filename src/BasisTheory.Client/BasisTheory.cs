@@ -37,7 +37,7 @@ public partial class BasisTheory
         Applications = new ApplicationsClient(_client);
         ApplicationKeys = new ApplicationKeysClient(_client);
         ApplicationTemplates = new ApplicationTemplatesClient(_client);
-        Detokenize = new DetokenizeClient(_client);
+        Tokens = new TokensClient(_client);
         Logs = new LogsClient(_client);
         Permissions = new PermissionsClient(_client);
         Proxies = new ProxiesClient(_client);
@@ -46,8 +46,6 @@ public partial class BasisTheory
         Roles = new RolesClient(_client);
         Sessions = new SessionsClient(_client);
         Threeds = new ThreedsClient(_client);
-        Tokenize = new TokenizeClient(_client);
-        Tokens = new TokensClient(_client);
         Webhooks = new WebhooksClient(_client);
         Tenants = new TenantsClient(_client);
     }
@@ -58,7 +56,7 @@ public partial class BasisTheory
 
     public ApplicationTemplatesClient ApplicationTemplates { get; init; }
 
-    public DetokenizeClient Detokenize { get; init; }
+    public TokensClient Tokens { get; init; }
 
     public LogsClient Logs { get; init; }
 
@@ -75,10 +73,6 @@ public partial class BasisTheory
     public SessionsClient Sessions { get; init; }
 
     public ThreedsClient Threeds { get; init; }
-
-    public TokenizeClient Tokenize { get; init; }
-
-    public TokensClient Tokens { get; init; }
 
     public WebhooksClient Webhooks { get; init; }
 
