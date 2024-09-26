@@ -1,1 +1,3 @@
 .gitignore
+
+src/BasisTheory.Client.Test/TestClient.cs
