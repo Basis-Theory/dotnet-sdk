@@ -53,6 +53,86 @@ public class TestClient
         await EnsureTokenIsDeleted(client, tokenId);
     }
 
+    [Test]
+    [Ignore("Idempotency Header is currently not supported in dotnet SDK")]
+    public async Task ShouldSupportIdempotencyHeader()
+    {
+        var client = GetPrivateClient();
+        var options = new RequestOptions
+        {
+            // IdempotencyKey = Guid.NewGuid().ToString(),
+        };
+
+        var firstTokenId = await CreateToken(client, "6011000990139424", options);
+        var secondTokenId = await CreateToken(client, "4242424242424242", options);
+
+        Assert.That(secondTokenId, Is.EqualTo(firstTokenId));
+    }
+
+    [Test]
+    [Ignore("Auto pagination is not currently supported in dotnet SDK")]
+    public async Task ShouldSupportAutoPaginationOnListV1()
+    {
+        // TODO: Implement
+    }
+
+    [Test]
+    [Ignore("Auto pagination is not currently supported in dotnet SDK")]
+    public async Task ShouldSupportAutoPaginationOnListV2()
+    {
+        // TODO: Implement
+    }
+
+    [Test]
+    public async Task ShouldSupportWebhookLifecycle()
+    {
+        var client = GetManagementClient();
+
+        var url = "https://echo.basistheory.com/" + Guid.NewGuid();
+        var webhookId = await CreateWebhook(client, url);
+        await GetAndAssertWebhookUrl(client, webhookId, url);
+
+        Thread.Sleep(TimeSpan.FromSeconds(2)); // Required to avoid error `The webhook subscription is undergoing another concurrent operation. Please wait a few seconds, then try again.`
+
+        var updateUrl = await UpdateWebhook(client, webhookId);
+        await GetAndAssertWebhookUrl(client, webhookId, updateUrl);
+
+        Thread.Sleep(TimeSpan.FromSeconds(2)); // Required to avoid error `The webhook subscription is undergoing another concurrent operation. Please wait a few seconds, then try again.`
+
+        await client.Webhooks.DeleteAsync(webhookId);
+    }
+
+    private static async Task<string> UpdateWebhook(BasisTheory client, string webhookId)
+    {
+        var updateUrl = "https://echo.basistheory.com/" + Guid.NewGuid();
+        await client.Webhooks.UpdateAsync(webhookId,
+            new WebhookUpdateRequest
+            {
+                Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+                Url = updateUrl,
+                Events = ["token.created", "token.updated"]
+            });
+        return updateUrl;
+    }
+
+    private static async Task GetAndAssertWebhookUrl(BasisTheory client, string webhookId, string url)
+    {
+        var w = await client.Webhooks.GetAsync(webhookId);
+        Assert.That(w.Url, Is.EqualTo(url));
+    }
+
+    private static async Task<string> CreateWebhook(BasisTheory client, string url)
+    {
+        var webhook = await client.Webhooks.CreateAsync(new WebhookCreateRequest
+        {
+            Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+            Url = url,
+            Events = ["token.created"]
+        });
+        var webhookId = webhook.Id;
+        return webhookId;
+    }
+
     private static async Task EnsureTokenIsDeleted(BasisTheory client, string? tokenId)
     {
         await client.Tokens.DeleteAsync(tokenId);
@@ -140,7 +220,7 @@ public class TestClient
         Assert.That(token.Data.GetJsonElementValue<string>("number"), Is.EqualTo(cardNumber));
     }
 
-    private static async Task<string?> CreateToken(BasisTheory client, string cardNumber)
+    private static async Task<string?> CreateToken(BasisTheory client, string cardNumber, RequestOptions? options = null)
     {
         var token = await client.Tokens.CreateAsync(new CreateTokenRequest
         {
@@ -168,7 +248,7 @@ public class TestClient
             },
             DeduplicateToken = false,
             Containers = ["/pci/high/"]
-        });
+        }, options);
         var tokenId = token.Id;
         return tokenId;
     }
