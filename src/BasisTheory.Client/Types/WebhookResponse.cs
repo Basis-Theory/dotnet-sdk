@@ -32,10 +32,10 @@ public record WebhookResponse
     public required DateTime CreatedAt { get; set; }
 
     [JsonPropertyName("modified_by")]
-    public required string ModifiedBy { get; set; }
+    public string? ModifiedBy { get; set; }
 
     [JsonPropertyName("modified_at")]
-    public required DateTime ModifiedAt { get; set; }
+    public DateTime? ModifiedAt { get; set; }
 
     public override string ToString()
     {
