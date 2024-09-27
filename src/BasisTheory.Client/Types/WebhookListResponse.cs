@@ -8,10 +8,10 @@ namespace BasisTheory.Client;
 public record WebhookListResponse
 {
     [JsonPropertyName("pagination")]
-    public required WebhookListResponsePagination Pagination { get; set; }
+    public WebhookListResponsePagination? Pagination { get; set; }
 
     [JsonPropertyName("data")]
-    public IEnumerable<WebhookResponse> Data { get; set; } = new List<WebhookResponse>();
+    public IEnumerable<WebhookResponse>? Data { get; set; }
 
     public override string ToString()
     {

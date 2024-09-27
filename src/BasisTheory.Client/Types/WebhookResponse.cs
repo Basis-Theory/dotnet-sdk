@@ -8,34 +8,34 @@ namespace BasisTheory.Client;
 public record WebhookResponse
 {
     [JsonPropertyName("id")]
-    public required string Id { get; set; }
+    public string? Id { get; set; }
 
     [JsonPropertyName("tenant_id")]
-    public required string TenantId { get; set; }
+    public string? TenantId { get; set; }
 
     [JsonPropertyName("status")]
-    public required WebhookResponseStatus Status { get; set; }
+    public WebhookResponseStatus? Status { get; set; }
 
     [JsonPropertyName("name")]
-    public required string Name { get; set; }
+    public string? Name { get; set; }
 
     [JsonPropertyName("url")]
-    public required string Url { get; set; }
+    public string? Url { get; set; }
 
     [JsonPropertyName("events")]
-    public IEnumerable<string> Events { get; set; } = new List<string>();
+    public IEnumerable<string>? Events { get; set; }
 
     [JsonPropertyName("created_by")]
-    public required string CreatedBy { get; set; }
+    public string? CreatedBy { get; set; }
 
     [JsonPropertyName("created_at")]
-    public required DateTime CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     [JsonPropertyName("modified_by")]
-    public required string ModifiedBy { get; set; }
+    public string? ModifiedBy { get; set; }
 
     [JsonPropertyName("modified_at")]
-    public required DateTime ModifiedAt { get; set; }
+    public DateTime? ModifiedAt { get; set; }
 
     public override string ToString()
     {
