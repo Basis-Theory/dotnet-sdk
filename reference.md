@@ -672,13 +672,7 @@ await client.Tokens.CreateAsync(
             ImpactLevel = "string",
             RestrictionPolicy = "string",
         },
-        Metadata = new Dictionary<string, string?>()
-        {
-            {
-                "string",
-                new Dictionary<object, object?>() { { "key", "value" } }
-            },
-        },
+        Metadata = new Dictionary<string, string?>() { { "string", null } },
         SearchIndexes = new List<string>() { "string" },
         FingerprintExpression = "string",
         Mask = new Dictionary<object, object?>() { { "key", "value" } },
