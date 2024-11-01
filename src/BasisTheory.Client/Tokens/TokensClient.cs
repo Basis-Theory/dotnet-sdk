@@ -215,27 +215,7 @@ public partial class TokensClient
 
     /// <example>
     /// <code>
-    /// await client.Tokens.CreateAsync(
-    ///     new CreateTokenRequest
-    ///     {
-    ///         Id = "string",
-    ///         Type = "string",
-    ///         Data = new Dictionary<object, object?>() { { "key", "value" } },
-    ///         Privacy = new Privacy
-    ///         {
-    ///             Classification = "string",
-    ///             ImpactLevel = "string",
-    ///             RestrictionPolicy = "string",
-    ///         },
-    ///         Metadata = new Dictionary<string, string?>() { { "string", null } },
-    ///         SearchIndexes = new List<string>() { "string" },
-    ///         FingerprintExpression = "string",
-    ///         Mask = new Dictionary<object, object?>() { { "key", "value" } },
-    ///         DeduplicateToken = true,
-    ///         ExpiresAt = "string",
-    ///         Containers = new List<string>() { "string" },
-    ///     }
-    /// );
+    /// await client.Tokens.CreateAsync(new CreateTokenRequest());
     /// </code>
     /// </example>
     public async Task<Token> CreateAsync(

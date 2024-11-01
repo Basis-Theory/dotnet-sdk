@@ -660,27 +660,7 @@ await client.Tokens.ListAsync(new TokensListRequest());
 <dd>
 
 ```csharp
-await client.Tokens.CreateAsync(
-    new CreateTokenRequest
-    {
-        Id = "string",
-        Type = "string",
-        Data = new Dictionary<object, object?>() { { "key", "value" } },
-        Privacy = new Privacy
-        {
-            Classification = "string",
-            ImpactLevel = "string",
-            RestrictionPolicy = "string",
-        },
-        Metadata = new Dictionary<string, string?>() { { "string", null } },
-        SearchIndexes = new List<string>() { "string" },
-        FingerprintExpression = "string",
-        Mask = new Dictionary<object, object?>() { { "key", "value" } },
-        DeduplicateToken = true,
-        ExpiresAt = "string",
-        Containers = new List<string>() { "string" },
-    }
-);
+await client.Tokens.CreateAsync(new CreateTokenRequest());
 ```
 </dd>
 </dl>
@@ -944,6 +924,49 @@ await client.Tokens.SearchV2Async(new SearchTokensRequestV2());
 <dd>
 
 **request:** `SearchTokensRequestV2` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Enrichments
+<details><summary><code>client.Enrichments.<a href="/src/BasisTheory.Client/Enrichments/EnrichmentsClient.cs">BankaccountverifyAsync</a>(BankVerificationRequest { ... })</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Enrichments.BankaccountverifyAsync(
+    new BankVerificationRequest { TokenId = "token_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `BankVerificationRequest` 
     
 </dd>
 </dl>
@@ -1983,7 +2006,73 @@ await client.Sessions.AuthorizeAsync(new AuthorizeSessionRequest { Nonce = "nonc
 </dl>
 </details>
 
+## Tenants
+<details><summary><code>client.Tenants.<a href="/src/BasisTheory.Client/Tenants/TenantsClient.cs">OwnerGetAsync</a>() -> TenantMemberResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.OwnerGetAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Threeds
+<details><summary><code>client.Threeds.<a href="/src/BasisTheory.Client/Threeds/ThreedsClient.cs">CreatesessionAsync</a>(CreateThreeDsSessionRequest { ... }) -> CreateThreeDsSessionResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Threeds.CreatesessionAsync(new CreateThreeDsSessionRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateThreeDsSessionRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Threeds.<a href="/src/BasisTheory.Client/Threeds/ThreedsClient.cs">AuthenticateSessionAsync</a>(sessionId, AuthenticateThreeDsSessionRequest { ... }) -> ThreeDsAuthentication</code></summary>
 <dl>
 <dd>
@@ -2160,7 +2249,7 @@ await client.Webhooks.PingAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">GetAsync</a>(id) -> WebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">GetAsync</a>(id) -> Webhook</code></summary>
 <dl>
 <dd>
 
@@ -2214,7 +2303,7 @@ await client.Webhooks.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">UpdateAsync</a>(id, WebhookUpdateRequest { ... }) -> WebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">UpdateAsync</a>(id, UpdateWebhookRequest { ... }) -> Webhook</code></summary>
 <dl>
 <dd>
 
@@ -2243,7 +2332,7 @@ Update a new webhook
 ```csharp
 await client.Webhooks.UpdateAsync(
     "id",
-    new WebhookUpdateRequest
+    new UpdateWebhookRequest
     {
         Name = "webhook-update",
         Url = "http://www.example.com",
@@ -2272,7 +2361,7 @@ await client.Webhooks.UpdateAsync(
 <dl>
 <dd>
 
-**request:** `WebhookUpdateRequest` 
+**request:** `UpdateWebhookRequest` 
     
 </dd>
 </dl>
@@ -2338,7 +2427,7 @@ await client.Webhooks.DeleteAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">ListAsync</a>() -> WebhookListResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">ListAsync</a>() -> WebhookList</code></summary>
 <dl>
 <dd>
 
@@ -2377,7 +2466,7 @@ await client.Webhooks.ListAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">CreateAsync</a>(WebhookCreateRequest { ... }) -> WebhookResponse</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">CreateAsync</a>(CreateWebhookRequest { ... }) -> Webhook</code></summary>
 <dl>
 <dd>
 
@@ -2405,7 +2494,7 @@ Create a new webhook
 
 ```csharp
 await client.Webhooks.CreateAsync(
-    new WebhookCreateRequest
+    new CreateWebhookRequest
     {
         Name = "webhook-create",
         Url = "http://www.example.com",
@@ -2426,7 +2515,7 @@ await client.Webhooks.CreateAsync(
 <dl>
 <dd>
 
-**request:** `WebhookCreateRequest` 
+**request:** `CreateWebhookRequest` 
     
 </dd>
 </dl>
