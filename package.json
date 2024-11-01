@@ -1,0 +1,29 @@
+{
+  "name": "dotnet-sdk",
+  "version": "0.0.1",
+  "description": "Basis Theory .NET SDK",
+  "repository": "https://github.com/Basis-Theory/dotnet-sdk",
+  "author": "Basis Theory",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "release": "semantic-release"
+  },
+  "devDependencies": {
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.0",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.0",
+    "@semantic-release/release-notes-generator": "^14.0.1",
+    "semantic-release": "^24.2.0"
+  },
+  "resolutions": {
+    "ansi-regex": "^5.0.1",
+    "http-cache-semantics": "^4.1.1",
+    "minimatch": "^3.0.5",
+    "minimist": "^1.2.6",
+    "semver": "^7.5.2",
+    "semver-regex": "^3.1.4"
+  }
+}

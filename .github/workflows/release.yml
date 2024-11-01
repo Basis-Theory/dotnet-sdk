@@ -1,0 +1,42 @@
+name: Release
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: PROD
+
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GH_SEMANTIC_RELEASE_PAT }}
+
+      - name: Start Deploy Message
+        uses: Basis-Theory/github-actions/deploy-slack-action@master
+        with:
+          slack-api-token: ${{ secrets.SLACK_DUCKBOT_API_KEY }}
+          channel: ${{ vars.SLACK_DUCKBOT_PRODUCT_DEPLOY_CHANNEL }}
+
+
+
+
+
+      - name: "Release"
+        env:
+          GH_TOKEN: ${{ secrets.GH_SEMANTIC_RELEASE_PAT }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          yarn install --frozen-lockfile
+          yarn release
+
+      - name: Stop Deploy Message
+        if: always()
+        uses: Basis-Theory/github-actions/deploy-slack-action@master
+        with:
+          slack-api-token: ${{ secrets.SLACK_DUCKBOT_API_KEY }}
+          channel: ${{ vars.SLACK_DUCKBOT_PRODUCT_DEPLOY_CHANNEL }}
+          status: 'done'
