@@ -1,8 +1,6 @@
 using System.Text.Json;
 using NUnit.Framework;
 
-#nullable enable
-
 namespace BasisTheory.Client.Test;
 
 [TestFixture]
@@ -106,7 +104,7 @@ public class TestClient
     {
         var updateUrl = "https://echo.basistheory.com/" + Guid.NewGuid();
         await client.Webhooks.UpdateAsync(webhookId,
-            new WebhookUpdateRequest
+            new UpdateWebhookRequest
             {
                 Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
                 Url = updateUrl,
@@ -123,7 +121,7 @@ public class TestClient
 
     private static async Task<string> CreateWebhook(BasisTheory client, string url)
     {
-        var webhook = await client.Webhooks.CreateAsync(new WebhookCreateRequest
+        var webhook = await client.Webhooks.CreateAsync(new CreateWebhookRequest
         {
             Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
             Url = url,
