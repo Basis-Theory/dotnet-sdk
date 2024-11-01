@@ -5,90 +5,26 @@ on:
     - cron: '0 12 * * 1' # 12pm UTC every Monday
   workflow_dispatch:
 
-env:
-  NUGET_AUTH_TOKEN: ${{ secrets.PRIVATE_PACKAGE_TOKEN }}
-
 jobs:
-  build-docker-image:
-    runs-on: ubuntu-latest-8-cores
-
+  scan:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Cache Docker Image
-        uses: actions/cache@v3
-        with:
-          path: /tmp/vault-api.tar
-          key: ${{ runner.os }}-docker-images-${{ github.sha }}
-
-      - name: Build Image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: false
-          load: true
-          tags: vault-api:latest
-          outputs: type=docker,dest=/tmp/vault-api.tar
-          build-args: |
-            GITHUB_TOKEN=${{ secrets.PRIVATE_PACKAGE_TOKEN }}
-            GIT_SHA=${{ github.sha }}
-
-  scan-code:
-    runs-on: ubuntu-latest-8-cores
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 8.0.x
-          source-url: https://nuget.pkg.github.com/Basis-Theory/index.json
-
-      - name: Security Scan
-        run: |
-          dotnet tool install --global security-scan --version 5.6.7
-          security-scan BasisTheory.Vault.sln --excl-proj="*Tests/**" -n --cwe
-
-      - name: Slack Alert on Failure
-        uses: 8398a7/action-slack@v3
-        if: failure()
-        with:
-          author_name: Security Scan
-          status: ${{ job.status }}
-          channel: ${{ secrets.SLACK_SECURITY_SCAN_ALERT_CHANNEL_ID }}
-          fields: 'repo,workflow'
+      - name: Snyk code scan
+        uses: snyk/actions/gradle@master
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-
-  scan-container:
-    runs-on: ubuntu-latest-8-cores
-    needs:
-      - build-docker-image
-    steps:
-      - name: Cache Docker Image
-        uses: actions/cache@v3
+          SNYK_TOKEN: ${{ secrets.SNYK_API_KEY }}
         with:
-          path: /tmp/vault-api.tar
-          key: ${{ runner.os }}-docker-images-${{ github.sha }}
+          command: code test
 
-      - name: Load Docker Image
-        run: |
-          docker load --input /tmp/vault-api.tar
-
-      - name: Container Scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: vault-api:latest
-          format: 'table'
-          exit-code: '1'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+      - name: Snyk dependency scan
+        uses: snyk/actions/gradle@master
         env:
-          TRIVY_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-db,public.ecr.aws/aquasecurity/trivy-db
+          SNYK_TOKEN: ${{ secrets.SNYK_API_KEY }}
+        with:
+          args: --all-sub-projects --severity-threshold=high
 
       - name: Slack Alert on Failure
         uses: 8398a7/action-slack@v3
