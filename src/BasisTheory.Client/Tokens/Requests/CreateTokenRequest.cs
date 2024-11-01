@@ -14,7 +14,7 @@ public record CreateTokenRequest
     public string? Type { get; set; }
 
     [JsonPropertyName("data")]
-    public required object Data { get; set; }
+    public object? Data { get; set; }
 
     [JsonPropertyName("privacy")]
     public Privacy? Privacy { get; set; }
@@ -39,6 +39,9 @@ public record CreateTokenRequest
 
     [JsonPropertyName("containers")]
     public IEnumerable<string>? Containers { get; set; }
+
+    [JsonPropertyName("token_intent_id")]
+    public string? TokenIntentId { get; set; }
 
     public override string ToString()
     {

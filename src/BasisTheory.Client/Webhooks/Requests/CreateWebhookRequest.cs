@@ -5,7 +5,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record WebhookUpdateRequest
+public record CreateWebhookRequest
 {
     /// <summary>
     /// The name of the webhook
@@ -18,6 +18,12 @@ public record WebhookUpdateRequest
     /// </summary>
     [JsonPropertyName("url")]
     public required string Url { get; set; }
+
+    /// <summary>
+    /// The email address to use for management notification events. Ie: webhook disabled
+    /// </summary>
+    [JsonPropertyName("notify_email")]
+    public string? NotifyEmail { get; set; }
 
     /// <summary>
     /// An array of event types that the webhook will listen for

@@ -1,40 +1,31 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
+using System.Threading.Tasks;
 using BasisTheory.Client.Core;
-using BasisTheory.Client.Tenants;
 
 #nullable enable
 
 namespace BasisTheory.Client;
 
-public partial class TenantsClient
+public partial class EnrichmentsClient
 {
     private RawClient _client;
 
-    internal TenantsClient(RawClient client)
+    internal EnrichmentsClient(RawClient client)
     {
         _client = client;
-        Connections = new ConnectionsClient(_client);
-        Invitations = new InvitationsClient(_client);
-        Members = new MembersClient(_client);
-        Self = new SelfClient(_client);
     }
-
-    public ConnectionsClient Connections { get; }
-
-    public InvitationsClient Invitations { get; }
-
-    public MembersClient Members { get; }
-
-    public SelfClient Self { get; }
 
     /// <example>
     /// <code>
-    /// await client.Tenants.OwnerGetAsync();
+    /// await client.Enrichments.BankaccountverifyAsync(
+    ///     new BankVerificationRequest { TokenId = "token_id" }
+    /// );
     /// </code>
     /// </example>
-    public async Task<TenantMemberResponse> OwnerGetAsync(
+    public async Task BankaccountverifyAsync(
+        BankVerificationRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -43,37 +34,32 @@ public partial class TenantsClient
             new RawClient.JsonApiRequest
             {
                 BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Get,
-                Path = "tenants/self/owner",
+                Method = HttpMethod.Post,
+                Path = "enrichments/bank-account-verify",
+                Body = request,
                 Options = options,
             },
             cancellationToken
         );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
-            try
-            {
-                return JsonUtils.Deserialize<TenantMemberResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
+            return;
         }
-
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         try
         {
             switch (response.StatusCode)
             {
+                case 400:
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
                     );
                 case 403:
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
-                case 404:
-                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
             }
         }
         catch (JsonException)

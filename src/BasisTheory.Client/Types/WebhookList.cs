@@ -5,13 +5,13 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record WebhookListResponse
+public record WebhookList
 {
     [JsonPropertyName("pagination")]
-    public required WebhookListResponsePagination Pagination { get; set; }
+    public required WebhookListPagination Pagination { get; set; }
 
     [JsonPropertyName("data")]
-    public IEnumerable<WebhookResponse> Data { get; set; } = new List<WebhookResponse>();
+    public IEnumerable<Webhook> Data { get; set; } = new List<Webhook>();
 
     public override string ToString()
     {

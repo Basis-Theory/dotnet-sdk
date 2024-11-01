@@ -10,6 +10,12 @@ public record ThreeDsAuthentication
     [JsonPropertyName("pan_token_id")]
     public string? PanTokenId { get; set; }
 
+    [JsonPropertyName("token_id")]
+    public string? TokenId { get; set; }
+
+    [JsonPropertyName("token_intent_id")]
+    public string? TokenIntentId { get; set; }
+
     [JsonPropertyName("threeds_version")]
     public string? ThreedsVersion { get; set; }
 

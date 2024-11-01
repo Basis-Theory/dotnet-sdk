@@ -10,11 +10,20 @@ public record ThreeDsSession
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
+    [JsonPropertyName("type")]
+    public string? Type { get; set; }
+
     [JsonPropertyName("tenant_id")]
     public string? TenantId { get; set; }
 
     [JsonPropertyName("pan_token_id")]
     public string? PanTokenId { get; set; }
+
+    [JsonPropertyName("token_id")]
+    public string? TokenId { get; set; }
+
+    [JsonPropertyName("token_intent_id")]
+    public string? TokenIntentId { get; set; }
 
     [JsonPropertyName("card_brand")]
     public string? CardBrand { get; set; }

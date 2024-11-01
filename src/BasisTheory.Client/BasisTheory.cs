@@ -1,5 +1,4 @@
 using BasisTheory.Client.Core;
-using BasisTheory.Client.Tenants;
 
 #nullable enable
 
@@ -38,6 +37,7 @@ public partial class BasisTheory
         ApplicationKeys = new ApplicationKeysClient(_client);
         ApplicationTemplates = new ApplicationTemplatesClient(_client);
         Tokens = new TokensClient(_client);
+        Enrichments = new EnrichmentsClient(_client);
         Logs = new LogsClient(_client);
         Permissions = new PermissionsClient(_client);
         Proxies = new ProxiesClient(_client);
@@ -45,9 +45,9 @@ public partial class BasisTheory
         Reactors = new ReactorsClient(_client);
         Roles = new RolesClient(_client);
         Sessions = new SessionsClient(_client);
+        Tenants = new TenantsClient(_client);
         Threeds = new ThreedsClient(_client);
         Webhooks = new WebhooksClient(_client);
-        Tenants = new TenantsClient(_client);
     }
 
     public ApplicationsClient Applications { get; init; }
@@ -57,6 +57,8 @@ public partial class BasisTheory
     public ApplicationTemplatesClient ApplicationTemplates { get; init; }
 
     public TokensClient Tokens { get; init; }
+
+    public EnrichmentsClient Enrichments { get; init; }
 
     public LogsClient Logs { get; init; }
 
@@ -72,11 +74,11 @@ public partial class BasisTheory
 
     public SessionsClient Sessions { get; init; }
 
+    public TenantsClient Tenants { get; init; }
+
     public ThreedsClient Threeds { get; init; }
 
     public WebhooksClient Webhooks { get; init; }
-
-    public TenantsClient Tenants { get; init; }
 
     private static string GetFromEnvironmentOrThrow(string env, string message)
     {

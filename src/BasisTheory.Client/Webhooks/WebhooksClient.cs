@@ -67,7 +67,7 @@ public partial class WebhooksClient
     /// await client.Webhooks.GetAsync("id");
     /// </code>
     /// </example>
-    public async Task<WebhookResponse> GetAsync(
+    public async Task<Webhook> GetAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -88,7 +88,7 @@ public partial class WebhooksClient
         {
             try
             {
-                return JsonUtils.Deserialize<WebhookResponse>(responseBody)!;
+                return JsonUtils.Deserialize<Webhook>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -106,6 +106,8 @@ public partial class WebhooksClient
                     );
                 case 403:
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
+                case 404:
+                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
             }
         }
         catch (JsonException)
@@ -126,7 +128,7 @@ public partial class WebhooksClient
     /// <code>
     /// await client.Webhooks.UpdateAsync(
     ///     "id",
-    ///     new WebhookUpdateRequest
+    ///     new UpdateWebhookRequest
     ///     {
     ///         Name = "webhook-update",
     ///         Url = "http://www.example.com",
@@ -135,9 +137,9 @@ public partial class WebhooksClient
     /// );
     /// </code>
     /// </example>
-    public async Task<WebhookResponse> UpdateAsync(
+    public async Task<Webhook> UpdateAsync(
         string id,
-        WebhookUpdateRequest request,
+        UpdateWebhookRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -158,7 +160,7 @@ public partial class WebhooksClient
         {
             try
             {
-                return JsonUtils.Deserialize<WebhookResponse>(responseBody)!;
+                return JsonUtils.Deserialize<Webhook>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -265,7 +267,7 @@ public partial class WebhooksClient
     /// await client.Webhooks.ListAsync();
     /// </code>
     /// </example>
-    public async Task<WebhookListResponse> ListAsync(
+    public async Task<WebhookList> ListAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -285,7 +287,7 @@ public partial class WebhooksClient
         {
             try
             {
-                return JsonUtils.Deserialize<WebhookListResponse>(responseBody)!;
+                return JsonUtils.Deserialize<WebhookList>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -297,6 +299,10 @@ public partial class WebhooksClient
         {
             switch (response.StatusCode)
             {
+                case 400:
+                    throw new BadRequestError(
+                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
@@ -322,7 +328,7 @@ public partial class WebhooksClient
     /// <example>
     /// <code>
     /// await client.Webhooks.CreateAsync(
-    ///     new WebhookCreateRequest
+    ///     new CreateWebhookRequest
     ///     {
     ///         Name = "webhook-create",
     ///         Url = "http://www.example.com",
@@ -331,8 +337,8 @@ public partial class WebhooksClient
     /// );
     /// </code>
     /// </example>
-    public async Task<WebhookResponse> CreateAsync(
-        WebhookCreateRequest request,
+    public async Task<Webhook> CreateAsync(
+        CreateWebhookRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -353,7 +359,7 @@ public partial class WebhooksClient
         {
             try
             {
-                return JsonUtils.Deserialize<WebhookResponse>(responseBody)!;
+                return JsonUtils.Deserialize<Webhook>(responseBody)!;
             }
             catch (JsonException e)
             {

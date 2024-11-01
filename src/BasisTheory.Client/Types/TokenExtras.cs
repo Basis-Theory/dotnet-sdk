@@ -5,13 +5,10 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record WebhookListResponsePagination
+public record TokenExtras
 {
-    [JsonPropertyName("page_size")]
-    public int? PageSize { get; set; }
-
-    [JsonPropertyName("next")]
-    public string? Next { get; set; }
+    [JsonPropertyName("deduplicated")]
+    public bool? Deduplicated { get; set; }
 
     public override string ToString()
     {

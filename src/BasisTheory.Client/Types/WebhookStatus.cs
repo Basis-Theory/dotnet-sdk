@@ -6,8 +6,8 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<WebhookResponseStatus>))]
-public enum WebhookResponseStatus
+[JsonConverter(typeof(StringEnumSerializer<WebhookStatus>))]
+public enum WebhookStatus
 {
     [EnumMember(Value = "enabled")]
     Enabled,
