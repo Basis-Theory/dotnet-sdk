@@ -1,9 +1,10 @@
 using System.Text.Json.Serialization;
+using BasisTheory.Client;
 using BasisTheory.Client.Core;
 
 #nullable enable
 
-namespace BasisTheory.Client;
+namespace BasisTheory.Client.Threeds;
 
 public record AuthenticateThreeDsSessionRequest
 {
