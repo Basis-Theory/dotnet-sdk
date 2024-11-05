@@ -19,7 +19,7 @@ public partial class TokensClient
 
     /// <example>
     /// <code>
-    /// await client.Tokens.DetokenizeAsync(new Dictionary<object, object?>() { { "key", "value" } });
+    /// await client.Tokens.DetokenizeAsync(new Dictionary&lt;object, object?&gt;() { { "key", "value" } });
     /// </code>
     /// </example>
     public async Task DetokenizeAsync(
@@ -75,7 +75,7 @@ public partial class TokensClient
 
     /// <example>
     /// <code>
-    /// await client.Tokens.TokenizeAsync(new Dictionary<object, object?>() { { "key", "value" } });
+    /// await client.Tokens.TokenizeAsync(new Dictionary&lt;object, object?&gt;() { { "key", "value" } });
     /// </code>
     /// </example>
     public async Task<object> TokenizeAsync(

@@ -6,7 +6,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-[JsonConverter(typeof(StringEnumSerializer<TenantInvitationStatus>))]
+[JsonConverter(typeof(EnumSerializer<TenantInvitationStatus>))]
 public enum TenantInvitationStatus
 {
     [EnumMember(Value = "PENDING")]
