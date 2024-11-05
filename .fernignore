@@ -4,6 +4,7 @@
 
 .gitignore
 .releaserc.json
+CHANGELOG.md
 package.json
 yarn.lock
 

@@ -132,7 +132,7 @@ public partial class WebhooksClient
     ///     {
     ///         Name = "webhook-update",
     ///         Url = "http://www.example.com",
-    ///         Events = new List<string>() { "token:created" },
+    ///         Events = new List&lt;string&gt;() { "token:created" },
     ///     }
     /// );
     /// </code>
@@ -332,7 +332,7 @@ public partial class WebhooksClient
     ///     {
     ///         Name = "webhook-create",
     ///         Url = "http://www.example.com",
-    ///         Events = new List<string>() { "token:created" },
+    ///         Events = new List&lt;string&gt;() { "token:created" },
     ///     }
     /// );
     /// </code>
