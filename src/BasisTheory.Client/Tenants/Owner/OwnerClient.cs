@@ -1,32 +1,28 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
+using BasisTheory.Client;
 using BasisTheory.Client.Core;
-using BasisTheory.Client.Threeds;
 
 #nullable enable
 
-namespace BasisTheory.Client;
+namespace BasisTheory.Client.Tenants;
 
-public partial class ThreedsClient
+public partial class OwnerClient
 {
     private RawClient _client;
 
-    internal ThreedsClient(RawClient client)
+    internal OwnerClient(RawClient client)
     {
         _client = client;
-        Sessions = new SessionsClient(_client);
     }
-
-    public SessionsClient Sessions { get; }
 
     /// <example>
     /// <code>
-    /// await client.Threeds.CreatesessionAsync(new CreateThreeDsSessionRequest());
+    /// await client.Tenants.Owner.GetAsync();
     /// </code>
     /// </example>
-    public async Task<CreateThreeDsSessionResponse> CreatesessionAsync(
-        CreateThreeDsSessionRequest request,
+    public async Task<TenantMemberResponse> GetAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -35,9 +31,8 @@ public partial class ThreedsClient
             new RawClient.JsonApiRequest
             {
                 BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Post,
-                Path = "3ds/sessions",
-                Body = request,
+                Method = HttpMethod.Get,
+                Path = "tenants/self/owner",
                 Options = options,
             },
             cancellationToken
@@ -47,7 +42,7 @@ public partial class ThreedsClient
         {
             try
             {
-                return JsonUtils.Deserialize<CreateThreeDsSessionResponse>(responseBody)!;
+                return JsonUtils.Deserialize<TenantMemberResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -59,16 +54,14 @@ public partial class ThreedsClient
         {
             switch (response.StatusCode)
             {
-                case 400:
-                    throw new BadRequestError(
-                        JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                    );
                 case 401:
                     throw new UnauthorizedError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
                     );
                 case 403:
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
+                case 404:
+                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
             }
         }
         catch (JsonException)

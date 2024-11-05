@@ -2006,32 +2006,6 @@ await client.Sessions.AuthorizeAsync(new AuthorizeSessionRequest { Nonce = "nonc
 </dl>
 </details>
 
-## Tenants
-<details><summary><code>client.Tenants.<a href="/src/BasisTheory.Client/Tenants/TenantsClient.cs">OwnerGetAsync</a>() -> TenantMemberResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Tenants.OwnerGetAsync();
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Threeds
 <details><summary><code>client.Threeds.<a href="/src/BasisTheory.Client/Threeds/ThreedsClient.cs">CreatesessionAsync</a>(CreateThreeDsSessionRequest { ... }) -> CreateThreeDsSessionResponse</code></summary>
 <dl>
@@ -2062,142 +2036,6 @@ await client.Threeds.CreatesessionAsync(new CreateThreeDsSessionRequest());
 <dd>
 
 **request:** `CreateThreeDsSessionRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Threeds.<a href="/src/BasisTheory.Client/Threeds/ThreedsClient.cs">AuthenticateSessionAsync</a>(sessionId, AuthenticateThreeDsSessionRequest { ... }) -> ThreeDsAuthentication</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Threeds.AuthenticateSessionAsync(
-    "sessionId",
-    new AuthenticateThreeDsSessionRequest
-    {
-        AuthenticationCategory = "authentication_category",
-        AuthenticationType = "authentication_type",
-        RequestorInfo = new ThreeDsRequestorInfo(),
-    }
-);
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**sessionId:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `AuthenticateThreeDsSessionRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Threeds.<a href="/src/BasisTheory.Client/Threeds/ThreedsClient.cs">GetChallengeResultAsync</a>(sessionId) -> ThreeDsAuthentication</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Threeds.GetChallengeResultAsync("sessionId");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**sessionId:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Threeds.<a href="/src/BasisTheory.Client/Threeds/ThreedsClient.cs">GetSessionByIdAsync</a>(id) -> ThreeDsSession</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Threeds.GetSessionByIdAsync("id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `string` 
     
 </dd>
 </dl>
@@ -2941,6 +2779,32 @@ await client.Tenants.Members.DeleteAsync("memberId");
 </dl>
 </details>
 
+## Tenants Owner
+<details><summary><code>client.Tenants.Owner.<a href="/src/BasisTheory.Client/Tenants/Owner/OwnerClient.cs">GetAsync</a>() -> TenantMemberResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Owner.GetAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Tenants Self
 <details><summary><code>client.Tenants.Self.<a href="/src/BasisTheory.Client/Tenants/Self/SelfClient.cs">GetUsageReportsAsync</a>() -> TenantUsageReport</code></summary>
 <dl>
@@ -3047,6 +2911,143 @@ await client.Tenants.Self.UpdateAsync(new UpdateTenantRequest { Name = "name" })
 ```csharp
 await client.Tenants.Self.DeleteAsync();
 ```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Threeds Sessions
+<details><summary><code>client.Threeds.Sessions.<a href="/src/BasisTheory.Client/Threeds/Sessions/SessionsClient.cs">AuthenticateAsync</a>(sessionId, AuthenticateThreeDsSessionRequest { ... }) -> ThreeDsAuthentication</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Threeds.Sessions.AuthenticateAsync(
+    "sessionId",
+    new AuthenticateThreeDsSessionRequest
+    {
+        AuthenticationCategory = "authentication_category",
+        AuthenticationType = "authentication_type",
+        RequestorInfo = new ThreeDsRequestorInfo(),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**sessionId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `AuthenticateThreeDsSessionRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Threeds.Sessions.<a href="/src/BasisTheory.Client/Threeds/Sessions/SessionsClient.cs">GetChallengeResultAsync</a>(sessionId) -> ThreeDsAuthentication</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Threeds.Sessions.GetChallengeResultAsync("sessionId");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**sessionId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Threeds.Sessions.<a href="/src/BasisTheory.Client/Threeds/Sessions/SessionsClient.cs">GetAsync</a>(id) -> ThreeDsSession</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Threeds.Sessions.GetAsync("id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
+    
 </dd>
 </dl>
 </dd>
