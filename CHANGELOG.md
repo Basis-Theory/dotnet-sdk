@@ -1,3 +1,10 @@
+# [0.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.0.4...v0.1.0) (2024-11-18)
+
+
+### Features
+
+* Add support for Idenpotency Key and PATCH methods ([#18](https://github.com/Basis-Theory/dotnet-sdk/issues/18)) ([873287e](https://github.com/Basis-Theory/dotnet-sdk/commit/873287e30ece92bed440a1061510289fd60993da))
+
 ## [0.0.4](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.0.3...v0.0.4) (2024-11-05)
 
 
