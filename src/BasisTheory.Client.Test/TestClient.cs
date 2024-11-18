@@ -64,13 +64,12 @@ public class TestClient
     }
 
     [Test]
-    [Ignore("Idempotency Header is currently not supported in dotnet SDK")]
     public async Task ShouldSupportIdempotencyHeader()
     {
         var client = GetPrivateClient();
-        var options = new RequestOptions
+        var options = new IdempotentRequestOptions
         {
-            // IdempotencyKey = Guid.NewGuid().ToString(),
+            IdempotencyKey = Guid.NewGuid().ToString(),
         };
 
         var firstTokenId = await CreateToken(client, "6011000990139424", options);
@@ -230,7 +229,7 @@ public class TestClient
         Assert.That(token.Data.GetJsonElementValue<string>("number"), Is.EqualTo(cardNumber));
     }
 
-    private static async Task<string?> CreateToken(BasisTheory client, string cardNumber, RequestOptions? options = null)
+    private static async Task<string?> CreateToken(BasisTheory client, string cardNumber, IdempotentRequestOptions? options = null)
     {
         var token = await client.Tokens.CreateAsync(new CreateTokenRequest
         {
