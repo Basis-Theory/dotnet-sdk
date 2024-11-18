@@ -1,5 +1,6 @@
 using BasisTheory.Client.Core;
 using BasisTheory.Client.Tenants;
+using BasisTheory.Client.Threeds;
 
 #nullable enable
 
@@ -51,9 +52,9 @@ public partial class BasisTheory
         Reactors = new ReactorsClient(_client);
         Roles = new RolesClient(_client);
         Sessions = new SessionsClient(_client);
-        Threeds = new ThreedsClient(_client);
         Webhooks = new WebhooksClient(_client);
         Tenants = new TenantsClient(_client);
+        Threeds = new ThreedsClient(_client);
     }
 
     public ApplicationsClient Applications { get; init; }
@@ -80,11 +81,11 @@ public partial class BasisTheory
 
     public SessionsClient Sessions { get; init; }
 
-    public ThreedsClient Threeds { get; init; }
-
     public WebhooksClient Webhooks { get; init; }
 
     public TenantsClient Tenants { get; init; }
+
+    public ThreedsClient Threeds { get; init; }
 
     private static string GetFromEnvironmentOrThrow(string env, string message)
     {

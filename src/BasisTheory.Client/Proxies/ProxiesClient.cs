@@ -104,7 +104,7 @@ public partial class ProxiesClient
     /// </example>
     public async Task<Proxy> CreateAsync(
         CreateProxyRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -115,6 +115,7 @@ public partial class ProxiesClient
                 Method = HttpMethod.Post,
                 Path = "proxies",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -229,7 +230,7 @@ public partial class ProxiesClient
     public async Task<Proxy> UpdateAsync(
         string id,
         UpdateProxyRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -240,6 +241,7 @@ public partial class ProxiesClient
                 Method = HttpMethod.Put,
                 Path = $"proxies/{id}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -345,7 +347,7 @@ public partial class ProxiesClient
     public async Task PatchAsync(
         string id,
         PatchProxyRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -356,6 +358,7 @@ public partial class ProxiesClient
                 Method = HttpMethodExtensions.Patch,
                 Path = $"proxies/{id}",
                 Body = request,
+                ContentType = "application/merge-patch+json",
                 Options = options,
             },
             cancellationToken

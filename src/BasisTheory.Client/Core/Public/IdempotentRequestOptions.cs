@@ -6,7 +6,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public partial class RequestOptions : IRequestOptions
+public partial class IdempotentRequestOptions : IIdempotentRequestOptions
 {
     /// <summary>
     /// The Base URL for the API.
@@ -28,8 +28,17 @@ public partial class RequestOptions : IRequestOptions
     /// </summary>
     public TimeSpan? Timeout { get; init; }
 
+    public string? IdempotencyKey { get; init; }
+
     /// <summary>
     /// The http headers sent with the request.
     /// </summary>
     Headers IRequestOptions.Headers { get; init; } = new();
+
+    Headers IIdempotentRequestOptions.GetIdempotencyHeaders()
+    {
+        return new Headers(
+            new Dictionary<string, string> { ["BT-IDEMPOTENCY-KEY"] = IdempotencyKey }
+        );
+    }
 }

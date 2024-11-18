@@ -101,7 +101,7 @@ public partial class ApplicationsClient
     /// </example>
     public async Task<Application> CreateAsync(
         CreateApplicationRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -112,6 +112,7 @@ public partial class ApplicationsClient
                 Method = HttpMethod.Post,
                 Path = "applications",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -223,7 +224,7 @@ public partial class ApplicationsClient
     public async Task<Application> UpdateAsync(
         string id,
         UpdateApplicationRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -234,6 +235,7 @@ public partial class ApplicationsClient
                 Method = HttpMethod.Put,
                 Path = $"applications/{id}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -394,7 +396,7 @@ public partial class ApplicationsClient
     /// </example>
     public async Task<Application> RegenerateKeyAsync(
         string id,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {

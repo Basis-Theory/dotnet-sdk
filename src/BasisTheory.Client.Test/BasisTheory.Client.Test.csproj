@@ -20,7 +20,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\BasisTheory.Client\BasisTheory.Client.csproj" />
+        <ProjectReference Include="..\BasisTheory.Client\BasisTheory.Client.csproj" />
     </ItemGroup>
 
+    <Import Project="BasisTheory.Client.Test.Custom.props" Condition="Exists('BasisTheory.Client.Test.Custom.props')" />
 </Project>

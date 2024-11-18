@@ -101,7 +101,7 @@ public partial class MembersClient
     public async Task<TenantMemberResponse> UpdateAsync(
         string memberId,
         UpdateTenantMemberRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -112,6 +112,7 @@ public partial class MembersClient
                 Method = HttpMethod.Put,
                 Path = $"tenants/self/members/{memberId}",
                 Body = request,
+                ContentType = "application/json-patch+json",
                 Options = options,
             },
             cancellationToken
