@@ -9,7 +9,11 @@ public partial class BasisTheory
 {
     private RawClient _client;
 
-    public BasisTheory(string? apiKey = null, ClientOptions? clientOptions = null)
+    public BasisTheory(
+        string? apiKey = null,
+        string? correlationId = null,
+        ClientOptions? clientOptions = null
+    )
     {
         apiKey ??= GetFromEnvironmentOrThrow(
             "BT-API-KEY",
@@ -19,10 +23,11 @@ public partial class BasisTheory
             new Dictionary<string, string>()
             {
                 { "BT-API-KEY", apiKey },
+                { "BT-TRACE-ID", correlationId },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "BasisTheory.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
-                { "User-Agent", "BasisTheory.Client/0.0.1" },
+                { "User-Agent", "BasisTheory/0.0.1" },
             }
         );
         clientOptions ??= new ClientOptions();

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using NUnit.Framework;
+using WireMock.RequestBuilders;
 
 namespace BasisTheory.Client.Test;
 
@@ -49,6 +50,17 @@ public class TestClient
         // Clean-up
         await DeleteApplication(managementClient, applicationId);
         await EnsureTokenIsDeleted(client, tokenId);
+    }
+
+    [Test]
+    [Ignore("Correlation ID is currently not supported")]
+    public async Task ShouldSupportCorrelationId()
+    {
+        var client = GetPrivateClient();
+        var options = new RequestOptions
+        {
+            // CorrelationId = Guid.NewGuid().ToString()
+        };
     }
 
     [Test]
@@ -254,7 +266,7 @@ public class TestClient
     private static BasisTheory GetPrivateClient()
     {
         return new BasisTheory(Environment.GetEnvironmentVariable("BT_PVT_API_KEY"),
-            new ClientOptions
+            clientOptions: new ClientOptions
             {
                 BaseUrl = Environment.GetEnvironmentVariable("BT_API_URL")!,
             });
@@ -263,7 +275,7 @@ public class TestClient
     private static BasisTheory GetManagementClient()
     {
         return new BasisTheory(Environment.GetEnvironmentVariable("BT_MGT_API_KEY"),
-            new ClientOptions
+            clientOptions: new ClientOptions
             {
                 BaseUrl = Environment.GetEnvironmentVariable("BT_API_URL")!,
             });
