@@ -254,7 +254,7 @@ public class TestClient
     private static BasisTheory GetPrivateClient()
     {
         return new BasisTheory(Environment.GetEnvironmentVariable("BT_PVT_API_KEY"),
-            new ClientOptions
+            clientOptions: new ClientOptions
             {
                 BaseUrl = Environment.GetEnvironmentVariable("BT_API_URL")!,
             });
@@ -263,7 +263,7 @@ public class TestClient
     private static BasisTheory GetManagementClient()
     {
         return new BasisTheory(Environment.GetEnvironmentVariable("BT_MGT_API_KEY"),
-            new ClientOptions
+            clientOptions: new ClientOptions
             {
                 BaseUrl = Environment.GetEnvironmentVariable("BT_API_URL")!,
             });
