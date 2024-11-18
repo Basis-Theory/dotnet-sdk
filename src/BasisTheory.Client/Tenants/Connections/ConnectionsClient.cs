@@ -30,7 +30,7 @@ public partial class ConnectionsClient
     /// </example>
     public async Task<CreateTenantConnectionResponse> CreateAsync(
         CreateTenantConnectionRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -41,6 +41,7 @@ public partial class ConnectionsClient
                 Method = HttpMethod.Post,
                 Path = "tenants/self/connections",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

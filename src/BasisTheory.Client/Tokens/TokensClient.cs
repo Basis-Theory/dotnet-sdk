@@ -35,6 +35,7 @@ public partial class TokensClient
                 Method = HttpMethod.Post,
                 Path = "detokenize",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -80,7 +81,7 @@ public partial class TokensClient
     /// </example>
     public async Task<object> TokenizeAsync(
         object request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -91,6 +92,7 @@ public partial class TokensClient
                 Method = HttpMethod.Post,
                 Path = "tokenize",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -220,7 +222,7 @@ public partial class TokensClient
     /// </example>
     public async Task<Token> CreateAsync(
         CreateTokenRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -231,6 +233,7 @@ public partial class TokensClient
                 Method = HttpMethod.Post,
                 Path = "tokens",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -284,7 +287,7 @@ public partial class TokensClient
     /// </example>
     public async Task<TokenPaginatedList> SearchAsync(
         SearchTokensRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -295,6 +298,7 @@ public partial class TokensClient
                 Method = HttpMethod.Post,
                 Path = "tokens/search",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -461,7 +465,7 @@ public partial class TokensClient
     public async Task<Token> UpdateAsync(
         string id,
         UpdateTokenRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -472,6 +476,7 @@ public partial class TokensClient
                 Method = HttpMethodExtensions.Patch,
                 Path = $"tokens/{id}",
                 Body = request,
+                ContentType = "application/merge-patch+json",
                 Options = options,
             },
             cancellationToken
@@ -594,7 +599,7 @@ public partial class TokensClient
     /// </example>
     public async Task<TokenCursorPaginatedList> SearchV2Async(
         SearchTokensRequestV2 request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -605,6 +610,7 @@ public partial class TokensClient
                 Method = HttpMethod.Post,
                 Path = "v2/tokens/search",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

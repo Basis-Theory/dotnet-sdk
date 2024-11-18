@@ -105,7 +105,7 @@ public partial class ReactorformulasClient
     /// </example>
     public async Task<ReactorFormula> CreateAsync(
         CreateReactorFormulaRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -116,6 +116,7 @@ public partial class ReactorformulasClient
                 Method = HttpMethod.Post,
                 Path = "reactor-formulas",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -230,7 +231,7 @@ public partial class ReactorformulasClient
     public async Task<ReactorFormula> UpdateAsync(
         string id,
         UpdateReactorFormulaRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -241,6 +242,7 @@ public partial class ReactorformulasClient
                 Method = HttpMethod.Put,
                 Path = $"reactor-formulas/{id}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

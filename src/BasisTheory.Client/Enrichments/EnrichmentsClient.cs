@@ -37,6 +37,7 @@ public partial class EnrichmentsClient
                 Method = HttpMethod.Post,
                 Path = "enrichments/bank-account-verify",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

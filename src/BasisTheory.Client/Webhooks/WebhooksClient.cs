@@ -151,6 +151,7 @@ public partial class WebhooksClient
                 Method = HttpMethod.Put,
                 Path = $"webhooks/{id}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -350,6 +351,7 @@ public partial class WebhooksClient
                 Method = HttpMethod.Post,
                 Path = "webhooks",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

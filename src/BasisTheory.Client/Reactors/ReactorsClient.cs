@@ -106,7 +106,7 @@ public partial class ReactorsClient
     /// </example>
     public async Task<Reactor> CreateAsync(
         CreateReactorRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -117,6 +117,7 @@ public partial class ReactorsClient
                 Method = HttpMethod.Post,
                 Path = "reactors",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -228,7 +229,7 @@ public partial class ReactorsClient
     public async Task<Reactor> UpdateAsync(
         string id,
         UpdateReactorRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -239,6 +240,7 @@ public partial class ReactorsClient
                 Method = HttpMethod.Put,
                 Path = $"reactors/{id}",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -344,7 +346,7 @@ public partial class ReactorsClient
     public async Task PatchAsync(
         string id,
         PatchReactorRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -355,6 +357,7 @@ public partial class ReactorsClient
                 Method = HttpMethodExtensions.Patch,
                 Path = $"reactors/{id}",
                 Body = request,
+                ContentType = "application/merge-patch+json",
                 Options = options,
             },
             cancellationToken
@@ -412,6 +415,7 @@ public partial class ReactorsClient
                 Method = HttpMethod.Post,
                 Path = $"reactors/{id}/react",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -481,6 +485,7 @@ public partial class ReactorsClient
                 Method = HttpMethod.Post,
                 Path = $"reactors/{id}/react-async",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

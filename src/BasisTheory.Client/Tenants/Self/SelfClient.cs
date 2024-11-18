@@ -141,7 +141,7 @@ public partial class SelfClient
     /// </example>
     public async Task<Tenant> UpdateAsync(
         UpdateTenantRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -152,6 +152,7 @@ public partial class SelfClient
                 Method = HttpMethod.Put,
                 Path = "tenants/self",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

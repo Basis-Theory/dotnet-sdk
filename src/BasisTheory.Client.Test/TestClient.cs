@@ -25,9 +25,9 @@ public class TestClient
         var tokenId = await CreateToken(client, cardNumber);
         await GetAndValidateCardNumber(client, tokenId, cardNumber);
 
-        // var updateCardNumber = "4242424242424242";
-        // await UpdateTokenb(client, tokenId, cardNumber);
-        // GetAndValidateCardNumber(client, tokenId, updateCardNumber);
+        var updateCardNumber = "4242424242424242";
+        await UpdateToken(client, tokenId, updateCardNumber);
+        GetAndValidateCardNumber(client, tokenId, updateCardNumber);
 
         // Create Application
         var application = await managementClient.Applications.CreateAsync(new CreateApplicationRequest
@@ -64,13 +64,12 @@ public class TestClient
     }
 
     [Test]
-    [Ignore("Idempotency Header is currently not supported in dotnet SDK")]
     public async Task ShouldSupportIdempotencyHeader()
     {
         var client = GetPrivateClient();
-        var options = new RequestOptions
+        var options = new IdempotentRequestOptions
         {
-            // IdempotencyKey = Guid.NewGuid().ToString(),
+            IdempotencyKey = Guid.NewGuid().ToString(),
         };
 
         var firstTokenId = await CreateToken(client, "6011000990139424", options);
@@ -208,7 +207,7 @@ public class TestClient
         return proxyId;
     }
 
-    private static async Task UpdateTokenb(BasisTheory client, string? tokenId, string cardNumber)
+    private static async Task UpdateToken(BasisTheory client, string? tokenId, string cardNumber)
     {
         await client.Tokens.UpdateAsync(tokenId,
             new UpdateTokenRequest
@@ -230,7 +229,7 @@ public class TestClient
         Assert.That(token.Data.GetJsonElementValue<string>("number"), Is.EqualTo(cardNumber));
     }
 
-    private static async Task<string?> CreateToken(BasisTheory client, string cardNumber, RequestOptions? options = null)
+    private static async Task<string?> CreateToken(BasisTheory client, string cardNumber, IdempotentRequestOptions? options = null)
     {
         var token = await client.Tokens.CreateAsync(new CreateTokenRequest
         {

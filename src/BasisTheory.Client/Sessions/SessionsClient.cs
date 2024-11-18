@@ -23,7 +23,7 @@ public partial class SessionsClient
     /// </code>
     /// </example>
     public async Task<CreateSessionResponse> CreateAsync(
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -84,7 +84,7 @@ public partial class SessionsClient
     /// </example>
     public async Task AuthorizeAsync(
         AuthorizeSessionRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -95,6 +95,7 @@ public partial class SessionsClient
                 Method = HttpMethod.Post,
                 Path = "sessions/authorize",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken

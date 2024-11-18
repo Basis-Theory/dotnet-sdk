@@ -88,7 +88,7 @@ public partial class ApplicationKeysClient
     /// </example>
     public async Task<ApplicationKey> CreateAsync(
         string id,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {

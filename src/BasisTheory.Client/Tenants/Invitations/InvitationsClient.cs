@@ -100,7 +100,7 @@ public partial class InvitationsClient
     /// </example>
     public async Task<TenantInvitationResponse> CreateAsync(
         CreateTenantInvitationRequest request,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
@@ -111,6 +111,7 @@ public partial class InvitationsClient
                 Method = HttpMethod.Post,
                 Path = "tenants/self/invitations",
                 Body = request,
+                ContentType = "application/json",
                 Options = options,
             },
             cancellationToken
@@ -162,7 +163,7 @@ public partial class InvitationsClient
     /// </example>
     public async Task<TenantInvitationResponse> ResendAsync(
         string invitationId,
-        RequestOptions? options = null,
+        IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
