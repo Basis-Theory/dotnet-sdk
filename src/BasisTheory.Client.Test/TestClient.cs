@@ -25,9 +25,9 @@ public class TestClient
         var tokenId = await CreateToken(client, cardNumber);
         await GetAndValidateCardNumber(client, tokenId, cardNumber);
 
-        // var updateCardNumber = "4242424242424242";
-        // await UpdateTokenb(client, tokenId, cardNumber);
-        // GetAndValidateCardNumber(client, tokenId, updateCardNumber);
+        var updateCardNumber = "4242424242424242";
+        await UpdateToken(client, tokenId, updateCardNumber);
+        GetAndValidateCardNumber(client, tokenId, updateCardNumber);
 
         // Create Application
         var application = await managementClient.Applications.CreateAsync(new CreateApplicationRequest
@@ -207,7 +207,7 @@ public class TestClient
         return proxyId;
     }
 
-    private static async Task UpdateTokenb(BasisTheory client, string? tokenId, string cardNumber)
+    private static async Task UpdateToken(BasisTheory client, string? tokenId, string cardNumber)
     {
         await client.Tokens.UpdateAsync(tokenId,
             new UpdateTokenRequest
