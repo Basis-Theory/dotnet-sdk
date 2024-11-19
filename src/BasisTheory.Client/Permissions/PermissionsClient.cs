@@ -18,11 +18,11 @@ public partial class PermissionsClient
 
     /// <example>
     /// <code>
-    /// await client.Permissions.GetAsync(new PermissionsGetRequest());
+    /// await client.Permissions.ListAsync(new PermissionsListRequest());
     /// </code>
     /// </example>
-    public async Task<IEnumerable<Permission>> GetAsync(
-        PermissionsGetRequest request,
+    public async Task<IEnumerable<Permission>> ListAsync(
+        PermissionsListRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
