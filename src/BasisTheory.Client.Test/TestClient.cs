@@ -123,6 +123,102 @@ public class TestClient
     }
 
     [Test]
+    public async Task ShouldPerformReactorLifecycle()
+    {
+        var managementClient = GetManagementClient();
+        var applicationId = await CreateApplication(managementClient);
+        var reactor = await managementClient.Reactors.CreateAsync(new CreateReactorRequest
+        {
+            Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+            Code = @"
+                    module.exports = async function (req) {
+                      // Do something with req.configuration.SERVICE_API_KEY
+
+                      return {
+                        raw: {
+                          foo: ""bar""
+                        }
+                      };
+                    };",
+            Configuration = new Dictionary<string, string?>
+            {
+                { "SERVICE_API_KEY", "key_abcd1234" }
+            },
+            Application = new Application
+            {
+                Id = applicationId
+            }
+        });
+        var reactorId = reactor.Id;
+
+        var updatedReactor = await managementClient.Reactors.UpdateAsync(
+            reactorId,
+            new UpdateReactorRequest
+            {
+                Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+                Code = @"
+                    module.exports = async function (req) {
+                      // Do something with req.configuration.SERVICE_API_KEY
+
+                      return {
+                        raw: {
+                          foo: ""bar""
+                        }
+                      };
+                    };",
+                Configuration = new Dictionary<string, string?>
+                {
+                    { "SERVICE_API_KEY", "key_abcd1234" }
+                },
+                Application = new Application
+                {
+                    Id = applicationId
+                }
+            }
+        );
+        Assert.That(updatedReactor.Id, Is.EqualTo(reactorId));
+
+        await managementClient.Reactors.PatchAsync(
+            reactorId,
+            new PatchReactorRequest
+            {
+                Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+                Configuration = new Dictionary<string, string?>
+                {
+                    { "SERVICE_API_KEY", "key_abcd1234" }
+                }
+            }
+        );
+
+        var client = GetPrivateClient();
+        var reactResponse = await client.Reactors.ReactAsync(
+            reactorId,
+            new ReactRequest
+            {
+                Args = new
+                {
+                    foo = "bar"
+                }
+            }
+        );
+        Assert.That(reactResponse.Raw!.GetJsonElementValue<string>("foo"), Is.EqualTo("bar"));
+
+        var asyncReactResponse = await client.Reactors.ReactAsyncAsync(
+            reactorId,
+            new ReactRequestAsync
+            {
+                Args = new
+                {
+                    foo = "bar"
+                }
+            }
+        );
+        Assert.IsTrue(Guid.TryParse(asyncReactResponse.AsyncReactorRequestId, out Guid _));
+
+        await managementClient.Reactors.DeleteAsync(reactorId);
+    }
+
+    [Test]
     public async Task ShouldPerformTokenLifecycle()
     {
         var client = GetPrivateClient();
