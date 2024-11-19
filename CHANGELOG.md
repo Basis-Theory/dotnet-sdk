@@ -1,3 +1,10 @@
+## [0.1.1](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.1.0...v0.1.1) (2024-11-19)
+
+
+### Bug Fixes
+
+* Upgrade to latest specs ([#21](https://github.com/Basis-Theory/dotnet-sdk/issues/21)) ([5591ef1](https://github.com/Basis-Theory/dotnet-sdk/commit/5591ef1a68f814a8f7a5f9399c1af5e5e1b40381))
+
 # [0.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.0.4...v0.1.0) (2024-11-18)
 
 
