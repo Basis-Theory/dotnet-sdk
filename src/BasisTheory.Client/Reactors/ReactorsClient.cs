@@ -471,7 +471,7 @@ public partial class ReactorsClient
     /// await client.Reactors.ReactAsyncAsync("id", new ReactRequestAsync());
     /// </code>
     /// </example>
-    public async Task<ReactResponse> ReactAsyncAsync(
+    public async Task<AsyncReactResponse> ReactAsyncAsync(
         string id,
         ReactRequestAsync request,
         RequestOptions? options = null,
@@ -495,7 +495,7 @@ public partial class ReactorsClient
         {
             try
             {
-                return JsonUtils.Deserialize<ReactResponse>(responseBody)!;
+                return JsonUtils.Deserialize<AsyncReactResponse>(responseBody)!;
             }
             catch (JsonException e)
             {

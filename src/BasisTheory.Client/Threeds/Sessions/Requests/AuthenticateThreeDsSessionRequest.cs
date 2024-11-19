@@ -17,6 +17,12 @@ public record AuthenticateThreeDsSessionRequest
     [JsonPropertyName("challenge_preference")]
     public string? ChallengePreference { get; set; }
 
+    [JsonPropertyName("request_decoupled_challenge")]
+    public bool? RequestDecoupledChallenge { get; set; }
+
+    [JsonPropertyName("decoupled_challenge_max_time")]
+    public int? DecoupledChallengeMaxTime { get; set; }
+
     [JsonPropertyName("purchase_info")]
     public ThreeDsPurchaseInfo? PurchaseInfo { get; set; }
 

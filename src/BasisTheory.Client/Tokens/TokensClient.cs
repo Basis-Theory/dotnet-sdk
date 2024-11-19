@@ -22,7 +22,7 @@ public partial class TokensClient
     /// await client.Tokens.DetokenizeAsync(new Dictionary&lt;object, object?&gt;() { { "key", "value" } });
     /// </code>
     /// </example>
-    public async Task DetokenizeAsync(
+    public async Task<object> DetokenizeAsync(
         object request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -40,11 +40,19 @@ public partial class TokensClient
             },
             cancellationToken
         );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
-            return;
+            try
+            {
+                return JsonUtils.Deserialize<object>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryException("Failed to deserialize response", e);
+            }
         }
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+
         try
         {
             switch (response.StatusCode)
