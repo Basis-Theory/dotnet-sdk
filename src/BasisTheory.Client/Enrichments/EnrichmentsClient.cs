@@ -1,7 +1,6 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
-using System.Threading.Tasks;
 using BasisTheory.Client.Core;
 
 #nullable enable
@@ -19,12 +18,12 @@ public partial class EnrichmentsClient
 
     /// <example>
     /// <code>
-    /// await client.Enrichments.BankaccountverifyAsync(
+    /// await client.Enrichments.BankAccountVerifyAsync(
     ///     new BankVerificationRequest { TokenId = "token_id" }
     /// );
     /// </code>
     /// </example>
-    public async Task BankaccountverifyAsync(
+    public async Task<BankVerificationResponse> BankAccountVerifyAsync(
         BankVerificationRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -42,11 +41,19 @@ public partial class EnrichmentsClient
             },
             cancellationToken
         );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
-            return;
+            try
+            {
+                return JsonUtils.Deserialize<BankVerificationResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryException("Failed to deserialize response", e);
+            }
         }
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+
         try
         {
             switch (response.StatusCode)
