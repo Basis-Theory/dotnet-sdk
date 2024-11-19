@@ -53,7 +53,7 @@ public class TestClient
     }
 
     [Test]
-    [Ignore("Correlation ID is currently not supported")]
+    [Ignore("Correlation ID is currently not supportedin RequestOptions")]
     public async Task ShouldSupportCorrelationId()
     {
         var client = GetPrivateClient();
@@ -273,7 +273,7 @@ public class TestClient
 
     private static BasisTheory GetManagementClient()
     {
-        return new BasisTheory(Environment.GetEnvironmentVariable("BT_MGT_API_KEY"),
+        return new BasisTheory(apiKey: Environment.GetEnvironmentVariable("BT_MGT_API_KEY"),
             clientOptions: new ClientOptions
             {
                 BaseUrl = Environment.GetEnvironmentVariable("BT_API_URL")!,
