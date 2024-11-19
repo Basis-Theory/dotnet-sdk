@@ -4,7 +4,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record PermissionsGetRequest
+public record PermissionsListRequest
 {
     public string? ApplicationType { get; set; }
 

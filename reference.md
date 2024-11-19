@@ -1045,7 +1045,7 @@ await client.Logs.GetEntityTypesAsync();
 </details>
 
 ## Permissions
-<details><summary><code>client.Permissions.<a href="/src/BasisTheory.Client/Permissions/PermissionsClient.cs">GetAsync</a>(PermissionsGetRequest { ... }) -> IEnumerable<Permission></code></summary>
+<details><summary><code>client.Permissions.<a href="/src/BasisTheory.Client/Permissions/PermissionsClient.cs">ListAsync</a>(PermissionsListRequest { ... }) -> IEnumerable<Permission></code></summary>
 <dl>
 <dd>
 
@@ -1058,7 +1058,7 @@ await client.Logs.GetEntityTypesAsync();
 <dd>
 
 ```csharp
-await client.Permissions.GetAsync(new PermissionsGetRequest());
+await client.Permissions.ListAsync(new PermissionsListRequest());
 ```
 </dd>
 </dl>
@@ -1073,7 +1073,7 @@ await client.Permissions.GetAsync(new PermissionsGetRequest());
 <dl>
 <dd>
 
-**request:** `PermissionsGetRequest` 
+**request:** `PermissionsListRequest` 
     
 </dd>
 </dl>
