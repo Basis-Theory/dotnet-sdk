@@ -527,7 +527,7 @@ await client.ApplicationTemplates.GetAsync("id");
 </details>
 
 ## Tokens
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">DetokenizeAsync</a>(object { ... })</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">DetokenizeAsync</a>(object { ... }) -> object</code></summary>
 <dl>
 <dd>
 
@@ -936,7 +936,7 @@ await client.Tokens.SearchV2Async(new SearchTokensRequestV2());
 </details>
 
 ## Enrichments
-<details><summary><code>client.Enrichments.<a href="/src/BasisTheory.Client/Enrichments/EnrichmentsClient.cs">BankaccountverifyAsync</a>(BankVerificationRequest { ... })</code></summary>
+<details><summary><code>client.Enrichments.<a href="/src/BasisTheory.Client/Enrichments/EnrichmentsClient.cs">BankaccountverifyAsync</a>(BankVerificationRequest { ... }) -> BankVerificationResponse</code></summary>
 <dl>
 <dd>
 
@@ -1866,7 +1866,7 @@ await client.Reactors.ReactAsync("id", new ReactRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsyncAsync</a>(id, ReactRequestAsync { ... }) -> ReactResponse</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsyncAsync</a>(id, ReactRequestAsync { ... }) -> AsyncReactResponse</code></summary>
 <dl>
 <dd>
 
@@ -2566,6 +2566,46 @@ await client.Tenants.Invitations.ResendAsync("invitationId");
 </dl>
 </details>
 
+<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">GetAsync</a>(invitationId) -> TenantInvitationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Invitations.GetAsync("invitationId");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**invitationId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">DeleteAsync</a>(invitationId)</code></summary>
 <dl>
 <dd>
@@ -2607,7 +2647,7 @@ await client.Tenants.Invitations.DeleteAsync("invitationId");
 </details>
 
 ## Tenants Members
-<details><summary><code>client.Tenants.Members.<a href="/src/BasisTheory.Client/Tenants/Members/MembersClient.cs">GetAsync</a>(MembersGetRequest { ... }) -> TenantMemberResponsePaginatedList</code></summary>
+<details><summary><code>client.Tenants.Members.<a href="/src/BasisTheory.Client/Tenants/Members/MembersClient.cs">ListAsync</a>(MembersListRequest { ... }) -> TenantMemberResponsePaginatedList</code></summary>
 <dl>
 <dd>
 
@@ -2620,7 +2660,7 @@ await client.Tenants.Invitations.DeleteAsync("invitationId");
 <dd>
 
 ```csharp
-await client.Tenants.Members.GetAsync(new MembersGetRequest());
+await client.Tenants.Members.ListAsync(new MembersListRequest());
 ```
 </dd>
 </dl>
@@ -2635,7 +2675,7 @@ await client.Tenants.Members.GetAsync(new MembersGetRequest());
 <dl>
 <dd>
 
-**request:** `MembersGetRequest` 
+**request:** `MembersListRequest` 
     
 </dd>
 </dl>

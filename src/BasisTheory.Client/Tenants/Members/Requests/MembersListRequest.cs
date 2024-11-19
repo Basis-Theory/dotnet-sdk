@@ -4,7 +4,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.Tenants;
 
-public record MembersGetRequest
+public record MembersListRequest
 {
     public IEnumerable<string> UserId { get; set; } = new List<string>();
 

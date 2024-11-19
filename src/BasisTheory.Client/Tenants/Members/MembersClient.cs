@@ -20,11 +20,11 @@ public partial class MembersClient
 
     /// <example>
     /// <code>
-    /// await client.Tenants.Members.GetAsync(new MembersGetRequest());
+    /// await client.Tenants.Members.ListAsync(new MembersListRequest());
     /// </code>
     /// </example>
-    public async Task<TenantMemberResponsePaginatedList> GetAsync(
-        MembersGetRequest request,
+    public async Task<TenantMemberResponsePaginatedList> ListAsync(
+        MembersListRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
