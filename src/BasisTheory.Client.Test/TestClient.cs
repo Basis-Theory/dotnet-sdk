@@ -16,6 +16,113 @@ public class TestClient
     }
 
     [Test]
+    public async Task ShouldPerformProxyLifecycle()
+    {
+        var client = GetManagementClient();
+        var applicationId = await CreateApplication(client);
+        var proxy = await client.Proxies.CreateAsync(new CreateProxyRequest
+        {
+            Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+            DestinationUrl = "https://example.com/api",
+            RequestTransform = new ProxyTransform
+            {
+                Code = @"
+                  module.exports = async function (req) {
+                    // Do something with req.configuration.SERVICE_API_KEY
+
+                    return {
+                      headers: req.args.headers,
+                      body: req.args.body
+                    };
+                  };
+                "
+            },
+            ResponseTransform = new ProxyTransform
+            {
+                Code = @"
+                  module.exports = async function (req) {
+                    // Do something with req.configuration.SERVICE_API_KEY
+
+                    return {
+                      headers: req.args.headers,
+                      body: req.args.body
+                    };
+                  };
+                "
+            },
+            Configuration = new Dictionary<string, string?>
+            {
+                { "SERVICE_API_KEY", "key_abcd1234" }
+            },
+            Application = new Application
+            {
+                Id = applicationId
+            },
+            RequireAuth = true
+        });
+        var proxyId = proxy.Id;
+
+        var updatedProxy = await client.Proxies.UpdateAsync(
+            proxyId,
+            new UpdateProxyRequest
+            {
+                Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+                DestinationUrl = "https://example.com/api",
+                RequestTransform = new ProxyTransform
+                {
+                    Code = @"
+                  module.exports = async function (req) {
+                    // Do something with req.configuration.SERVICE_API_KEY
+
+                    return {
+                      headers: req.args.headers,
+                      body: req.args.body
+                    };
+                  };
+                "
+                },
+                ResponseTransform = new ProxyTransform
+                {
+                    Code = @"
+                  module.exports = async function (req) {
+                    // Do something with req.configuration.SERVICE_API_KEY
+
+                    return {
+                      headers: req.args.headers,
+                      body: req.args.body
+                    };
+                  };
+                "
+                },
+                Configuration = new Dictionary<string, string?>
+                {
+                    { "SERVICE_API_KEY", "key_abcd1234" }
+                },
+                Application = new Application
+                {
+                    Id = applicationId
+                },
+                RequireAuth = true
+            }
+        );
+        Assert.That(updatedProxy.Id, Is.EqualTo(proxyId));
+
+        await client.Proxies.PatchAsync(
+            proxyId,
+            new PatchProxyRequest
+            {
+                Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+                DestinationUrl = "https://example.com/api",
+                Configuration = new Dictionary<string, string?> {
+                    { "SERVICE_API_KEY", "key_abcd1234" }
+                },
+            }
+        );
+
+        await client.Proxies.DeleteAsync(proxyId);
+    }
+
+    [Test]
     public async Task ShouldPerformTokenLifecycle()
     {
         var client = GetPrivateClient();
@@ -30,13 +137,7 @@ public class TestClient
         GetAndValidateCardNumber(client, tokenId, updateCardNumber);
 
         // Create Application
-        var application = await managementClient.Applications.CreateAsync(new CreateApplicationRequest
-        {
-            Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
-            Type = "private",
-            Permissions = ["token:use"]
-        });
-        var applicationId = application.Id;
+        var applicationId = await CreateApplication(managementClient);
 
         // Proxies
         var proxyId = await CreateProxy(managementClient, applicationId);
@@ -50,6 +151,18 @@ public class TestClient
         // Clean-up
         await DeleteApplication(managementClient, applicationId);
         await EnsureTokenIsDeleted(client, tokenId);
+    }
+
+    private static async Task<string?> CreateApplication(BasisTheory managementClient)
+    {
+        var application = await managementClient.Applications.CreateAsync(new CreateApplicationRequest
+        {
+            Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+            Type = "private",
+            Permissions = ["token:use"]
+        });
+        var applicationId = application.Id;
+        return applicationId;
     }
 
     [Test]
