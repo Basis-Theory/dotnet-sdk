@@ -1,6 +1,5 @@
 using System.Text.Json;
 using NUnit.Framework;
-using WireMock.RequestBuilders;
 
 namespace BasisTheory.Client.Test;
 
@@ -13,6 +12,209 @@ public class TestClient
         var client = GetManagementClient();
         var actual = await client.Tenants.Self.GetAsync();
         Assert.That(actual.Name, Is.EqualTo("SDK Integration Tests"));
+    }
+
+    [Test]
+    public async Task ShouldPerformProxyLifecycle()
+    {
+        var client = GetManagementClient();
+        var applicationId = await CreateApplication(client);
+        var proxy = await client.Proxies.CreateAsync(new CreateProxyRequest
+        {
+            Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+            DestinationUrl = "https://example.com/api",
+            RequestTransform = new ProxyTransform
+            {
+                Code = @"
+                  module.exports = async function (req) {
+                    // Do something with req.configuration.SERVICE_API_KEY
+
+                    return {
+                      headers: req.args.headers,
+                      body: req.args.body
+                    };
+                  };
+                "
+            },
+            ResponseTransform = new ProxyTransform
+            {
+                Code = @"
+                  module.exports = async function (req) {
+                    // Do something with req.configuration.SERVICE_API_KEY
+
+                    return {
+                      headers: req.args.headers,
+                      body: req.args.body
+                    };
+                  };
+                "
+            },
+            Configuration = new Dictionary<string, string?>
+            {
+                { "SERVICE_API_KEY", "key_abcd1234" }
+            },
+            Application = new Application
+            {
+                Id = applicationId
+            },
+            RequireAuth = true
+        });
+        var proxyId = proxy.Id;
+
+        var updatedProxy = await client.Proxies.UpdateAsync(
+            proxyId,
+            new UpdateProxyRequest
+            {
+                Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+                DestinationUrl = "https://example.com/api",
+                RequestTransform = new ProxyTransform
+                {
+                    Code = @"
+                  module.exports = async function (req) {
+                    // Do something with req.configuration.SERVICE_API_KEY
+
+                    return {
+                      headers: req.args.headers,
+                      body: req.args.body
+                    };
+                  };
+                "
+                },
+                ResponseTransform = new ProxyTransform
+                {
+                    Code = @"
+                  module.exports = async function (req) {
+                    // Do something with req.configuration.SERVICE_API_KEY
+
+                    return {
+                      headers: req.args.headers,
+                      body: req.args.body
+                    };
+                  };
+                "
+                },
+                Configuration = new Dictionary<string, string?>
+                {
+                    { "SERVICE_API_KEY", "key_abcd1234" }
+                },
+                Application = new Application
+                {
+                    Id = applicationId
+                },
+                RequireAuth = true
+            }
+        );
+        Assert.That(updatedProxy.Id, Is.EqualTo(proxyId));
+
+        await client.Proxies.PatchAsync(
+            proxyId,
+            new PatchProxyRequest
+            {
+                Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+                DestinationUrl = "https://example.com/api",
+                Configuration = new Dictionary<string, string?> {
+                    { "SERVICE_API_KEY", "key_abcd1234" }
+                },
+            }
+        );
+
+        await client.Proxies.DeleteAsync(proxyId);
+    }
+
+    [Test]
+    public async Task ShouldPerformReactorLifecycle()
+    {
+        var managementClient = GetManagementClient();
+        var applicationId = await CreateApplication(managementClient);
+        var reactor = await managementClient.Reactors.CreateAsync(new CreateReactorRequest
+        {
+            Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+            Code = @"
+                    module.exports = async function (req) {
+                      // Do something with req.configuration.SERVICE_API_KEY
+
+                      return {
+                        raw: {
+                          foo: ""bar""
+                        }
+                      };
+                    };",
+            Configuration = new Dictionary<string, string?>
+            {
+                { "SERVICE_API_KEY", "key_abcd1234" }
+            },
+            Application = new Application
+            {
+                Id = applicationId
+            }
+        });
+        var reactorId = reactor.Id;
+
+        var updatedReactor = await managementClient.Reactors.UpdateAsync(
+            reactorId,
+            new UpdateReactorRequest
+            {
+                Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+                Code = @"
+                    module.exports = async function (req) {
+                      // Do something with req.configuration.SERVICE_API_KEY
+
+                      return {
+                        raw: {
+                          foo: ""bar""
+                        }
+                      };
+                    };",
+                Configuration = new Dictionary<string, string?>
+                {
+                    { "SERVICE_API_KEY", "key_abcd1234" }
+                },
+                Application = new Application
+                {
+                    Id = applicationId
+                }
+            }
+        );
+        Assert.That(updatedReactor.Id, Is.EqualTo(reactorId));
+
+        await managementClient.Reactors.PatchAsync(
+            reactorId,
+            new PatchReactorRequest
+            {
+                Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+                Configuration = new Dictionary<string, string?>
+                {
+                    { "SERVICE_API_KEY", "key_abcd1234" }
+                }
+            }
+        );
+
+        var client = GetPrivateClient();
+        var reactResponse = await client.Reactors.ReactAsync(
+            reactorId,
+            new ReactRequest
+            {
+                Args = new
+                {
+                    foo = "bar"
+                }
+            }
+        );
+        Assert.That(reactResponse.Raw!.GetJsonElementValue<string>("foo"), Is.EqualTo("bar"));
+
+        var asyncReactResponse = await client.Reactors.ReactAsyncAsync(
+            reactorId,
+            new ReactRequestAsync
+            {
+                Args = new
+                {
+                    foo = "bar"
+                }
+            }
+        );
+        Assert.IsTrue(Guid.TryParse(asyncReactResponse.AsyncReactorRequestId, out Guid _));
+
+        await managementClient.Reactors.DeleteAsync(reactorId);
     }
 
     [Test]
@@ -30,13 +232,7 @@ public class TestClient
         GetAndValidateCardNumber(client, tokenId, updateCardNumber);
 
         // Create Application
-        var application = await managementClient.Applications.CreateAsync(new CreateApplicationRequest
-        {
-            Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
-            Type = "private",
-            Permissions = ["token:use"]
-        });
-        var applicationId = application.Id;
+        var applicationId = await CreateApplication(managementClient);
 
         // Proxies
         var proxyId = await CreateProxy(managementClient, applicationId);
@@ -52,8 +248,20 @@ public class TestClient
         await EnsureTokenIsDeleted(client, tokenId);
     }
 
+    private static async Task<string?> CreateApplication(BasisTheory managementClient)
+    {
+        var application = await managementClient.Applications.CreateAsync(new CreateApplicationRequest
+        {
+            Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+            Type = "private",
+            Permissions = ["token:use"]
+        });
+        var applicationId = application.Id;
+        return applicationId;
+    }
+
     [Test]
-    [Ignore("Correlation ID is currently not supported")]
+    [Ignore("Correlation ID is currently not supportedin RequestOptions")]
     public async Task ShouldSupportCorrelationId()
     {
         var client = GetPrivateClient();
@@ -79,17 +287,45 @@ public class TestClient
     }
 
     [Test]
-    [Ignore("Auto pagination is not currently supported in dotnet SDK")]
     public async Task ShouldSupportAutoPaginationOnListV1()
     {
-        // TODO: Implement
+        var client = GetPrivateClient();
+        const int pageSize = 3;
+        var tokens = client.Tokens.ListAsync(new TokensListRequest
+        {
+            Size = pageSize
+        }, null).AsPagesAsync();
+
+        var count = 0;
+        await foreach (var token in tokens)
+        {
+            count++;
+            if (count > pageSize)
+                break;
+        }
+
+        Assert.That(count, Is.GreaterThan(pageSize));
     }
 
     [Test]
-    [Ignore("Auto pagination is not currently supported in dotnet SDK")]
     public async Task ShouldSupportAutoPaginationOnListV2()
     {
-        // TODO: Implement
+        var client = GetPrivateClient();
+        const int pageSize = 3;
+        var tokens = client.Tokens.ListV2Async(new TokensListV2Request
+        {
+            Size = pageSize
+        }, null).AsPagesAsync();
+
+        var count = 0;
+        await foreach (var token in tokens)
+        {
+            count++;
+            if (count > pageSize)
+                break;
+        }
+
+        Assert.That(count, Is.GreaterThan(pageSize));
     }
 
     [Test]
@@ -273,7 +509,7 @@ public class TestClient
 
     private static BasisTheory GetManagementClient()
     {
-        return new BasisTheory(Environment.GetEnvironmentVariable("BT_MGT_API_KEY"),
+        return new BasisTheory(apiKey: Environment.GetEnvironmentVariable("BT_MGT_API_KEY"),
             clientOptions: new ClientOptions
             {
                 BaseUrl = Environment.GetEnvironmentVariable("BT_API_URL")!,
