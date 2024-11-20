@@ -17,12 +17,9 @@ public partial class WebhooksClient
     {
         _client = client;
         Events = new EventsClient(_client);
-        SigningKey = new SigningKeyClient(_client);
     }
 
     public EventsClient Events { get; }
-
-    public SigningKeyClient SigningKey { get; }
 
     /// <summary>
     /// Simple endpoint that can be utilized to verify the application is running

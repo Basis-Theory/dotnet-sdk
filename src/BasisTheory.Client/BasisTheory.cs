@@ -48,7 +48,6 @@ public partial class BasisTheory
         Logs = new LogsClient(_client);
         Permissions = new PermissionsClient(_client);
         Proxies = new ProxiesClient(_client);
-        Reactorformulas = new ReactorformulasClient(_client);
         Reactors = new ReactorsClient(_client);
         Roles = new RolesClient(_client);
         Sessions = new SessionsClient(_client);
@@ -72,8 +71,6 @@ public partial class BasisTheory
     public PermissionsClient Permissions { get; init; }
 
     public ProxiesClient Proxies { get; init; }
-
-    public ReactorformulasClient Reactorformulas { get; init; }
 
     public ReactorsClient Reactors { get; init; }
 
