@@ -26,77 +26,33 @@ public partial class ReactorsClient
     /// await client.Reactors.ListAsync(new ReactorsListRequest());
     /// </code>
     /// </example>
-    public async Task<ReactorPaginatedList> ListAsync(
-        ReactorsListRequest request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
+    public Pager<Reactor> ListAsync(ReactorsListRequest request, RequestOptions? options = null)
     {
-        var _query = new Dictionary<string, object>();
-        _query["id"] = request.Id;
-        if (request.Name != null)
+        if (request is not null)
         {
-            _query["name"] = request.Name;
+            request = request with { };
         }
-        if (request.Page != null)
-        {
-            _query["page"] = request.Page.ToString();
-        }
-        if (request.Start != null)
-        {
-            _query["start"] = request.Start;
-        }
-        if (request.Size != null)
-        {
-            _query["size"] = request.Size.ToString();
-        }
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
+        var pager = new OffsetPager<
+            ReactorsListRequest,
+            RequestOptions?,
+            ReactorPaginatedList,
+            int?,
+            object,
+            Reactor
+        >(
+            request,
+            options,
+            ListAsync,
+            request => request?.Page ?? 0,
+            (request, offset) =>
             {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Get,
-                Path = "reactors",
-                Query = _query,
-                Options = options,
+                request.Page = offset;
             },
-            cancellationToken
+            null,
+            response => response?.Data?.ToList(),
+            null
         );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            try
-            {
-                return JsonUtils.Deserialize<ReactorPaginatedList>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        try
-        {
-            switch (response.StatusCode)
-            {
-                case 401:
-                    throw new UnauthorizedError(
-                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                    );
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
-                case 404:
-                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-            }
-        }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new BasisTheoryApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
+        return pager;
     }
 
     /// <example>
@@ -523,6 +479,79 @@ public partial class ReactorsClient
                     throw new UnprocessableEntityError(
                         JsonUtils.Deserialize<ProblemDetails>(responseBody)
                     );
+            }
+        }
+        catch (JsonException)
+        {
+            // unable to map error response, throwing generic error
+        }
+        throw new BasisTheoryApiException(
+            $"Error with status code {response.StatusCode}",
+            response.StatusCode,
+            responseBody
+        );
+    }
+
+    internal async Task<ReactorPaginatedList> ListAsync(
+        ReactorsListRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        _query["id"] = request.Id;
+        if (request.Name != null)
+        {
+            _query["name"] = request.Name;
+        }
+        if (request.Page != null)
+        {
+            _query["page"] = request.Page.ToString();
+        }
+        if (request.Start != null)
+        {
+            _query["start"] = request.Start;
+        }
+        if (request.Size != null)
+        {
+            _query["size"] = request.Size.ToString();
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                BaseUrl = _client.Options.BaseUrl,
+                Method = HttpMethod.Get,
+                Path = "reactors",
+                Query = _query,
+                Options = options,
+            },
+            cancellationToken
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            try
+            {
+                return JsonUtils.Deserialize<ReactorPaginatedList>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryException("Failed to deserialize response", e);
+            }
+        }
+
+        try
+        {
+            switch (response.StatusCode)
+            {
+                case 401:
+                    throw new UnauthorizedError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
+                case 403:
+                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
+                case 404:
+                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
             }
         }
         catch (JsonException)

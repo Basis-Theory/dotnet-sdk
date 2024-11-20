@@ -1,3 +1,10 @@
+## [0.1.2](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.1.1...v0.1.2) (2024-11-19)
+
+
+### Bug Fixes
+
+* permissions.list method ([#22](https://github.com/Basis-Theory/dotnet-sdk/issues/22)) ([3f48fda](https://github.com/Basis-Theory/dotnet-sdk/commit/3f48fda2a18a56376669c162ad0307e2611e4206))
+
 ## [0.1.1](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.1.0...v0.1.1) (2024-11-19)
 
 

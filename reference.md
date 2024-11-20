@@ -1,6 +1,6 @@
 # Reference
 ## Applications
-<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">ListAsync</a>(ApplicationsListRequest { ... }) -> ApplicationPaginatedList</code></summary>
+<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">ListAsync</a>(ApplicationsListRequest { ... }) -> Pager<Application></code></summary>
 <dl>
 <dd>
 
@@ -607,7 +607,7 @@ await client.Tokens.TokenizeAsync(new Dictionary<object, object?>() { { "key", "
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">ListAsync</a>(TokensListRequest { ... }) -> TokenPaginatedList</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">ListAsync</a>(TokensListRequest { ... }) -> Pager<Token></code></summary>
 <dl>
 <dd>
 
@@ -687,7 +687,7 @@ await client.Tokens.CreateAsync(new CreateTokenRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">SearchAsync</a>(SearchTokensRequest { ... }) -> TokenPaginatedList</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">SearchAsync</a>(SearchTokensRequest { ... }) -> Pager<Token></code></summary>
 <dl>
 <dd>
 
@@ -855,7 +855,7 @@ await client.Tokens.UpdateAsync("id", new UpdateTokenRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">ListV2Async</a>(TokensListV2Request { ... }) -> TokenCursorPaginatedList</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">ListV2Async</a>(TokensListV2Request { ... }) -> Pager<Token></code></summary>
 <dl>
 <dd>
 
@@ -895,7 +895,7 @@ await client.Tokens.ListV2Async(new TokensListV2Request());
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">SearchV2Async</a>(SearchTokensRequestV2 { ... }) -> TokenCursorPaginatedList</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">SearchV2Async</a>(SearchTokensRequestV2 { ... }) -> Pager<Token></code></summary>
 <dl>
 <dd>
 
@@ -979,7 +979,7 @@ await client.Enrichments.BankAccountVerifyAsync(
 </details>
 
 ## Logs
-<details><summary><code>client.Logs.<a href="/src/BasisTheory.Client/Logs/LogsClient.cs">ListAsync</a>(LogsListRequest { ... }) -> LogPaginatedList</code></summary>
+<details><summary><code>client.Logs.<a href="/src/BasisTheory.Client/Logs/LogsClient.cs">ListAsync</a>(LogsListRequest { ... }) -> Pager<Log></code></summary>
 <dl>
 <dd>
 
@@ -1086,7 +1086,7 @@ await client.Permissions.ListAsync(new PermissionsListRequest());
 </details>
 
 ## Proxies
-<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">ListAsync</a>(ProxiesListRequest { ... }) -> ProxyPaginatedList</code></summary>
+<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">ListAsync</a>(ProxiesListRequest { ... }) -> Pager<Proxy></code></summary>
 <dl>
 <dd>
 
@@ -1348,7 +1348,7 @@ await client.Proxies.PatchAsync("id", new PatchProxyRequest());
 </details>
 
 ## Reactorformulas
-<details><summary><code>client.Reactorformulas.<a href="/src/BasisTheory.Client/Reactorformulas/ReactorformulasClient.cs">ListAsync</a>(ReactorformulasListRequest { ... }) -> ReactorFormulaPaginatedList</code></summary>
+<details><summary><code>client.Reactorformulas.<a href="/src/BasisTheory.Client/Reactorformulas/ReactorformulasClient.cs">ListAsync</a>(ReactorformulasListRequest { ... }) -> Pager<ReactorFormula></code></summary>
 <dl>
 <dd>
 
@@ -1562,7 +1562,7 @@ await client.Reactorformulas.DeleteAsync("id");
 </details>
 
 ## Reactors
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ListAsync</a>(ReactorsListRequest { ... }) -> ReactorPaginatedList</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ListAsync</a>(ReactorsListRequest { ... }) -> Pager<Reactor></code></summary>
 <dl>
 <dd>
 
@@ -2446,7 +2446,7 @@ await client.Tenants.Connections.DeleteAsync();
 </details>
 
 ## Tenants Invitations
-<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">ListAsync</a>(InvitationsListRequest { ... }) -> TenantInvitationResponsePaginatedList</code></summary>
+<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">ListAsync</a>(InvitationsListRequest { ... }) -> Pager<TenantInvitationResponse></code></summary>
 <dl>
 <dd>
 
