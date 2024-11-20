@@ -331,6 +331,46 @@ public class TestClient
     }
 
     [Test]
+    public async Task ShouldCreateAndUpdateToken()
+    {
+        var client = GetPrivateClient();
+        var token = await client.Tokens.CreateAsync(new CreateTokenRequest
+        {
+            Type = "token",
+            Data = "Sensitive Value",
+            Mask = "{{ data | reveal_last: 4 }}",
+            Containers = ["/general/high/"],
+            Metadata = new Dictionary<string, string?>
+            {
+                { "nonSensitiveField", "Non-Sensitive Value" }
+            },
+            SearchIndexes = ["{{ data }}", "{{ data | last4 }}"],
+            FingerprintExpression = "{{ data }}",
+            DeduplicateToken = true,
+            ExpiresAt = "8/26/2030 7:23:57 PM -07:00",
+        });
+        AssertIsGuid(token.Id);
+
+        var updatedToken = await client.Tokens.UpdateAsync(
+            token.Id,
+            new UpdateTokenRequest
+            {
+                Data = "Sensitive Value",
+                Mask = "{{ data | reveal_last: 4 }}",
+                Containers = ["/general/high/"],
+                Metadata = new Dictionary<string, string?>
+                {
+                    { "nonSensitiveField", "Non-Sensitive Value" }
+                },
+                SearchIndexes = ["{{ data }}", "{{ data | last4 }}"],
+                FingerprintExpression = "{{ data }}",
+                DeduplicateToken = true,
+            }
+        );
+        Assert.That(updatedToken.Id, Is.EqualTo(token.Id));
+    }
+
+    [Test]
     public async Task ShouldSupportWebhookLifecycle()
     {
         var client = GetManagementClient();
