@@ -11,7 +11,7 @@ public record TokenEnrichments
     public BinDetails? BinDetails { get; set; }
 
     [JsonPropertyName("card_details")]
-    public CardDetails? CardDetails { get; set; }
+    public TokenEnrichmentsCardDetails? CardDetails { get; set; }
 
     public override string ToString()
     {
