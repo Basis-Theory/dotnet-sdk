@@ -1,6 +1,5 @@
 using System.Text.Json;
 using NUnit.Framework;
-using WireMock.RequestBuilders;
 
 namespace BasisTheory.Client.Test;
 
@@ -288,17 +287,45 @@ public class TestClient
     }
 
     [Test]
-    [Ignore("Auto pagination is not currently supported in dotnet SDK")]
     public async Task ShouldSupportAutoPaginationOnListV1()
     {
-        // TODO: Implement
+        var client = GetPrivateClient();
+        const int pageSize = 3;
+        var tokens = client.Tokens.ListAsync(new TokensListRequest
+        {
+            Size = pageSize
+        }, null).AsPagesAsync();
+
+        var count = 0;
+        await foreach (var token in tokens)
+        {
+            count++;
+            if (count > pageSize)
+                break;
+        }
+
+        Assert.That(count, Is.GreaterThan(pageSize));
     }
 
     [Test]
-    [Ignore("Auto pagination is not currently supported in dotnet SDK")]
     public async Task ShouldSupportAutoPaginationOnListV2()
     {
-        // TODO: Implement
+        var client = GetPrivateClient();
+        const int pageSize = 3;
+        var tokens = client.Tokens.ListV2Async(new TokensListV2Request
+        {
+            Size = pageSize
+        }, null).AsPagesAsync();
+
+        var count = 0;
+        await foreach (var token in tokens)
+        {
+            count++;
+            if (count > pageSize)
+                break;
+        }
+
+        Assert.That(count, Is.GreaterThan(pageSize));
     }
 
     [Test]
