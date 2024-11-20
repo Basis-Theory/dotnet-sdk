@@ -51,6 +51,7 @@ public partial class BasisTheory
         Reactors = new ReactorsClient(_client);
         Roles = new RolesClient(_client);
         Sessions = new SessionsClient(_client);
+        TokenIntents = new TokenIntentsClient(_client);
         Webhooks = new WebhooksClient(_client);
         Tenants = new TenantsClient(_client);
         Threeds = new ThreedsClient(_client);
@@ -77,6 +78,8 @@ public partial class BasisTheory
     public RolesClient Roles { get; init; }
 
     public SessionsClient Sessions { get; init; }
+
+    public TokenIntentsClient TokenIntents { get; init; }
 
     public WebhooksClient Webhooks { get; init; }
 
