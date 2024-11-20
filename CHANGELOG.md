@@ -1,3 +1,10 @@
+## [0.1.3](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.1.2...v0.1.3) (2024-11-20)
+
+
+### Bug Fixes
+
+* Support auto-pagination ([#23](https://github.com/Basis-Theory/dotnet-sdk/issues/23)) ([c78071f](https://github.com/Basis-Theory/dotnet-sdk/commit/c78071fe60c4bae731613eb5ba81451f2a341623))
+
 ## [0.1.2](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.1.1...v0.1.2) (2024-11-19)
 
 
