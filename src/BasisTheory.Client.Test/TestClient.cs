@@ -499,6 +499,38 @@ public class TestClient
     }
 
     [Test]
+    public async Task ShouldDetokenizeSingle()
+    {
+        var client = GetPrivateClient();
+        var cardNumber = "4242424242424242";
+        var tokenId = await CreateToken(client, cardNumber);
+        var actual = await client.Tokens.DetokenizeAsync(new
+        {
+            card_number = "{{ "+tokenId+" | json: '$.number' }}"
+        });
+        Assert.That(actual.GetJsonElementValue<string>("card_number"), Is.EqualTo(cardNumber));
+    }
+
+    [Test]
+    public async Task ShouldDetokenizeArray()
+    {
+        var client = GetPrivateClient();
+        var tokenId1 = await CreateToken(client, "4242424242424242");
+        var tokenId2 = await CreateToken(client, "4111111111111111");
+        var actual = await client.Tokens.DetokenizeAsync(new
+        {
+            tokens = new []
+            {
+                $"{{{{ {tokenId1} }}}}",
+                $"{{{{ {tokenId2} }}}}"
+            }
+        });
+        var tokensResponseJsonList = actual.GetJsonElementValue<JsonElement>("tokens");
+        Assert.That(tokensResponseJsonList[0].GetJsonElementValue<string>("number"), Is.EqualTo("4242424242424242"));
+        Assert.That(tokensResponseJsonList[1].GetJsonElementValue<string>("number"), Is.EqualTo("4111111111111111"));
+    }
+
+    [Test]
     public async Task ShouldSupportWebhookLifecycle()
     {
         var client = GetManagementClient();
