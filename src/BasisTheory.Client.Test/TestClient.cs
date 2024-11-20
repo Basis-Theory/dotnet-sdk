@@ -248,18 +248,6 @@ public class TestClient
         await EnsureTokenIsDeleted(client, tokenId);
     }
 
-    private static async Task<string?> CreateApplication(BasisTheory managementClient)
-    {
-        var application = await managementClient.Applications.CreateAsync(new CreateApplicationRequest
-        {
-            Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
-            Type = "private",
-            Permissions = ["token:use"]
-        });
-        var applicationId = application.Id;
-        return applicationId;
-    }
-
     [Test]
     [Ignore("Correlation ID is currently not supportedin RequestOptions")]
     public async Task ShouldSupportCorrelationId()
@@ -551,6 +539,24 @@ public class TestClient
     }
 
     [Test]
+    public async Task ShouldCallTokenIntents()
+    {
+        var client = GetPrivateClient();
+        var tokenIntent = await client.TokenIntents.CreateAsync(new CreateTokenIntentRequest
+        {
+            Type = "card",
+            Data = new
+            {
+                number = "4242424242424242",
+                expiration_month = 12,
+                expiration_year = 2025,
+                cvc = "123",
+            }
+        });
+        AssertIsGuid(tokenIntent.Id);
+    }
+
+    [Test]
     public async Task ShouldSupportWebhookLifecycle()
     {
         var client = GetManagementClient();
@@ -741,6 +747,18 @@ public class TestClient
     private static void AssertIsGuid(string? expected)
     {
         Assert.That(Guid.TryParse(expected, out Guid _), Is.True);
+    }
+
+    private static async Task<string?> CreateApplication(BasisTheory managementClient)
+    {
+        var application = await managementClient.Applications.CreateAsync(new CreateApplicationRequest
+        {
+            Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
+            Type = "private",
+            Permissions = ["token:use"]
+        });
+        var applicationId = application.Id;
+        return applicationId;
     }
 }
 
