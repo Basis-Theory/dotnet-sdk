@@ -331,6 +331,226 @@ public class TestClient
     }
 
     [Test]
+    public async Task ShouldCreateAndUpdateToken()
+    {
+        var client = GetPrivateClient();
+        var token = await client.Tokens.CreateAsync(new CreateTokenRequest
+        {
+            Type = "token",
+            Data = "Sensitive Value",
+            Mask = "{{ data | reveal_last: 4 }}",
+            Containers = ["/general/high/"],
+            Metadata = new Dictionary<string, string?>
+            {
+                { "nonSensitiveField", "Non-Sensitive Value" }
+            },
+            SearchIndexes = ["{{ data }}", "{{ data | last4 }}"],
+            FingerprintExpression = "{{ data }}",
+            DeduplicateToken = true,
+            ExpiresAt = "8/26/2030 7:23:57 PM -07:00",
+        });
+        AssertIsGuid(token.Id);
+
+        var updatedToken = await client.Tokens.UpdateAsync(
+            token.Id,
+            new UpdateTokenRequest
+            {
+                Data = "Sensitive Value",
+                Mask = "{{ data | reveal_last: 4 }}",
+                Containers = ["/general/high/"],
+                Metadata = new Dictionary<string, string?>
+                {
+                    { "nonSensitiveField", "Non-Sensitive Value" }
+                },
+                SearchIndexes = ["{{ data }}", "{{ data | last4 }}"],
+                FingerprintExpression = "{{ data }}",
+                DeduplicateToken = true,
+            }
+        );
+        Assert.That(updatedToken.Id, Is.EqualTo(token.Id));
+    }
+
+    [Test]
+    public async Task ShouldTokenizeBasic()
+    {
+        var client = GetPrivateClient();
+        var response = await client.Tokens.TokenizeAsync(new
+        {
+            first_name = "John",
+            last_name = "Doe",
+        });
+        AssertIsGuid(response.GetJsonElementValue<string>("first_name"));
+        AssertIsGuid(response.GetJsonElementValue<string>("last_name"));
+    }
+
+    [Test]
+    public async Task ShouldTokenizeToken()
+    {
+        var client = GetPrivateClient();
+        var response = await client.Tokens.TokenizeAsync(new
+        {
+            type = "token",
+            data = "Sensitive Value",
+            metadata = new {
+                nonSensitive = "Non-Sensitive Value"
+            },
+            search_indexes = new []
+            {
+                "{{ data }}"
+            },
+            fingerprint_expression = "{{ data }}"
+        });
+        AssertIsGuid(response.GetJsonElementValue<string>("id"));
+    }
+
+    [Test]
+    public async Task ShouldTokenizeCard()
+    {
+        var client = GetPrivateClient();
+        var response = await client.Tokens.TokenizeAsync(new
+        {
+            type = "card",
+            data = new
+            {
+                number = "4242424242424242",
+                expiration_month = 12,
+                expiration_year = 2025,
+                cvc = "123",
+            },
+            metadata = new
+            {
+                nonSensitiveField = "Non-Sensitive Value",
+            }
+        });
+        AssertIsGuid(response.GetJsonElementValue<string>("id"));
+    }
+
+    [Test]
+    public async Task ShouldTokenizeArray()
+    {
+        var client = GetPrivateClient();
+        var response = await client.Tokens.TokenizeAsync(new List<object>
+        {
+            "John",
+            "Doe",
+            new {
+                type = "card",
+                data = new
+                {
+                    number = "4242424242424242",
+                    expiration_month = 12,
+                    expiration_year = 2025,
+                    cvc = "123",
+                },
+                metadata = new
+                {
+                    nonSensitiveField = "Non-Sensitive Value",
+                }
+            },
+            new
+            {
+                type = "token",
+                data = "Sensitive Value"
+            },
+        });
+        Assert.That(response, Is.TypeOf<JsonElement>());
+        var responseJson = (JsonElement)response;
+        AssertIsGuid(responseJson[0].GetString());
+        AssertIsGuid(responseJson[1].GetString());
+        AssertIsGuid(responseJson[2].GetJsonElementValue<string>("id"));
+        AssertIsGuid(responseJson[3].GetJsonElementValue<string>("id"));
+    }
+
+    [Test]
+    public async Task ShouldTokenizeComposite()
+    {
+        var client = GetPrivateClient();
+        var response = await client.Tokens.TokenizeAsync(new
+        {
+            first_name = "John",
+            last_name = "Doe",
+            primary_card = new
+            {
+                type = "card",
+                data = new {
+                    number = "4242424242424242",
+                    expiration_month = 12,
+                    expiration_year = 2025,
+                    cvc = "123"
+                }
+            },
+            sensitive_tags = new object[]
+            {
+                "preferred",
+                new
+                {
+                    type = "token",
+                    data = "vip"
+                }
+            }
+        });
+        AssertIsGuid(response.GetJsonElementValue<string>("first_name"));
+        AssertIsGuid(response.GetJsonElementValue<string>("last_name"));
+        AssertIsGuid(response.GetJsonElementValue<object>("primary_card")
+            .GetJsonElementValue<string>("id"));
+        var senstiveTagList = response.GetJsonElementValue<JsonElement>("sensitive_tags");
+        AssertIsGuid(senstiveTagList[0].GetString());
+        AssertIsGuid(senstiveTagList[1].GetJsonElementValue<string>("id"));
+    }
+
+    [Test]
+    public async Task ShouldDetokenizeSingle()
+    {
+        var client = GetPrivateClient();
+        var cardNumber = "4242424242424242";
+        var tokenId = await CreateToken(client, cardNumber);
+        var actual = await client.Tokens.DetokenizeAsync(new
+        {
+            card_number = "{{ "+tokenId+" | json: '$.number' }}"
+        });
+        Assert.That(actual.GetJsonElementValue<string>("card_number"), Is.EqualTo(cardNumber));
+    }
+
+    [Test]
+    public async Task ShouldDetokenizeArray()
+    {
+        var client = GetPrivateClient();
+        var tokenId1 = await CreateToken(client, "4242424242424242");
+        var tokenId2 = await CreateToken(client, "4111111111111111");
+        var actual = await client.Tokens.DetokenizeAsync(new
+        {
+            tokens = new []
+            {
+                $"{{{{ {tokenId1} }}}}",
+                $"{{{{ {tokenId2} }}}}"
+            }
+        });
+        var tokensResponseJsonList = actual.GetJsonElementValue<JsonElement>("tokens");
+        Assert.That(tokensResponseJsonList[0].GetJsonElementValue<string>("number"), Is.EqualTo("4242424242424242"));
+        Assert.That(tokensResponseJsonList[1].GetJsonElementValue<string>("number"), Is.EqualTo("4111111111111111"));
+    }
+
+    [Test]
+    public async Task ShouldCallBankAccountVerify()
+    {
+        var client = GetPrivateClient();
+        var token = await client.Tokens.CreateAsync(new CreateTokenRequest
+        {
+            Type = "bank",
+            Data = new
+            {
+                routing_number = "021000021",
+                account_number = "00001"
+            }
+        });
+        var actual = await client.Enrichments.BankAccountVerifyAsync(new BankVerificationRequest
+        {
+            TokenId = token.Id!,
+        });
+        Assert.That(actual.Status, Is.EqualTo("enabled"));
+    }
+
+    [Test]
     public async Task ShouldSupportWebhookLifecycle()
     {
         var client = GetManagementClient();
@@ -527,7 +747,7 @@ public class TestClient
 public static class ObjectExtensions
 {
     public static T GetJsonElementValue<T>(this object obj, string propertyName, T defaultValue = default)
-    {
+                {
         if (obj is JsonElement jsonElement && jsonElement.TryGetProperty(propertyName, out JsonElement property))
         {
             return property.ValueKind switch
@@ -537,6 +757,8 @@ public static class ObjectExtensions
                 JsonValueKind.Number when typeof(T) == typeof(double) => (T)(object)property.GetDouble(),
                 JsonValueKind.String => (T)(object)property.GetString(),
                 JsonValueKind.True or JsonValueKind.False => (T)(object)property.GetBoolean(),
+                JsonValueKind.Object => (T)(object)property,
+                JsonValueKind.Array => (T)(object)property,
                 _ => defaultValue
             };
         }
