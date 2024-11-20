@@ -371,6 +371,134 @@ public class TestClient
     }
 
     [Test]
+    public async Task ShouldTokenizeBasic()
+    {
+        var client = GetPrivateClient();
+        var response = await client.Tokens.TokenizeAsync(new
+        {
+            first_name = "John",
+            last_name = "Doe",
+        });
+        AssertIsGuid(response.GetJsonElementValue<string>("first_name"));
+        AssertIsGuid(response.GetJsonElementValue<string>("last_name"));
+    }
+
+    [Test]
+    public async Task ShouldTokenizeToken()
+    {
+        var client = GetPrivateClient();
+        var response = await client.Tokens.TokenizeAsync(new
+        {
+            type = "token",
+            data = "Sensitive Value",
+            metadata = new {
+                nonSensitive = "Non-Sensitive Value"
+            },
+            search_indexes = new []
+            {
+                "{{ data }}"
+            },
+            fingerprint_expression = "{{ data }}"
+        });
+        AssertIsGuid(response.GetJsonElementValue<string>("id"));
+    }
+
+    [Test]
+    public async Task ShouldTokenizeCard()
+    {
+        var client = GetPrivateClient();
+        var response = await client.Tokens.TokenizeAsync(new
+        {
+            type = "card",
+            data = new
+            {
+                number = "4242424242424242",
+                expiration_month = 12,
+                expiration_year = 2025,
+                cvc = "123",
+            },
+            metadata = new
+            {
+                nonSensitiveField = "Non-Sensitive Value",
+            }
+        });
+        AssertIsGuid(response.GetJsonElementValue<string>("id"));
+    }
+
+    [Test]
+    public async Task ShouldTokenizeArray()
+    {
+        var client = GetPrivateClient();
+        var response = await client.Tokens.TokenizeAsync(new List<object>
+        {
+            "John",
+            "Doe",
+            new {
+                type = "card",
+                data = new
+                {
+                    number = "4242424242424242",
+                    expiration_month = 12,
+                    expiration_year = 2025,
+                    cvc = "123",
+                },
+                metadata = new
+                {
+                    nonSensitiveField = "Non-Sensitive Value",
+                }
+            },
+            new
+            {
+                type = "token",
+                data = "Sensitive Value"
+            },
+        });
+        Assert.That(response, Is.TypeOf<JsonElement>());
+        var responseJson = (JsonElement)response;
+        AssertIsGuid(responseJson[0].GetString());
+        AssertIsGuid(responseJson[1].GetString());
+        AssertIsGuid(responseJson[2].GetJsonElementValue<string>("id"));
+        AssertIsGuid(responseJson[3].GetJsonElementValue<string>("id"));
+    }
+
+    [Test]
+    public async Task ShouldTokenizeComposite()
+    {
+        var client = GetPrivateClient();
+        var response = await client.Tokens.TokenizeAsync(new
+        {
+            first_name = "John",
+            last_name = "Doe",
+            primary_card = new
+            {
+                type = "card",
+                data = new {
+                    number = "4242424242424242",
+                    expiration_month = 12,
+                    expiration_year = 2025,
+                    cvc = "123"
+                }
+            },
+            sensitive_tags = new object[]
+            {
+                "preferred",
+                new
+                {
+                    type = "token",
+                    data = "vip"
+                }
+            }
+        });
+        AssertIsGuid(response.GetJsonElementValue<string>("first_name"));
+        AssertIsGuid(response.GetJsonElementValue<string>("last_name"));
+        AssertIsGuid(response.GetJsonElementValue<object>("primary_card")
+            .GetJsonElementValue<string>("id"));
+        var senstiveTagList = response.GetJsonElementValue<JsonElement>("sensitive_tags");
+        AssertIsGuid(senstiveTagList[0].GetString());
+        AssertIsGuid(senstiveTagList[1].GetJsonElementValue<string>("id"));
+    }
+
+    [Test]
     public async Task ShouldSupportWebhookLifecycle()
     {
         var client = GetManagementClient();
@@ -567,7 +695,7 @@ public class TestClient
 public static class ObjectExtensions
 {
     public static T GetJsonElementValue<T>(this object obj, string propertyName, T defaultValue = default)
-    {
+                {
         if (obj is JsonElement jsonElement && jsonElement.TryGetProperty(propertyName, out JsonElement property))
         {
             return property.ValueKind switch
@@ -577,6 +705,8 @@ public static class ObjectExtensions
                 JsonValueKind.Number when typeof(T) == typeof(double) => (T)(object)property.GetDouble(),
                 JsonValueKind.String => (T)(object)property.GetString(),
                 JsonValueKind.True or JsonValueKind.False => (T)(object)property.GetBoolean(),
+                JsonValueKind.Object => (T)(object)property,
+                JsonValueKind.Array => (T)(object)property,
                 _ => defaultValue
             };
         }
