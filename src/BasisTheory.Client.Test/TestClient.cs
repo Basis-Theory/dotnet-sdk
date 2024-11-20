@@ -531,6 +531,26 @@ public class TestClient
     }
 
     [Test]
+    public async Task ShouldCallBankAccountVerify()
+    {
+        var client = GetPrivateClient();
+        var token = await client.Tokens.CreateAsync(new CreateTokenRequest
+        {
+            Type = "bank",
+            Data = new
+            {
+                routing_number = "021000021",
+                account_number = "00001"
+            }
+        });
+        var actual = await client.Enrichments.BankAccountVerifyAsync(new BankVerificationRequest
+        {
+            TokenId = token.Id!,
+        });
+        Assert.That(actual.Status, Is.EqualTo("enabled"));
+    }
+
+    [Test]
     public async Task ShouldSupportWebhookLifecycle()
     {
         var client = GetManagementClient();
