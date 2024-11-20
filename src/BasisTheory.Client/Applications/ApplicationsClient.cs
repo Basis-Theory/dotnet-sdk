@@ -351,69 +351,6 @@ public partial class ApplicationsClient
         );
     }
 
-    /// <example>
-    /// <code>
-    /// await client.Applications.RegenerateKeyAsync("id");
-    /// </code>
-    /// </example>
-    public async Task<Application> RegenerateKeyAsync(
-        string id,
-        IdempotentRequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Post,
-                Path = $"applications/{id}/regenerate",
-                Options = options,
-            },
-            cancellationToken
-        );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            try
-            {
-                return JsonUtils.Deserialize<Application>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        try
-        {
-            switch (response.StatusCode)
-            {
-                case 401:
-                    throw new UnauthorizedError(
-                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                    );
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
-                case 404:
-                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-                case 422:
-                    throw new UnprocessableEntityError(
-                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                    );
-            }
-        }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new BasisTheoryApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
-    }
-
     internal async Task<ApplicationPaginatedList> ListAsync(
         ApplicationsListRequest request,
         RequestOptions? options = null,
