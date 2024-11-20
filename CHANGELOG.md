@@ -1,3 +1,10 @@
+## [0.1.5](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.1.4...v0.1.5) (2024-11-20)
+
+
+### Bug Fixes
+
+* Add token-intents ([#28](https://github.com/Basis-Theory/dotnet-sdk/issues/28)) ([7c17942](https://github.com/Basis-Theory/dotnet-sdk/commit/7c17942da3d1d9c902de8f1ee45b6493fd777f65))
+
 ## [0.1.4](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.1.3...v0.1.4) (2024-11-20)
 
 
