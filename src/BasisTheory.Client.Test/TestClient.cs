@@ -212,7 +212,7 @@ public class TestClient
                 }
             }
         );
-        Assert.IsTrue(Guid.TryParse(asyncReactResponse.AsyncReactorRequestId, out Guid _));
+        AssertIsGuid(asyncReactResponse.AsyncReactorRequestId);
 
         await managementClient.Reactors.DeleteAsync(reactorId);
     }
@@ -294,11 +294,12 @@ public class TestClient
         var tokens = client.Tokens.ListAsync(new TokensListRequest
         {
             Size = pageSize
-        }, null).AsPagesAsync();
+        }, null);
 
         var count = 0;
-        await foreach (var token in tokens)
+        await foreach (Token token in tokens)
         {
+            AssertIsGuid(token.Id);
             count++;
             if (count > pageSize)
                 break;
@@ -315,11 +316,12 @@ public class TestClient
         var tokens = client.Tokens.ListV2Async(new TokensListV2Request
         {
             Size = pageSize
-        }, null).AsPagesAsync();
+        }, null);
 
         var count = 0;
-        await foreach (var token in tokens)
+        await foreach (Token token in tokens)
         {
+            AssertIsGuid(token.Id);
             count++;
             if (count > pageSize)
                 break;
@@ -514,6 +516,11 @@ public class TestClient
             {
                 BaseUrl = Environment.GetEnvironmentVariable("BT_API_URL")!,
             });
+    }
+
+    private static void AssertIsGuid(string? expected)
+    {
+        Assert.That(Guid.TryParse(expected, out Guid _), Is.True);
     }
 }
 
