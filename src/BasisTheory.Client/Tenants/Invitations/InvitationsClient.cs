@@ -23,74 +23,36 @@ public partial class InvitationsClient
     /// await client.Tenants.Invitations.ListAsync(new InvitationsListRequest());
     /// </code>
     /// </example>
-    public async Task<TenantInvitationResponsePaginatedList> ListAsync(
+    public Pager<TenantInvitationResponse> ListAsync(
         InvitationsListRequest request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
+        RequestOptions? options = null
     )
     {
-        var _query = new Dictionary<string, object>();
-        if (request.Status != null)
+        if (request is not null)
         {
-            _query["status"] = request.Status.Value.Stringify();
+            request = request with { };
         }
-        if (request.Page != null)
-        {
-            _query["page"] = request.Page.ToString();
-        }
-        if (request.Start != null)
-        {
-            _query["start"] = request.Start;
-        }
-        if (request.Size != null)
-        {
-            _query["size"] = request.Size.ToString();
-        }
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
+        var pager = new OffsetPager<
+            InvitationsListRequest,
+            RequestOptions?,
+            TenantInvitationResponsePaginatedList,
+            int?,
+            object,
+            TenantInvitationResponse
+        >(
+            request,
+            options,
+            ListAsync,
+            request => request?.Page ?? 0,
+            (request, offset) =>
             {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Get,
-                Path = "tenants/self/invitations",
-                Query = _query,
-                Options = options,
+                request.Page = offset;
             },
-            cancellationToken
+            null,
+            response => response?.Data?.ToList(),
+            null
         );
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            try
-            {
-                return JsonUtils.Deserialize<TenantInvitationResponsePaginatedList>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        try
-        {
-            switch (response.StatusCode)
-            {
-                case 401:
-                    throw new UnauthorizedError(
-                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                    );
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
-            }
-        }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new BasisTheoryApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
+        return pager;
     }
 
     /// <example>
@@ -314,6 +276,76 @@ public partial class InvitationsClient
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
                 case 404:
                     throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+            }
+        }
+        catch (JsonException)
+        {
+            // unable to map error response, throwing generic error
+        }
+        throw new BasisTheoryApiException(
+            $"Error with status code {response.StatusCode}",
+            response.StatusCode,
+            responseBody
+        );
+    }
+
+    internal async Task<TenantInvitationResponsePaginatedList> ListAsync(
+        InvitationsListRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _query = new Dictionary<string, object>();
+        if (request.Status != null)
+        {
+            _query["status"] = request.Status.Value.Stringify();
+        }
+        if (request.Page != null)
+        {
+            _query["page"] = request.Page.ToString();
+        }
+        if (request.Start != null)
+        {
+            _query["start"] = request.Start;
+        }
+        if (request.Size != null)
+        {
+            _query["size"] = request.Size.ToString();
+        }
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                BaseUrl = _client.Options.BaseUrl,
+                Method = HttpMethod.Get,
+                Path = "tenants/self/invitations",
+                Query = _query,
+                Options = options,
+            },
+            cancellationToken
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            try
+            {
+                return JsonUtils.Deserialize<TenantInvitationResponsePaginatedList>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryException("Failed to deserialize response", e);
+            }
+        }
+
+        try
+        {
+            switch (response.StatusCode)
+            {
+                case 401:
+                    throw new UnauthorizedError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
+                case 403:
+                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
             }
         }
         catch (JsonException)
