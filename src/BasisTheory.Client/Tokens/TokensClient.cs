@@ -666,6 +666,22 @@ public partial class TokensClient
     )
     {
         var _query = new Dictionary<string, object>();
+        if (request.Type != null)
+        {
+            _query["type"] = request.Type;
+        }
+        if (request.Container != null)
+        {
+            _query["container"] = request.Container;
+        }
+        if (request.Fingerprint != null)
+        {
+            _query["fingerprint"] = request.Fingerprint;
+        }
+        if (request.Metadata != null)
+        {
+            _query["metadata"] = request.Metadata.ToString();
+        }
         if (request.Start != null)
         {
             _query["start"] = request.Start;

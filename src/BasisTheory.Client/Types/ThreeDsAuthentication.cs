@@ -67,11 +67,20 @@ public record ThreeDsAuthentication
     [JsonPropertyName("acs_challenge_url")]
     public string? AcsChallengeUrl { get; set; }
 
+    [JsonPropertyName("challenge_preference")]
+    public string? ChallengePreference { get; set; }
+
+    [JsonPropertyName("challenge_preference_code")]
+    public string? ChallengePreferenceCode { get; set; }
+
     [JsonPropertyName("challenge_attempts")]
     public string? ChallengeAttempts { get; set; }
 
     [JsonPropertyName("challenge_cancel_reason")]
     public string? ChallengeCancelReason { get; set; }
+
+    [JsonPropertyName("challenge_cancel_reason_code")]
+    public string? ChallengeCancelReasonCode { get; set; }
 
     [JsonPropertyName("cardholder_info")]
     public string? CardholderInfo { get; set; }

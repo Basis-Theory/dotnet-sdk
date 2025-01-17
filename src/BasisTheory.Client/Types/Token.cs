@@ -31,6 +31,9 @@ public record Token
     [JsonPropertyName("created_at")]
     public DateTime? CreatedAt { get; set; }
 
+    [JsonPropertyName("card")]
+    public CardDetails? Card { get; set; }
+
     [JsonPropertyName("modified_by")]
     public string? ModifiedBy { get; set; }
 

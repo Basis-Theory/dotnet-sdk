@@ -182,8 +182,6 @@ public partial class WebhooksClient
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
                 case 404:
                     throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-                case 409:
-                    throw new ConflictError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
             }
         }
         catch (JsonException)
@@ -242,8 +240,6 @@ public partial class WebhooksClient
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
                 case 404:
                     throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-                case 409:
-                    throw new ConflictError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
             }
         }
         catch (JsonException)

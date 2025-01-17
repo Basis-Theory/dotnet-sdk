@@ -22,7 +22,7 @@ public partial class TokenIntentsClient
     /// await client.TokenIntents.CreateAsync(
     ///     new CreateTokenIntentRequest
     ///     {
-    ///         Type = "string",
+    ///         Type = "x",
     ///         Data = new Dictionary&lt;object, object?&gt;() { { "key", "value" } },
     ///     }
     /// );

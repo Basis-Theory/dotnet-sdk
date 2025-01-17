@@ -7,6 +7,18 @@ namespace BasisTheory.Client;
 
 public record GetTokensV2
 {
+    [JsonPropertyName("type")]
+    public string? Type { get; set; }
+
+    [JsonPropertyName("container")]
+    public string? Container { get; set; }
+
+    [JsonPropertyName("fingerprint")]
+    public string? Fingerprint { get; set; }
+
+    [JsonPropertyName("metadata")]
+    public Dictionary<string, string?>? Metadata { get; set; }
+
     [JsonPropertyName("start")]
     public string? Start { get; set; }
 

@@ -23,6 +23,9 @@ public record CreateThreeDsSessionRequest
     [JsonPropertyName("device")]
     public string? Device { get; set; }
 
+    [JsonPropertyName("web_challenge_mode")]
+    public string? WebChallengeMode { get; set; }
+
     [JsonPropertyName("device_info")]
     public ThreeDsDeviceInfo? DeviceInfo { get; set; }
 
