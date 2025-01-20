@@ -49,6 +49,9 @@ public record ThreeDsSession
     [JsonPropertyName("device_info")]
     public ThreeDsDeviceInfo? DeviceInfo { get; set; }
 
+    [JsonPropertyName("web_challenge_mode")]
+    public string? WebChallengeMode { get; set; }
+
     [JsonPropertyName("version")]
     public ThreeDsVersion? Version { get; set; }
 

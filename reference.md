@@ -1769,7 +1769,7 @@ await client.Sessions.AuthorizeAsync(new AuthorizeSessionRequest { Nonce = "nonc
 await client.TokenIntents.CreateAsync(
     new CreateTokenIntentRequest
     {
-        Type = "string",
+        Type = "x",
         Data = new Dictionary<object, object?>() { { "key", "value" } },
     }
 );

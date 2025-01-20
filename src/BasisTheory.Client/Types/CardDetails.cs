@@ -28,6 +28,9 @@ public record CardDetails
     [JsonPropertyName("authentication")]
     public string? Authentication { get; set; }
 
+    [JsonPropertyName("additional")]
+    public IEnumerable<AdditionalCardDetails>? Additional { get; set; }
+
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

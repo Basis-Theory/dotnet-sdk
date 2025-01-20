@@ -46,6 +46,9 @@ public record Proxy
     [JsonPropertyName("proxy_host")]
     public string? ProxyHost { get; set; }
 
+    [JsonPropertyName("timeout")]
+    public int? Timeout { get; set; }
+
     [JsonPropertyName("created_by")]
     public string? CreatedBy { get; set; }
 
