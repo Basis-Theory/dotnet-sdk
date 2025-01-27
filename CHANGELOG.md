@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.1.5...v0.2.0) (2025-01-27)
+
+
+### Features
+
+* Google Pay ([1192781](https://github.com/Basis-Theory/dotnet-sdk/commit/11927817cfc6c073c64db19e6baaeec6e704872e))
+
 ## [0.1.5](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.1.4...v0.1.5) (2024-11-20)
 
 
