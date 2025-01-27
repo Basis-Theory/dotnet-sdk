@@ -5,11 +5,8 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record TokenExtras
+public record TokenIntentExtras
 {
-    [JsonPropertyName("deduplicated")]
-    public bool? Deduplicated { get; set; }
-
     [JsonPropertyName("tsp_details")]
     public TokenServiceProviderDetails? TspDetails { get; set; }
 

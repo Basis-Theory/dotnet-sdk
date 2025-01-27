@@ -31,6 +31,12 @@ public record CreateTokenIntentResponse
     [JsonPropertyName("card")]
     public CardDetails? Card { get; set; }
 
+    [JsonPropertyName("authentication")]
+    public TokenAuthentication? Authentication { get; set; }
+
+    [JsonPropertyName("_extras")]
+    public TokenIntentExtras? Extras { get; set; }
+
     public override string ToString()
     {
         return JsonUtils.Serialize(this);
