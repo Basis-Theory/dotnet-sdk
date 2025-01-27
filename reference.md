@@ -2157,6 +2157,47 @@ await client.Webhooks.CreateAsync(
 </dl>
 </details>
 
+## Connections Googlepay
+<details><summary><code>client.Connections.Googlepay.<a href="/src/BasisTheory.Client/Connections/Googlepay/GooglepayClient.cs">TokenizeAsync</a>(GooglePayTokenizeRequest { ... }) -> CreateTokenIntentResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Connections.Googlepay.TokenizeAsync(new GooglePayTokenizeRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GooglePayTokenizeRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Reactors Results
 <details><summary><code>client.Reactors.Results.<a href="/src/BasisTheory.Client/Reactors/Results/ResultsClient.cs">GetAsync</a>(id, requestId) -> object</code></summary>
 <dl>
