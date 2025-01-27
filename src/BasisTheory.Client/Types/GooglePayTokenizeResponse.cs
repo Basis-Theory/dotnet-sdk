@@ -5,13 +5,10 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record TokenExtras
+public record GooglePayTokenizeResponse
 {
-    [JsonPropertyName("deduplicated")]
-    public bool? Deduplicated { get; set; }
-
-    [JsonPropertyName("tsp_details")]
-    public TokenServiceProviderDetails? TspDetails { get; set; }
+    [JsonPropertyName("token_intent")]
+    public CreateTokenIntentResponse? TokenIntent { get; set; }
 
     public override string ToString()
     {

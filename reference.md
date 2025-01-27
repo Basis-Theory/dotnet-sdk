@@ -938,6 +938,47 @@ await client.Enrichments.BankAccountVerifyAsync(
 </dl>
 </details>
 
+## Googlepay
+<details><summary><code>client.Googlepay.<a href="/src/BasisTheory.Client/Googlepay/GooglepayClient.cs">TokenizeAsync</a>(GooglePayTokenizeRequest { ... }) -> GooglePayTokenizeResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Googlepay.TokenizeAsync(new GooglePayTokenizeRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `GooglePayTokenizeRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Logs
 <details><summary><code>client.Logs.<a href="/src/BasisTheory.Client/Logs/LogsClient.cs">ListAsync</a>(LogsListRequest { ... }) -> Pager<Log></code></summary>
 <dl>

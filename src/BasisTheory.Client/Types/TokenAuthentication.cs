@@ -5,13 +5,13 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record TokenExtras
+public record TokenAuthentication
 {
-    [JsonPropertyName("deduplicated")]
-    public bool? Deduplicated { get; set; }
+    [JsonPropertyName("threeds_cryptogram")]
+    public string? ThreedsCryptogram { get; set; }
 
-    [JsonPropertyName("tsp_details")]
-    public TokenServiceProviderDetails? TspDetails { get; set; }
+    [JsonPropertyName("eci_indicator")]
+    public string? EciIndicator { get; set; }
 
     public override string ToString()
     {

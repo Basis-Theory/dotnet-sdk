@@ -64,6 +64,9 @@ public record Token
     [JsonPropertyName("aliases")]
     public IEnumerable<string>? Aliases { get; set; }
 
+    [JsonPropertyName("authentication")]
+    public TokenAuthentication? Authentication { get; set; }
+
     [JsonPropertyName("_extras")]
     public TokenExtras? Extras { get; set; }
 
