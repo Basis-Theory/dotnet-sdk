@@ -68,6 +68,10 @@ public partial class GooglepayClient
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
                 case 409:
                     throw new ConflictError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
+                case 422:
+                    throw new UnprocessableEntityError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
             }
         }
         catch (JsonException)
