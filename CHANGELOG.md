@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.2.0...v0.3.0) (2025-01-30)
+
+
+### Features
+
+* Add Google Pay Tokenization ([a824fe5](https://github.com/Basis-Theory/dotnet-sdk/commit/a824fe556df9fb541286cdcf6a1b014fc39260f6))
+
 # [0.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.1.5...v0.2.0) (2025-01-27)
 
 
