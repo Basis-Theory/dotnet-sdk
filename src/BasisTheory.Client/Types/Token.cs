@@ -34,6 +34,9 @@ public record Token
     [JsonPropertyName("card")]
     public CardDetails? Card { get; set; }
 
+    [JsonPropertyName("network_token")]
+    public CardDetails? NetworkToken { get; set; }
+
     [JsonPropertyName("modified_by")]
     public string? ModifiedBy { get; set; }
 

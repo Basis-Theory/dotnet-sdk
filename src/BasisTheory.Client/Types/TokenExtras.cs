@@ -13,6 +13,9 @@ public record TokenExtras
     [JsonPropertyName("tsp_details")]
     public TokenServiceProviderDetails? TspDetails { get; set; }
 
+    [JsonPropertyName("deduplication_behavior")]
+    public string? DeduplicationBehavior { get; set; }
+
     public override string ToString()
     {
         return JsonUtils.Serialize(this);
