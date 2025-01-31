@@ -1,3 +1,10 @@
+## [0.3.1](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.3.0...v0.3.1) (2025-01-31)
+
+
+### Bug Fixes
+
+* Add `network_token` to token intents ([ae1fe7a](https://github.com/Basis-Theory/dotnet-sdk/commit/ae1fe7acb8f1e40ae53d3a53203458b469b443c7))
+
 # [0.3.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.2.0...v0.3.0) (2025-01-30)
 
 
