@@ -1794,7 +1794,7 @@ await client.Sessions.AuthorizeAsync(new AuthorizeSessionRequest { Nonce = "nonc
 </details>
 
 ## TokenIntents
-<details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">CreateAsync</a>(CreateTokenIntentRequest { ... }) -> CreateTokenIntentResponse</code></summary>
+<details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">GetAsync</a>(id) -> TokenIntent</code></summary>
 <dl>
 <dd>
 
@@ -1807,13 +1807,7 @@ await client.Sessions.AuthorizeAsync(new AuthorizeSessionRequest { Nonce = "nonc
 <dd>
 
 ```csharp
-await client.TokenIntents.CreateAsync(
-    new CreateTokenIntentRequest
-    {
-        Type = "x",
-        Data = new Dictionary<object, object?>() { { "key", "value" } },
-    }
-);
+await client.TokenIntents.GetAsync("id");
 ```
 </dd>
 </dl>
@@ -1828,7 +1822,7 @@ await client.TokenIntents.CreateAsync(
 <dl>
 <dd>
 
-**request:** `CreateTokenIntentRequest` 
+**id:** `string` 
     
 </dd>
 </dl>
@@ -1869,6 +1863,52 @@ await client.TokenIntents.DeleteAsync("id");
 <dd>
 
 **id:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">CreateAsync</a>(CreateTokenIntentRequest { ... }) -> CreateTokenIntentResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.TokenIntents.CreateAsync(
+    new CreateTokenIntentRequest
+    {
+        Type = "x",
+        Data = new Dictionary<object, object?>() { { "key", "value" } },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateTokenIntentRequest` 
     
 </dd>
 </dl>

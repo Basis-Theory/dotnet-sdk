@@ -34,6 +34,9 @@ public record ThreeDsAuthentication
     [JsonPropertyName("ds_reference_number")]
     public string? DsReferenceNumber { get; set; }
 
+    [JsonPropertyName("liability_shifted")]
+    public bool? LiabilityShifted { get; set; }
+
     [JsonPropertyName("authentication_value")]
     public string? AuthenticationValue { get; set; }
 

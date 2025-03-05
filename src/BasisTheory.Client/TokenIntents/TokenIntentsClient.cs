@@ -19,6 +19,116 @@ public partial class TokenIntentsClient
 
     /// <example>
     /// <code>
+    /// await client.TokenIntents.GetAsync("id");
+    /// </code>
+    /// </example>
+    public async Task<TokenIntent> GetAsync(
+        string id,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                BaseUrl = _client.Options.BaseUrl,
+                Method = HttpMethod.Get,
+                Path = $"token-intents/{id}",
+                Options = options,
+            },
+            cancellationToken
+        );
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            try
+            {
+                return JsonUtils.Deserialize<TokenIntent>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryException("Failed to deserialize response", e);
+            }
+        }
+
+        try
+        {
+            switch (response.StatusCode)
+            {
+                case 401:
+                    throw new UnauthorizedError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
+                case 403:
+                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
+                case 404:
+                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+            }
+        }
+        catch (JsonException)
+        {
+            // unable to map error response, throwing generic error
+        }
+        throw new BasisTheoryApiException(
+            $"Error with status code {response.StatusCode}",
+            response.StatusCode,
+            responseBody
+        );
+    }
+
+    /// <example>
+    /// <code>
+    /// await client.TokenIntents.DeleteAsync("id");
+    /// </code>
+    /// </example>
+    public async Task DeleteAsync(
+        string id,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client.MakeRequestAsync(
+            new RawClient.JsonApiRequest
+            {
+                BaseUrl = _client.Options.BaseUrl,
+                Method = HttpMethod.Delete,
+                Path = $"token-intents/{id}",
+                Options = options,
+            },
+            cancellationToken
+        );
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return;
+        }
+        var responseBody = await response.Raw.Content.ReadAsStringAsync();
+        try
+        {
+            switch (response.StatusCode)
+            {
+                case 401:
+                    throw new UnauthorizedError(
+                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                    );
+                case 403:
+                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
+                case 404:
+                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+            }
+        }
+        catch (JsonException)
+        {
+            // unable to map error response, throwing generic error
+        }
+        throw new BasisTheoryApiException(
+            $"Error with status code {response.StatusCode}",
+            response.StatusCode,
+            responseBody
+        );
+    }
+
+    /// <example>
+    /// <code>
     /// await client.TokenIntents.CreateAsync(
     ///     new CreateTokenIntentRequest
     ///     {
@@ -73,57 +183,6 @@ public partial class TokenIntentsClient
                     );
                 case 403:
                     throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
-            }
-        }
-        catch (JsonException)
-        {
-            // unable to map error response, throwing generic error
-        }
-        throw new BasisTheoryApiException(
-            $"Error with status code {response.StatusCode}",
-            response.StatusCode,
-            responseBody
-        );
-    }
-
-    /// <example>
-    /// <code>
-    /// await client.TokenIntents.DeleteAsync("id");
-    /// </code>
-    /// </example>
-    public async Task DeleteAsync(
-        string id,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Delete,
-                Path = $"token-intents/{id}",
-                Options = options,
-            },
-            cancellationToken
-        );
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            return;
-        }
-        var responseBody = await response.Raw.Content.ReadAsStringAsync();
-        try
-        {
-            switch (response.StatusCode)
-            {
-                case 401:
-                    throw new UnauthorizedError(
-                        JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                    );
-                case 403:
-                    throw new ForbiddenError(JsonUtils.Deserialize<ProblemDetails>(responseBody));
-                case 404:
-                    throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
             }
         }
         catch (JsonException)
