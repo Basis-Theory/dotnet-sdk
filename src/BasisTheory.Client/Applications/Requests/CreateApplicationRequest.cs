@@ -13,9 +13,6 @@ public record CreateApplicationRequest
     [JsonPropertyName("type")]
     public required string Type { get; set; }
 
-    [JsonPropertyName("expires_at")]
-    public string? ExpiresAt { get; set; }
-
     [JsonPropertyName("permissions")]
     public IEnumerable<string>? Permissions { get; set; }
 

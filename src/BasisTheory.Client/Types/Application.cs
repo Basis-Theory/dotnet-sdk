@@ -37,9 +37,6 @@ public record Application
     [JsonPropertyName("modified_at")]
     public DateTime? ModifiedAt { get; set; }
 
-    [JsonPropertyName("expires_at")]
-    public DateTime? ExpiresAt { get; set; }
-
     [JsonPropertyName("permissions")]
     public IEnumerable<string>? Permissions { get; set; }
 

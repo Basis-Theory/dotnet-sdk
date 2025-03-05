@@ -7,8 +7,8 @@ namespace BasisTheory.Client;
 
 public record TenantUsageReport
 {
-    [JsonPropertyName("token_report")]
-    public TokenReport? TokenReport { get; set; }
+    [JsonPropertyName("total_tokens")]
+    public long? TotalTokens { get; set; }
 
     public override string ToString()
     {
