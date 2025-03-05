@@ -1,3 +1,15 @@
+# [1.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.3.1...v1.0.0) (2025-03-05)
+
+
+### Features
+
+* adding get token intents ([ecd328c](https://github.com/Basis-Theory/dotnet-sdk/commit/ecd328cc4c7889ee8328fd3f92228e79e605c545))
+
+
+### BREAKING CHANGES
+
+* Updated Token Usage response and removes expires_at from Applications
+
 ## [0.3.1](https://github.com/Basis-Theory/dotnet-sdk/compare/v0.3.0...v0.3.1) (2025-01-31)
 
 
