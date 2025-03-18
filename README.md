@@ -12,7 +12,7 @@ API reference documentation is available [here](https://api.basistheory.com).
 ## Installation
 
 ```sh
-nuget install BasisTheory.Client
+dotnet add package BasisTheory.Client
 ```
 
 ## Usage
