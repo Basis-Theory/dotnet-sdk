@@ -3,8 +3,6 @@ using System.Text.Json;
 using System.Threading;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public partial class LogsClient
@@ -60,16 +58,18 @@ public partial class LogsClient
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Get,
-                Path = "logs/entity-types",
-                Options = options,
-            },
-            cancellationToken
-        );
+        var response = await _client
+            .MakeRequestAsync(
+                new RawClient.JsonApiRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "logs/entity-types",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
         var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
@@ -106,7 +106,7 @@ public partial class LogsClient
         );
     }
 
-    internal async Task<LogPaginatedList> ListAsync(
+    private async Task<LogPaginatedList> ListAsync(
         LogsListRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -131,7 +131,7 @@ public partial class LogsClient
         }
         if (request.Page != null)
         {
-            _query["page"] = request.Page.ToString();
+            _query["page"] = request.Page.Value.ToString();
         }
         if (request.Start != null)
         {
@@ -139,19 +139,21 @@ public partial class LogsClient
         }
         if (request.Size != null)
         {
-            _query["size"] = request.Size.ToString();
+            _query["size"] = request.Size.Value.ToString();
         }
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Get,
-                Path = "logs",
-                Query = _query,
-                Options = options,
-            },
-            cancellationToken
-        );
+        var response = await _client
+            .MakeRequestAsync(
+                new RawClient.JsonApiRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "logs",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
         var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {

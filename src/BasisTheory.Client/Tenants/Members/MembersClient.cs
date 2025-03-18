@@ -1,11 +1,9 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
-using System.Threading.Tasks;
 using BasisTheory.Client;
 using BasisTheory.Client.Core;
-
-#nullable enable
+using global::System.Threading.Tasks;
 
 namespace BasisTheory.Client.Tenants;
 
@@ -33,7 +31,7 @@ public partial class MembersClient
         _query["user_id"] = request.UserId;
         if (request.Page != null)
         {
-            _query["page"] = request.Page.ToString();
+            _query["page"] = request.Page.Value.ToString();
         }
         if (request.Start != null)
         {
@@ -41,19 +39,21 @@ public partial class MembersClient
         }
         if (request.Size != null)
         {
-            _query["size"] = request.Size.ToString();
+            _query["size"] = request.Size.Value.ToString();
         }
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Get,
-                Path = "tenants/self/members",
-                Query = _query,
-                Options = options,
-            },
-            cancellationToken
-        );
+        var response = await _client
+            .MakeRequestAsync(
+                new RawClient.JsonApiRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = "tenants/self/members",
+                    Query = _query,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
         var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
@@ -105,18 +105,20 @@ public partial class MembersClient
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Put,
-                Path = $"tenants/self/members/{memberId}",
-                Body = request,
-                ContentType = "application/json-patch+json",
-                Options = options,
-            },
-            cancellationToken
-        );
+        var response = await _client
+            .MakeRequestAsync(
+                new RawClient.JsonApiRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Put,
+                    Path = $"tenants/self/members/{JsonUtils.SerializeAsString(memberId)}",
+                    Body = request,
+                    ContentType = "application/json-patch+json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
         var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {
@@ -160,22 +162,24 @@ public partial class MembersClient
     /// await client.Tenants.Members.DeleteAsync("memberId");
     /// </code>
     /// </example>
-    public async Task DeleteAsync(
+    public async global::System.Threading.Tasks.Task DeleteAsync(
         string memberId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Delete,
-                Path = $"tenants/self/members/{memberId}",
-                Options = options,
-            },
-            cancellationToken
-        );
+        var response = await _client
+            .MakeRequestAsync(
+                new RawClient.JsonApiRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Delete,
+                    Path = $"tenants/self/members/{JsonUtils.SerializeAsString(memberId)}",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
             return;

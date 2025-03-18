@@ -1,5 +1,6 @@
 using BasisTheory.Client.Core;
 using NUnit.Framework;
+using SystemTask = System.Threading.Tasks.Task;
 
 namespace BasisTheory.Client.Test.Core.Pagination;
 
@@ -7,7 +8,7 @@ namespace BasisTheory.Client.Test.Core.Pagination;
 public class GuidCursorTest
 {
     [Test]
-    public async Task CursorPagerShouldWorkWithGuidCursors()
+    public async SystemTask CursorPagerShouldWorkWithGuidCursors()
     {
         var pager = CreatePager();
         await AssertPager(pager);
@@ -45,7 +46,7 @@ public class GuidCursorTest
             (_, _, _) =>
             {
                 responses.MoveNext();
-                return Task.FromResult(responses.Current);
+                return SystemTask.FromResult(responses.Current);
             },
             (request, cursor) =>
             {
@@ -58,7 +59,7 @@ public class GuidCursorTest
         return pager;
     }
 
-    private async Task AssertPager(Pager<object> pager)
+    private async SystemTask AssertPager(Pager<object> pager)
     {
         var pageEnumerator = pager.AsPagesAsync().GetAsyncEnumerator();
 

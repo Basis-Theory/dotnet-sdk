@@ -2,8 +2,6 @@ using System;
 using System.Net.Http;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public partial class IdempotentRequestOptions : IIdempotentRequestOptions

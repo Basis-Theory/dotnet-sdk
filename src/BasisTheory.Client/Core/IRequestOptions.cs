@@ -1,8 +1,6 @@
 using System;
 using System.Net.Http;
 
-#nullable enable
-
 namespace BasisTheory.Client.Core;
 
 internal interface IRequestOptions

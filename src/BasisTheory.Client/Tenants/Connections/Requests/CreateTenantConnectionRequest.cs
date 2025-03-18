@@ -2,8 +2,6 @@ using System.Text.Json.Serialization;
 using BasisTheory.Client;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client.Tenants;
 
 public record CreateTenantConnectionRequest

@@ -4,8 +4,6 @@ using System.Threading;
 using BasisTheory.Client;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client.Reactors;
 
 public partial class ResultsClient
@@ -29,16 +27,19 @@ public partial class ResultsClient
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client.MakeRequestAsync(
-            new RawClient.JsonApiRequest
-            {
-                BaseUrl = _client.Options.BaseUrl,
-                Method = HttpMethod.Get,
-                Path = $"reactors/{id}/results/{requestId}",
-                Options = options,
-            },
-            cancellationToken
-        );
+        var response = await _client
+            .MakeRequestAsync(
+                new RawClient.JsonApiRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path =
+                        $"reactors/{JsonUtils.SerializeAsString(id)}/results/{JsonUtils.SerializeAsString(requestId)}",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
         var responseBody = await response.Raw.Content.ReadAsStringAsync();
         if (response.StatusCode is >= 200 and < 400)
         {

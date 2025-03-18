@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public record ThreeDsAcsRenderingType

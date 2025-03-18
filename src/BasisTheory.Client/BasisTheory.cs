@@ -2,13 +2,11 @@ using BasisTheory.Client.Core;
 using BasisTheory.Client.Tenants;
 using BasisTheory.Client.Threeds;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public partial class BasisTheory
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     public BasisTheory(
         string? apiKey = null,
@@ -40,6 +38,7 @@ public partial class BasisTheory
             }
         }
         _client = new RawClient(clientOptions);
+        ApplePay = new ApplePayClient(_client);
         Applications = new ApplicationsClient(_client);
         ApplicationKeys = new ApplicationKeysClient(_client);
         ApplicationTemplates = new ApplicationTemplatesClient(_client);
@@ -57,6 +56,8 @@ public partial class BasisTheory
         Tenants = new TenantsClient(_client);
         Threeds = new ThreedsClient(_client);
     }
+
+    public ApplePayClient ApplePay { get; init; }
 
     public ApplicationsClient Applications { get; init; }
 
