@@ -276,28 +276,6 @@ public class TestClient
     }
 
     [Test]
-    public async Task ShouldSupportAutoPaginationOnListV1()
-    {
-        var client = GetPrivateClient();
-        const int pageSize = 3;
-        var tokens = client.Tokens.ListAsync(new TokensListRequest
-        {
-            Size = pageSize
-        }, null);
-
-        var count = 0;
-        await foreach (Token token in tokens)
-        {
-            AssertIsGuid(token.Id);
-            count++;
-            if (count > pageSize)
-                break;
-        }
-
-        Assert.That(count, Is.GreaterThan(pageSize));
-    }
-
-    [Test]
     public async Task ShouldSupportAutoPaginationOnListV2()
     {
         var client = GetPrivateClient();
@@ -576,27 +554,27 @@ public class TestClient
         await client.Webhooks.DeleteAsync(webhookId);
     }
 
-    // [Test]
-    // public async Task ShouldSupportGooglePay()
-    // {
-    //     var client = GetPrivateClient();
+    [Test]
+    public async Task ShouldSupportGooglePay()
+    {
+        var client = GetPrivateTestTenantClient();
 
-    //     var gpayToken =
-    //         JsonConvert.DeserializeObject<GooglePaymentMethodToken>("{\"signature\":\"MEQCIBnz8wKrUi3qrLSn6KSrTcNIo6YcOzrfre7X49S27MrKAiBMF70q7EHe0Bw8uva77pclggSiPMRTFRFl7TZILyACOQ\\u003d\\u003d\",\"intermediateSigningKey\":{\"signedKey\":\"{\\\"keyValue\\\":\\\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnK9rrDl5FJalSwcoZD3qB5EYcA/sYVTH2Nbh6y/EZArFvvBRQA1eI3BIv1iZeCkBLd/A2nU1ve7xENoPOfp7+Q\\\\u003d\\\\u003d\\\",\\\"keyExpiration\\\":\\\"1737724267469\\\"}\",\"signatures\":[\"MEQCIHugFzQtVBVNizwkMhG/POcZAmRRXyeiZpt3aFwBzt5cAiBSOY4pfT4tQGWzZjkldbYkpBwWGpSasxRmlt7XPNOaLQ\\u003d\\u003d\"]},\"protocolVersion\":\"ECv2\",\"signedMessage\":\"{\\\"encryptedMessage\\\":\\\"XURDnvPAIhAKT9rARBV9RT0/yVTesT/w0UniXCJflwu2TkE54UnP7ZmWBo0gKjTJIU3j8D1Rntw2Ywr2UDLbZor+UoeZltzZOAv6iAR4MfvCLSzlh3HcjechwqZM8oxSF2iZoD2XrNqOgaYbOY1EaYoLx1JpftZDuTqSDLYa+szsoPjAUgzBO5TJZTDIa3zDNAdK3UtAPwutL1M4pTyuFhUKOC12J3RzZdaGFANbKSc8vdfqnR1hqsvsEt1sWPf2O3yty91klSA7FDckvwlKfRoNyQMDhaDkEvYUi75uxcjCRHE0Jjbj61bZriSTXiG2KWNF2OKpz7l61kgPJxCpK7A7TV3P4pBLwW7DYbRusO6FupLehxOZl9nBpVfApytCZGjaSXT7QfPpxdBv8j2VfKsodOf/dwv2Thrra9a6ZzFWsUz4l7Jbr4MCBLhXH4lSuxKrlA2Rf/CVPTgz8b88cYpEDZyqLJxDstwy74/Nl7Mjc4V7thzmdskAeYSuZXKXyyeo3BHqkguRkeagEwuHiZoem2V4W2qWOF8hYn14KY3cXXNcVA\\\\u003d\\\\u003d\\\",\\\"ephemeralPublicKey\\\":\\\"BHBDKlM3tik4o9leEkHu+875bHbORaCK7dDeXFCRmv4bzWJw/4bsvtBtaBH3SW5JXkE/6pkRYAtjFzQmHMRQYvc\\\\u003d\\\",\\\"tag\\\":\\\"Hle3Oafx5sfUc3U3sCQgV0tRPhCAvPlVLYiqvbPyTYY\\\\u003d\\\"}\"}");
+        var gpayToken =
+            JsonConvert.DeserializeObject<GooglePaymentMethodToken>("{\"signature\":\"MEQCIBnz8wKrUi3qrLSn6KSrTcNIo6YcOzrfre7X49S27MrKAiBMF70q7EHe0Bw8uva77pclggSiPMRTFRFl7TZILyACOQ\\u003d\\u003d\",\"intermediateSigningKey\":{\"signedKey\":\"{\\\"keyValue\\\":\\\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnK9rrDl5FJalSwcoZD3qB5EYcA/sYVTH2Nbh6y/EZArFvvBRQA1eI3BIv1iZeCkBLd/A2nU1ve7xENoPOfp7+Q\\\\u003d\\\\u003d\\\",\\\"keyExpiration\\\":\\\"1737724267469\\\"}\",\"signatures\":[\"MEQCIHugFzQtVBVNizwkMhG/POcZAmRRXyeiZpt3aFwBzt5cAiBSOY4pfT4tQGWzZjkldbYkpBwWGpSasxRmlt7XPNOaLQ\\u003d\\u003d\"]},\"protocolVersion\":\"ECv2\",\"signedMessage\":\"{\\\"encryptedMessage\\\":\\\"XURDnvPAIhAKT9rARBV9RT0/yVTesT/w0UniXCJflwu2TkE54UnP7ZmWBo0gKjTJIU3j8D1Rntw2Ywr2UDLbZor+UoeZltzZOAv6iAR4MfvCLSzlh3HcjechwqZM8oxSF2iZoD2XrNqOgaYbOY1EaYoLx1JpftZDuTqSDLYa+szsoPjAUgzBO5TJZTDIa3zDNAdK3UtAPwutL1M4pTyuFhUKOC12J3RzZdaGFANbKSc8vdfqnR1hqsvsEt1sWPf2O3yty91klSA7FDckvwlKfRoNyQMDhaDkEvYUi75uxcjCRHE0Jjbj61bZriSTXiG2KWNF2OKpz7l61kgPJxCpK7A7TV3P4pBLwW7DYbRusO6FupLehxOZl9nBpVfApytCZGjaSXT7QfPpxdBv8j2VfKsodOf/dwv2Thrra9a6ZzFWsUz4l7Jbr4MCBLhXH4lSuxKrlA2Rf/CVPTgz8b88cYpEDZyqLJxDstwy74/Nl7Mjc4V7thzmdskAeYSuZXKXyyeo3BHqkguRkeagEwuHiZoem2V4W2qWOF8hYn14KY3cXXNcVA\\\\u003d\\\\u003d\\\",\\\"ephemeralPublicKey\\\":\\\"BHBDKlM3tik4o9leEkHu+875bHbORaCK7dDeXFCRmv4bzWJw/4bsvtBtaBH3SW5JXkE/6pkRYAtjFzQmHMRQYvc\\\\u003d\\\",\\\"tag\\\":\\\"Hle3Oafx5sfUc3U3sCQgV0tRPhCAvPlVLYiqvbPyTYY\\\\u003d\\\"}\"}");
 
-    //     try
-    //     {
-    //         await client.Googlepay.TokenizeAsync(new GooglePayTokenizeRequest
-    //         {
-    //             GooglePaymentMethodToken = gpayToken
-    //         });
-    //         Assert.Fail("Should have raised an exception");
-    //     }
-    //     catch (UnprocessableEntityError e)
-    //     {
-    //         Assert.True(e.Body.Detail.Contains("expired intermediateSigningKey"));
-    //     }
-    // }
+        try
+        {
+            await client.Googlepay.TokenizeAsync(new GooglePayTokenizeRequest
+            {
+                GooglePaymentMethodToken = gpayToken
+            });
+            Assert.Fail("Should have raised an exception");
+        }
+        catch (UnprocessableEntityError e)
+        {
+            Assert.True(e.Body.Detail.Contains("expired intermediateSigningKey"));
+        }
+    }
 
     private static async Task<string> UpdateWebhook(BasisTheory client, string webhookId)
     {
@@ -752,6 +730,15 @@ public class TestClient
     private static BasisTheory GetPrivateClient()
     {
         return new BasisTheory(Environment.GetEnvironmentVariable("BT_PVT_API_KEY"),
+            clientOptions: new ClientOptions
+            {
+                BaseUrl = Environment.GetEnvironmentVariable("BT_API_URL")!,
+            });
+    }
+
+    private static BasisTheory GetPrivateTestTenantClient()
+    {
+        return new BasisTheory(Environment.GetEnvironmentVariable("BT_PVT_TEST_API_KEY"),
             clientOptions: new ClientOptions
             {
                 BaseUrl = Environment.GetEnvironmentVariable("BT_API_URL")!,
