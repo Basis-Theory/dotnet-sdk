@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v1.0.1...v1.1.0) (2025-03-18)
+
+
+### Features
+
+* Apple Pay support ([009abc0](https://github.com/Basis-Theory/dotnet-sdk/commit/009abc01e426e4c64f66fd357acf122777f910d8))
+
 ## [1.0.1](https://github.com/Basis-Theory/dotnet-sdk/compare/v1.0.0...v1.0.1) (2025-03-18)
 
 
