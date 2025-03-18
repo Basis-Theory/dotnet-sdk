@@ -274,7 +274,7 @@ public class TestClient
 
         Assert.That(secondTokenId, Is.EqualTo(firstTokenId));
     }
-    
+
     [Test]
     public async Task ShouldSupportAutoPaginationOnListV2()
     {
