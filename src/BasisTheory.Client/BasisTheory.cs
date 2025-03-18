@@ -40,6 +40,7 @@ public partial class BasisTheory
             }
         }
         _client = new RawClient(clientOptions);
+        ApplePay = new ApplePayClient(_client);
         Applications = new ApplicationsClient(_client);
         ApplicationKeys = new ApplicationKeysClient(_client);
         ApplicationTemplates = new ApplicationTemplatesClient(_client);
@@ -57,6 +58,8 @@ public partial class BasisTheory
         Tenants = new TenantsClient(_client);
         Threeds = new ThreedsClient(_client);
     }
+
+    public ApplePayClient ApplePay { get; init; }
 
     public ApplicationsClient Applications { get; init; }
 
