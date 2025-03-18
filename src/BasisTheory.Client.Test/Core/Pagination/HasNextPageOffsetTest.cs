@@ -1,5 +1,6 @@
 using BasisTheory.Client.Core;
 using NUnit.Framework;
+using SystemTask = global::System.Threading.Tasks.Task;
 
 namespace BasisTheory.Client.Test.Core.Pagination;
 
@@ -7,13 +8,13 @@ namespace BasisTheory.Client.Test.Core.Pagination;
 public class HasNextPageOffsetTest
 {
     [Test]
-    public async Task OffsetPagerShouldWorkWithHasNextPage()
+    public async SystemTask OffsetPagerShouldWorkWithHasNextPage()
     {
-        var pager = CreatePager();
-        await AssertPager(pager);
+        var pager = await CreatePagerAsync();
+        await AssertPagerAsync(pager);
     }
 
-    private static Pager<object> CreatePager()
+    private static async Task<Pager<object>> CreatePagerAsync()
     {
         var responses = new List<Response>
         {
@@ -33,13 +34,20 @@ public class HasNextPageOffsetTest
                 HasNext = false,
             },
         }.GetEnumerator();
-        Pager<object> pager = new OffsetPager<Request, object?, Response, int, object?, object>(
+        Pager<object> pager = await OffsetPager<
+            Request,
+            object?,
+            Response,
+            int,
+            object?,
+            object
+        >.CreateInstanceAsync(
             new() { Pagination = new() { Page = 1 } },
             null,
             (_, _, _) =>
             {
                 responses.MoveNext();
-                return Task.FromResult(responses.Current);
+                return SystemTask.FromResult(responses.Current);
             },
             request => request?.Pagination?.Page ?? 0,
             (request, offset) =>
@@ -54,7 +62,7 @@ public class HasNextPageOffsetTest
         return pager;
     }
 
-    private static async Task AssertPager(Pager<object> pager)
+    private static async SystemTask AssertPagerAsync(Pager<object> pager)
     {
         var pageCounter = 0;
         var itemCounter = 0;

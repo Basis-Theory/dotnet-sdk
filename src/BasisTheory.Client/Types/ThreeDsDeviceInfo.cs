@@ -1,7 +1,6 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
-
-#nullable enable
 
 namespace BasisTheory.Client;
 
@@ -57,6 +56,13 @@ public record ThreeDsDeviceInfo
 
     [JsonPropertyName("sdk_render_options")]
     public ThreeDsMobileSdkRenderOptions? SdkRenderOptions { get; set; }
+
+    /// <summary>
+    /// Additional properties received from the response, if any.
+    /// </summary>
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
+        new Dictionary<string, JsonElement>();
 
     public override string ToString()
     {

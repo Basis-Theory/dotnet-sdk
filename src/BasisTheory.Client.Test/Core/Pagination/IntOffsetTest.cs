@@ -1,5 +1,6 @@
 using BasisTheory.Client.Core;
 using NUnit.Framework;
+using SystemTask = global::System.Threading.Tasks.Task;
 
 namespace BasisTheory.Client.Test.Core.Pagination;
 
@@ -7,13 +8,13 @@ namespace BasisTheory.Client.Test.Core.Pagination;
 public class IntOffsetTest
 {
     [Test]
-    public async Task OffsetPagerShouldWorkWithIntPage()
+    public async SystemTask OffsetPagerShouldWorkWithIntPage()
     {
-        var pager = CreatePager();
-        await AssertPager(pager);
+        var pager = await CreatePagerAsync();
+        await AssertPagerAsync(pager);
     }
 
-    public Pager<object> CreatePager()
+    private async Task<Pager<object>> CreatePagerAsync()
     {
         var responses = new List<Response>
         {
@@ -21,13 +22,20 @@ public class IntOffsetTest
             new() { Data = new() { Items = ["item1"] } },
             new() { Data = new() { Items = [] } },
         }.GetEnumerator();
-        Pager<object> pager = new OffsetPager<Request, object?, Response, int, object?, object>(
+        Pager<object> pager = await OffsetPager<
+            Request,
+            object?,
+            Response,
+            int,
+            object?,
+            object
+        >.CreateInstanceAsync(
             new() { Pagination = new() { Page = 1 } },
             null,
             (_, _, _) =>
             {
                 responses.MoveNext();
-                return Task.FromResult(responses.Current);
+                return SystemTask.FromResult(responses.Current);
             },
             request => request.Pagination.Page,
             (request, offset) =>
@@ -42,7 +50,7 @@ public class IntOffsetTest
         return pager;
     }
 
-    public async Task AssertPager(Pager<object> pager)
+    public async SystemTask AssertPagerAsync(Pager<object> pager)
     {
         var pageCounter = 0;
         var itemCounter = 0;

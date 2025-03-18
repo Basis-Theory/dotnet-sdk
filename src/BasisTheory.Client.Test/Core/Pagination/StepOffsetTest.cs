@@ -1,5 +1,6 @@
 using BasisTheory.Client.Core;
 using NUnit.Framework;
+using SystemTask = global::System.Threading.Tasks.Task;
 
 namespace BasisTheory.Client.Test.Core.Pagination;
 
@@ -7,15 +8,15 @@ namespace BasisTheory.Client.Test.Core.Pagination;
 public class StepPageOffsetPaginationTest
 {
     [Test]
-    public async Task OffsetPagerShouldWorkWithStep()
+    public async SystemTask OffsetPagerShouldWorkWithStep()
     {
-        var pager = CreatePager();
-        await AssertPager(pager);
+        var pager = await CreatePagerAsync();
+        await AssertPagerAsync(pager);
     }
 
     private Pagination _paginationCopy;
 
-    private Pager<object> CreatePager()
+    private async Task<Pager<object>> CreatePagerAsync()
     {
         var responses = new List<Response>
         {
@@ -24,13 +25,20 @@ public class StepPageOffsetPaginationTest
             new() { Data = new() { Items = [] } },
         }.GetEnumerator();
         _paginationCopy = new() { ItemOffset = 0, PageSize = 2 };
-        Pager<object> pager = new OffsetPager<Request, object?, Response, int, object?, object>(
+        Pager<object> pager = await OffsetPager<
+            Request,
+            object?,
+            Response,
+            int,
+            object?,
+            object
+        >.CreateInstanceAsync(
             new() { Pagination = _paginationCopy },
             null,
             (_, _, _) =>
             {
                 responses.MoveNext();
-                return Task.FromResult(responses.Current);
+                return SystemTask.FromResult(responses.Current);
             },
             request => request?.Pagination?.ItemOffset ?? 0,
             (request, offset) =>
@@ -46,7 +54,7 @@ public class StepPageOffsetPaginationTest
         return pager;
     }
 
-    private async Task AssertPager(Pager<object> pager)
+    private async SystemTask AssertPagerAsync(Pager<object> pager)
     {
         var pageEnumerator = pager.AsPagesAsync().GetAsyncEnumerator();
 
@@ -54,13 +62,13 @@ public class StepPageOffsetPaginationTest
         Assert.That(await pageEnumerator.MoveNextAsync(), Is.True);
         var page = pageEnumerator.Current;
         Assert.That(page.Items, Has.Count.EqualTo(2));
-        Assert.That(_paginationCopy.ItemOffset, Is.EqualTo(0));
+        Assert.That(_paginationCopy.ItemOffset, Is.EqualTo(2));
 
         // second page
         Assert.That(await pageEnumerator.MoveNextAsync(), Is.True);
         page = pageEnumerator.Current;
         Assert.That(page.Items, Has.Count.EqualTo(1));
-        Assert.That(_paginationCopy.ItemOffset, Is.EqualTo(2));
+        Assert.That(_paginationCopy.ItemOffset, Is.EqualTo(3));
 
         // third page
         Assert.That(await pageEnumerator.MoveNextAsync(), Is.True);

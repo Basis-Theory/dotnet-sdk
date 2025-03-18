@@ -1,19 +1,23 @@
+using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
-
-#nullable enable
 
 namespace BasisTheory.Client;
 
 public record ProxiesListRequest
 {
+    [JsonIgnore]
     public IEnumerable<string> Id { get; set; } = new List<string>();
 
+    [JsonIgnore]
     public string? Name { get; set; }
 
+    [JsonIgnore]
     public int? Page { get; set; }
 
+    [JsonIgnore]
     public string? Start { get; set; }
 
+    [JsonIgnore]
     public int? Size { get; set; }
 
     public override string ToString()
