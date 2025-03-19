@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client.Tenants;
 
 public record CreateTenantInvitationRequest
@@ -13,6 +11,7 @@ public record CreateTenantInvitationRequest
     [JsonPropertyName("role")]
     public string? Role { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client.ApplePay;
 
 public record ApplePaySessionRequest
@@ -16,6 +14,7 @@ public record ApplePaySessionRequest
     [JsonPropertyName("domain")]
     public string? Domain { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

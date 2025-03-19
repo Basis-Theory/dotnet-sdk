@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public record CreateTokenRequest
@@ -43,6 +41,7 @@ public record CreateTokenRequest
     [JsonPropertyName("token_intent_id")]
     public string? TokenIntentId { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

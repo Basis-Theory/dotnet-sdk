@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public record CreateWebhookRequest
@@ -31,6 +29,7 @@ public record CreateWebhookRequest
     [JsonPropertyName("events")]
     public IEnumerable<string> Events { get; set; } = new List<string>();
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

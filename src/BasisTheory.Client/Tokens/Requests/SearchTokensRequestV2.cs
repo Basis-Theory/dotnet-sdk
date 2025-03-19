@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public record SearchTokensRequestV2
@@ -16,6 +14,7 @@ public record SearchTokensRequestV2
     [JsonPropertyName("size")]
     public int? Size { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

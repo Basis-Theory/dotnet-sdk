@@ -1,7 +1,5 @@
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client.Tenants;
 
 public partial class TenantsClient

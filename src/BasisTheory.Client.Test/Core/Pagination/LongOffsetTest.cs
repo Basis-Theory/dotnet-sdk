@@ -1,5 +1,6 @@
 using BasisTheory.Client.Core;
 using NUnit.Framework;
+using SystemTask = global::System.Threading.Tasks.Task;
 
 namespace BasisTheory.Client.Test.Core.Pagination;
 
@@ -7,27 +8,28 @@ namespace BasisTheory.Client.Test.Core.Pagination;
 public class LongOffsetTest
 {
     [Test]
-    public async Task OffsetPagerShouldWorkWithLongPage()
-    {
-        var pager = CreatePager();
-        await AssertPager(pager);
-    }
-
-    private static Pager<object> CreatePager()
+    public async SystemTask OffsetPagerShouldWorkWithLongPage()
     {
         var responses = new List<Response>
         {
-            new() { Data = new() { Items = ["item1", "item2"] } },
-            new() { Data = new() { Items = ["item1"] } },
-            new() { Data = new() { Items = [] } },
+            new() { Data = new Data { Items = ["item1", "item2"] } },
+            new() { Data = new Data { Items = ["item1"] } },
+            new() { Data = new Data { Items = [] } },
         }.GetEnumerator();
-        Pager<object> pager = new OffsetPager<Request, object?, Response, long, object?, object>(
-            new() { Pagination = new() { Page = 1 } },
+        Pager<object> pager = await OffsetPager<
+            Request,
+            object?,
+            Response,
+            long,
+            object?,
+            object
+        >.CreateInstanceAsync(
+            new Request { Pagination = new Pagination { Page = 1 } },
             null,
             (_, _, _) =>
             {
                 responses.MoveNext();
-                return Task.FromResult(responses.Current);
+                return SystemTask.FromResult(responses.Current);
             },
             request => request?.Pagination?.Page ?? 0,
             (request, offset) =>
@@ -39,11 +41,7 @@ public class LongOffsetTest
             response => response?.Data?.Items?.ToList(),
             null
         );
-        return pager;
-    }
 
-    private static async Task AssertPager(Pager<object> pager)
-    {
         var pageCounter = 0;
         var itemCounter = 0;
         await foreach (var page in pager.AsPagesAsync())
@@ -61,7 +59,7 @@ public class LongOffsetTest
 
     private class Request
     {
-        public Pagination Pagination { get; set; }
+        public Pagination? Pagination { get; set; }
     }
 
     private class Pagination
@@ -71,11 +69,11 @@ public class LongOffsetTest
 
     private class Response
     {
-        public Data Data { get; set; }
+        public Data? Data { get; set; }
     }
 
     private class Data
     {
-        public IEnumerable<string> Items { get; set; }
+        public IEnumerable<string>? Items { get; set; }
     }
 }

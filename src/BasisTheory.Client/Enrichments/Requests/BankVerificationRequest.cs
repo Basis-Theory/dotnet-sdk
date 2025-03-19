@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public record BankVerificationRequest
@@ -16,6 +14,7 @@ public record BankVerificationRequest
     [JsonPropertyName("routing_number")]
     public string? RoutingNumber { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);
