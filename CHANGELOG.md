@@ -1,3 +1,22 @@
+# [2.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v1.1.0...v2.0.0) (2025-03-19)
+
+
+### Features
+
+* Reworked Client ([2cebcbe](https://github.com/Basis-Theory/dotnet-sdk/commit/2cebcbef4cdef93d8bb6551190f59677b70aed8a))
+
+
+### BREAKING CHANGES
+
+* Endpoints that use the `Pager` are now required to be `await`ed.
+
+Example:
+`var tokens = client.Tokens.ListV2Async(...)`
+
+becomes
+
+`var tokens = await client.Tokens.ListV2Async(...);`
+
 # [1.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v1.0.1...v1.1.0) (2025-03-18)
 
 
