@@ -280,7 +280,7 @@ public class TestClient
     {
         var client = GetPrivateClient();
         const int pageSize = 3;
-        var tokens = client.Tokens.ListV2Async(new TokensListV2Request
+        var tokens = await client.Tokens.ListV2Async(new TokensListV2Request
         {
             Size = pageSize
         }, null);
@@ -572,7 +572,7 @@ public class TestClient
         }
         catch (UnprocessableEntityError e)
         {
-            Assert.True(e.Body.Detail.Contains("expired intermediateSigningKey"));
+            Assert.That(e.Body.Detail.Contains("expired intermediateSigningKey"));
         }
     }
 
