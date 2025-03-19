@@ -2,8 +2,6 @@ using System.Text.Json.Serialization;
 using BasisTheory.Client;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client.Tenants;
 
 public record CreateTenantConnectionRequest
@@ -14,6 +12,7 @@ public record CreateTenantConnectionRequest
     [JsonPropertyName("options")]
     public required TenantConnectionOptions Options { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public record CreateReactorRequest
@@ -19,6 +17,7 @@ public record CreateReactorRequest
     [JsonPropertyName("configuration")]
     public Dictionary<string, string?>? Configuration { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);
