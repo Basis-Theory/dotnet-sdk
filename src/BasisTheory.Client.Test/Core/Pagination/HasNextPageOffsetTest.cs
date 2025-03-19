@@ -1,5 +1,6 @@
 using BasisTheory.Client.Core;
 using NUnit.Framework;
+using SystemTask = global::System.Threading.Tasks.Task;
 
 namespace BasisTheory.Client.Test.Core.Pagination;
 
@@ -7,13 +8,7 @@ namespace BasisTheory.Client.Test.Core.Pagination;
 public class HasNextPageOffsetTest
 {
     [Test]
-    public async Task OffsetPagerShouldWorkWithHasNextPage()
-    {
-        var pager = CreatePager();
-        await AssertPager(pager);
-    }
-
-    private static Pager<object> CreatePager()
+    public async SystemTask OffsetPagerShouldWorkWithHasNextPage()
     {
         var responses = new List<Response>
         {
@@ -33,13 +28,20 @@ public class HasNextPageOffsetTest
                 HasNext = false,
             },
         }.GetEnumerator();
-        Pager<object> pager = new OffsetPager<Request, object?, Response, int, object?, object>(
-            new() { Pagination = new() { Page = 1 } },
+        Pager<object> pager = await OffsetPager<
+            Request,
+            object?,
+            Response,
+            int,
+            object?,
+            object
+        >.CreateInstanceAsync(
+            new Request { Pagination = new Pagination { Page = 1 } },
             null,
             (_, _, _) =>
             {
                 responses.MoveNext();
-                return Task.FromResult(responses.Current);
+                return SystemTask.FromResult(responses.Current);
             },
             request => request?.Pagination?.Page ?? 0,
             (request, offset) =>
@@ -51,11 +53,7 @@ public class HasNextPageOffsetTest
             response => response?.Data?.Items?.ToList(),
             response => response.HasNext
         );
-        return pager;
-    }
 
-    private static async Task AssertPager(Pager<object> pager)
-    {
         var pageCounter = 0;
         var itemCounter = 0;
         await foreach (var page in pager.AsPagesAsync())
@@ -73,7 +71,7 @@ public class HasNextPageOffsetTest
 
     private class Request
     {
-        public Pagination Pagination { get; set; }
+        public Pagination? Pagination { get; set; }
     }
 
     private class Pagination
@@ -83,12 +81,12 @@ public class HasNextPageOffsetTest
 
     private class Response
     {
-        public Data Data { get; set; }
+        public Data? Data { get; set; }
         public bool HasNext { get; set; }
     }
 
     private class Data
     {
-        public IEnumerable<string> Items { get; set; }
+        public IEnumerable<string>? Items { get; set; }
     }
 }

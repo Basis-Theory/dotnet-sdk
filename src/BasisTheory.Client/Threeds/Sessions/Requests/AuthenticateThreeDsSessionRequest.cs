@@ -2,8 +2,6 @@ using System.Text.Json.Serialization;
 using BasisTheory.Client;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client.Threeds;
 
 public record AuthenticateThreeDsSessionRequest
@@ -41,6 +39,7 @@ public record AuthenticateThreeDsSessionRequest
     [JsonPropertyName("message_extensions")]
     public IEnumerable<ThreeDsMessageExtension>? MessageExtensions { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);
