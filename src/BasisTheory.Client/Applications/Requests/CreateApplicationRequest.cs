@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public record CreateApplicationRequest
@@ -22,6 +20,7 @@ public record CreateApplicationRequest
     [JsonPropertyName("create_key")]
     public bool? CreateKey { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

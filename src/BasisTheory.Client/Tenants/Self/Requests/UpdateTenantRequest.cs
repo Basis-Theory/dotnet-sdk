@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client.Tenants;
 
 public record UpdateTenantRequest
@@ -13,6 +11,7 @@ public record UpdateTenantRequest
     [JsonPropertyName("settings")]
     public Dictionary<string, string?>? Settings { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);

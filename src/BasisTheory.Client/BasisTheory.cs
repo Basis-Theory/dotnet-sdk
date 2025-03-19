@@ -2,13 +2,11 @@ using BasisTheory.Client.Core;
 using BasisTheory.Client.Tenants;
 using BasisTheory.Client.Threeds;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public partial class BasisTheory
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     public BasisTheory(
         string? apiKey = null,
