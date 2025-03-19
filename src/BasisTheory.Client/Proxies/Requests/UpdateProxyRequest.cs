@@ -1,8 +1,6 @@
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-#nullable enable
-
 namespace BasisTheory.Client;
 
 public record UpdateProxyRequest
@@ -34,6 +32,7 @@ public record UpdateProxyRequest
     [JsonPropertyName("require_auth")]
     public bool? RequireAuth { get; set; }
 
+    /// <inheritdoc />
     public override string ToString()
     {
         return JsonUtils.Serialize(this);
