@@ -28,7 +28,7 @@ public record AuthenticateThreeDsSessionRequest
     public ThreeDsMerchantInfo? MerchantInfo { get; set; }
 
     [JsonPropertyName("requestor_info")]
-    public required ThreeDsRequestorInfo RequestorInfo { get; set; }
+    public ThreeDsRequestorInfo? RequestorInfo { get; set; }
 
     [JsonPropertyName("cardholder_info")]
     public ThreeDsCardholderInfo? CardholderInfo { get; set; }

@@ -3086,7 +3086,6 @@ await client.Threeds.Sessions.AuthenticateAsync(
     {
         AuthenticationCategory = "authentication_category",
         AuthenticationType = "authentication_type",
-        RequestorInfo = new ThreeDsRequestorInfo(),
     }
 );
 ```
