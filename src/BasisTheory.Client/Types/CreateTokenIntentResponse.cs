@@ -30,6 +30,9 @@ public record CreateTokenIntentResponse
     [JsonPropertyName("card")]
     public CardDetails? Card { get; set; }
 
+    [JsonPropertyName("bank")]
+    public BankDetails? Bank { get; set; }
+
     [JsonPropertyName("network_token")]
     public CardDetails? NetworkToken { get; set; }
 
