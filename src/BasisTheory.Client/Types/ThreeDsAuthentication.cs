@@ -15,6 +15,9 @@ public record ThreeDsAuthentication
     [JsonPropertyName("token_intent_id")]
     public string? TokenIntentId { get; set; }
 
+    [JsonPropertyName("session_id")]
+    public string? SessionId { get; set; }
+
     [JsonPropertyName("threeds_version")]
     public string? ThreedsVersion { get; set; }
 
@@ -44,6 +47,9 @@ public record ThreeDsAuthentication
 
     [JsonPropertyName("authentication_status_code")]
     public string? AuthenticationStatusCode { get; set; }
+
+    [JsonPropertyName("directory_status_code")]
+    public string? DirectoryStatusCode { get; set; }
 
     [JsonPropertyName("authentication_status_reason")]
     public string? AuthenticationStatusReason { get; set; }

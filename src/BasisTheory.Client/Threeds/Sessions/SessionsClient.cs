@@ -90,7 +90,6 @@ public partial class SessionsClient
     ///     {
     ///         AuthenticationCategory = "authentication_category",
     ///         AuthenticationType = "authentication_type",
-    ///         RequestorInfo = new ThreeDsRequestorInfo(),
     ///     }
     /// );
     /// </code></example>

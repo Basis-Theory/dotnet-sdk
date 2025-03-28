@@ -540,7 +540,7 @@ public class TestClient
     {
         var client = GetManagementClient();
 
-        var url = "https://echo.basistheory.com/" + Guid.NewGuid();
+        var url = "https://echo.flock-dev.com/" + Guid.NewGuid();
         var webhookId = await CreateWebhook(client, url);
         await GetAndAssertWebhookUrl(client, webhookId, url);
 
@@ -578,7 +578,7 @@ public class TestClient
 
     private static async Task<string> UpdateWebhook(BasisTheory client, string webhookId)
     {
-        var updateUrl = "https://echo.basistheory.com/" + Guid.NewGuid();
+        var updateUrl = "https://echo.flock-dev.com/" + Guid.NewGuid();
         await client.Webhooks.UpdateAsync(webhookId,
             new UpdateWebhookRequest
             {

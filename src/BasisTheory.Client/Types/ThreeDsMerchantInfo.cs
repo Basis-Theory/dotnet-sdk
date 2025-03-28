@@ -21,6 +21,9 @@ public record ThreeDsMerchantInfo
     [JsonPropertyName("category_code")]
     public string? CategoryCode { get; set; }
 
+    [JsonPropertyName("url")]
+    public string? Url { get; set; }
+
     [JsonPropertyName("risk_info")]
     public ThreeDsMerchantRiskInfo? RiskInfo { get; set; }
 
