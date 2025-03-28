@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.0.0...v2.1.0) (2025-03-28)
+
+
+### Features
+
+* update threeds authentication props ([70e756c](https://github.com/Basis-Theory/dotnet-sdk/commit/70e756c8e16ad641b59cac84103026a3adc167a5))
+
 # [2.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v1.1.0...v2.0.0) (2025-03-19)
 
 
