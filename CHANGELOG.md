@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.1.0...v2.2.0) (2025-03-28)
+
+
+### Features
+
+* trigger release for previous threeds updates ([#51](https://github.com/Basis-Theory/dotnet-sdk/issues/51)) ([b513bd2](https://github.com/Basis-Theory/dotnet-sdk/commit/b513bd22d912463b03786b57e6bf7f7f14d77fd9))
+
 # [2.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.0.0...v2.1.0) (2025-03-28)
 
 
