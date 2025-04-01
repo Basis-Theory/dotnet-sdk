@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.2.0...v2.3.0) (2025-04-01)
+
+
+### Features
+
+* Add registerAll to Apple Pay Domains and network token create ([4d98ee4](https://github.com/Basis-Theory/dotnet-sdk/commit/4d98ee4ea52d494bca63753698f37d67e040e0f4))
+
 # [2.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.1.0...v2.2.0) (2025-03-28)
 
 
