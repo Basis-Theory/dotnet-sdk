@@ -33,6 +33,9 @@ public record Token
     [JsonPropertyName("card")]
     public CardDetails? Card { get; set; }
 
+    [JsonPropertyName("bank")]
+    public BankDetails? Bank { get; set; }
+
     [JsonPropertyName("network_token")]
     public CardDetails? NetworkToken { get; set; }
 
@@ -67,7 +70,7 @@ public record Token
     public IEnumerable<string>? Aliases { get; set; }
 
     [JsonPropertyName("authentication")]
-    public TokenAuthentication? Authentication { get; set; }
+    public object? Authentication { get; set; }
 
     [JsonPropertyName("_extras")]
     public TokenExtras? Extras { get; set; }

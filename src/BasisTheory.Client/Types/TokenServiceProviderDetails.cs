@@ -45,6 +45,9 @@ public record TokenServiceProviderDetails
     [JsonPropertyName("authentication_responses")]
     public IEnumerable<AuthenticationResponse>? AuthenticationResponses { get; set; }
 
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

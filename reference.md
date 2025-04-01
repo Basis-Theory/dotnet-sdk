@@ -527,6 +527,47 @@ await client.ApplicationTemplates.GetAsync("id");
 </dl>
 </details>
 
+## NetworkTokens
+<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">TokenizeAsync</a>(CreateNetworkTokenRequest { ... }) -> Token</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.NetworkTokens.TokenizeAsync(new CreateNetworkTokenRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateNetworkTokenRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Tokens
 <details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">DetokenizeAsync</a>(object { ... }) -> object</code></summary>
 <dl>
@@ -2347,7 +2388,7 @@ await client.ApplePay.Domain.GetAsync();
 </dl>
 </details>
 
-<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">RegisterAsync</a>(ApplePayDomainRegistrationRequest { ... }) -> ApplePayDomainRegistrationResponse</code></summary>
+<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">RegisterAsync</a>(ApplePayDomainRegistrationListRequest { ... }) -> ApplePayDomainRegistrationResponse</code></summary>
 <dl>
 <dd>
 
@@ -2360,9 +2401,7 @@ await client.ApplePay.Domain.GetAsync();
 <dd>
 
 ```csharp
-await client.ApplePay.Domain.RegisterAsync(
-    new ApplePayDomainRegistrationRequest { Domain = "domain" }
-);
+await client.ApplePay.Domain.RegisterAsync(new ApplePayDomainRegistrationListRequest());
 ```
 </dd>
 </dl>
@@ -2377,7 +2416,7 @@ await client.ApplePay.Domain.RegisterAsync(
 <dl>
 <dd>
 
-**request:** `ApplePayDomainRegistrationRequest` 
+**request:** `ApplePayDomainRegistrationListRequest` 
     
 </dd>
 </dl>

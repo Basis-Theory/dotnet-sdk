@@ -37,7 +37,7 @@ public record CreateTokenIntentResponse
     public CardDetails? NetworkToken { get; set; }
 
     [JsonPropertyName("authentication")]
-    public TokenAuthentication? Authentication { get; set; }
+    public object? Authentication { get; set; }
 
     [JsonPropertyName("_extras")]
     public TokenIntentExtras? Extras { get; set; }

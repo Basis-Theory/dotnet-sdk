@@ -3,10 +3,10 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.ApplePay;
 
-public record ApplePayDomainRegistrationRequest
+public record ApplePayDomainRegistrationListRequest
 {
-    [JsonPropertyName("domain")]
-    public required string Domain { get; set; }
+    [JsonPropertyName("domains")]
+    public IEnumerable<string>? Domains { get; set; }
 
     /// <inheritdoc />
     public override string ToString()
