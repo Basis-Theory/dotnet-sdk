@@ -4,13 +4,19 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record TokenAuthentication
+public record Card
 {
-    [JsonPropertyName("threeds_cryptogram")]
-    public string? ThreedsCryptogram { get; set; }
+    [JsonPropertyName("number")]
+    public string? Number { get; set; }
 
-    [JsonPropertyName("eci_indicator")]
-    public string? EciIndicator { get; set; }
+    [JsonPropertyName("expiration_month")]
+    public int? ExpirationMonth { get; set; }
+
+    [JsonPropertyName("expiration_year")]
+    public int? ExpirationYear { get; set; }
+
+    [JsonPropertyName("cvc")]
+    public string? Cvc { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
