@@ -48,6 +48,9 @@ public record Proxy
     [JsonPropertyName("timeout")]
     public int? Timeout { get; set; }
 
+    [JsonPropertyName("client_certificate")]
+    public string? ClientCertificate { get; set; }
+
     [JsonPropertyName("created_by")]
     public string? CreatedBy { get; set; }
 
