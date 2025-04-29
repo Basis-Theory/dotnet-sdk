@@ -27,8 +27,14 @@ public record CardDetails
     [JsonPropertyName("authentication")]
     public string? Authentication { get; set; }
 
+    [JsonPropertyName("issuer")]
+    public CardIssuer? Issuer { get; set; }
+
     [JsonPropertyName("issuer_country")]
     public CardIssuerCountry? IssuerCountry { get; set; }
+
+    [JsonPropertyName("segment")]
+    public string? Segment { get; set; }
 
     [JsonPropertyName("additional")]
     public IEnumerable<AdditionalCardDetails>? Additional { get; set; }

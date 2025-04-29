@@ -4,19 +4,13 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record AdditionalCardDetails
+public record CardIssuer
 {
-    [JsonPropertyName("brand")]
-    public string? Brand { get; set; }
+    [JsonPropertyName("country")]
+    public string? Country { get; set; }
 
-    [JsonPropertyName("funding")]
-    public string? Funding { get; set; }
-
-    [JsonPropertyName("authentication")]
-    public string? Authentication { get; set; }
-
-    [JsonPropertyName("issuer")]
-    public CardIssuer? Issuer { get; set; }
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

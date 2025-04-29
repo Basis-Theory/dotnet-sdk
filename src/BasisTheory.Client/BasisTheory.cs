@@ -42,11 +42,11 @@ public partial class BasisTheory
         Applications = new ApplicationsClient(_client);
         ApplicationKeys = new ApplicationKeysClient(_client);
         ApplicationTemplates = new ApplicationTemplatesClient(_client);
-        NetworkTokens = new NetworkTokensClient(_client);
         Tokens = new TokensClient(_client);
         Enrichments = new EnrichmentsClient(_client);
         Googlepay = new GooglepayClient(_client);
         Logs = new LogsClient(_client);
+        NetworkTokens = new NetworkTokensClient(_client);
         Permissions = new PermissionsClient(_client);
         Proxies = new ProxiesClient(_client);
         Reactors = new ReactorsClient(_client);
@@ -66,8 +66,6 @@ public partial class BasisTheory
 
     public ApplicationTemplatesClient ApplicationTemplates { get; init; }
 
-    public NetworkTokensClient NetworkTokens { get; init; }
-
     public TokensClient Tokens { get; init; }
 
     public EnrichmentsClient Enrichments { get; init; }
@@ -75,6 +73,8 @@ public partial class BasisTheory
     public GooglepayClient Googlepay { get; init; }
 
     public LogsClient Logs { get; init; }
+
+    public NetworkTokensClient NetworkTokens { get; init; }
 
     public PermissionsClient Permissions { get; init; }
 
