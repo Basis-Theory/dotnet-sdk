@@ -1,3 +1,10 @@
+# [2.4.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.3.0...v2.4.0) (2025-04-29)
+
+
+### Features
+
+* update version of GH action ([#57](https://github.com/Basis-Theory/dotnet-sdk/issues/57)) ([50e6ff5](https://github.com/Basis-Theory/dotnet-sdk/commit/50e6ff530fe6b1b0c26925f1ea167cf20c41d870))
+
 # [2.3.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.2.0...v2.3.0) (2025-04-01)
 
 
