@@ -572,7 +572,7 @@ public class TestClient
         }
         catch (UnprocessableEntityError e)
         {
-            Assert.That(e.Body.Detail.Contains("expired intermediateSigningKey"));
+            Assert.That(e.Body.Detail.Contains("Failed to decrypt token"));
         }
     }
 
