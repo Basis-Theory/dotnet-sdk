@@ -27,8 +27,14 @@ public record CardDetails
     [JsonPropertyName("authentication")]
     public string? Authentication { get; set; }
 
+    [JsonPropertyName("issuer")]
+    public CardIssuer? Issuer { get; set; }
+
     [JsonPropertyName("issuer_country")]
     public CardIssuerCountry? IssuerCountry { get; set; }
+
+    [JsonPropertyName("segment")]
+    public string? Segment { get; set; }
 
     [JsonPropertyName("additional")]
     public IEnumerable<AdditionalCardDetails>? Additional { get; set; }
@@ -36,6 +42,9 @@ public record CardDetails
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>
+    /// <remarks>
+    /// [EXPERIMENTAL] This API is experimental and may change in future releases.
+    /// </remarks>
     [JsonExtensionData]
     public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
         new Dictionary<string, JsonElement>();

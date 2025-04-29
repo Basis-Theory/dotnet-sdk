@@ -42,11 +42,11 @@ public partial class BasisTheory
         Applications = new ApplicationsClient(_client);
         ApplicationKeys = new ApplicationKeysClient(_client);
         ApplicationTemplates = new ApplicationTemplatesClient(_client);
-        NetworkTokens = new NetworkTokensClient(_client);
         Tokens = new TokensClient(_client);
         Enrichments = new EnrichmentsClient(_client);
         Googlepay = new GooglepayClient(_client);
         Logs = new LogsClient(_client);
+        NetworkTokens = new NetworkTokensClient(_client);
         Permissions = new PermissionsClient(_client);
         Proxies = new ProxiesClient(_client);
         Reactors = new ReactorsClient(_client);
@@ -58,41 +58,41 @@ public partial class BasisTheory
         Threeds = new ThreedsClient(_client);
     }
 
-    public ApplePayClient ApplePay { get; init; }
+    public ApplePayClient ApplePay { get; }
 
-    public ApplicationsClient Applications { get; init; }
+    public ApplicationsClient Applications { get; }
 
-    public ApplicationKeysClient ApplicationKeys { get; init; }
+    public ApplicationKeysClient ApplicationKeys { get; }
 
-    public ApplicationTemplatesClient ApplicationTemplates { get; init; }
+    public ApplicationTemplatesClient ApplicationTemplates { get; }
 
-    public NetworkTokensClient NetworkTokens { get; init; }
+    public TokensClient Tokens { get; }
 
-    public TokensClient Tokens { get; init; }
+    public EnrichmentsClient Enrichments { get; }
 
-    public EnrichmentsClient Enrichments { get; init; }
+    public GooglepayClient Googlepay { get; }
 
-    public GooglepayClient Googlepay { get; init; }
+    public LogsClient Logs { get; }
 
-    public LogsClient Logs { get; init; }
+    public NetworkTokensClient NetworkTokens { get; }
 
-    public PermissionsClient Permissions { get; init; }
+    public PermissionsClient Permissions { get; }
 
-    public ProxiesClient Proxies { get; init; }
+    public ProxiesClient Proxies { get; }
 
-    public ReactorsClient Reactors { get; init; }
+    public ReactorsClient Reactors { get; }
 
-    public RolesClient Roles { get; init; }
+    public RolesClient Roles { get; }
 
-    public SessionsClient Sessions { get; init; }
+    public SessionsClient Sessions { get; }
 
-    public TokenIntentsClient TokenIntents { get; init; }
+    public TokenIntentsClient TokenIntents { get; }
 
-    public WebhooksClient Webhooks { get; init; }
+    public WebhooksClient Webhooks { get; }
 
-    public TenantsClient Tenants { get; init; }
+    public TenantsClient Tenants { get; }
 
-    public ThreedsClient Threeds { get; init; }
+    public ThreedsClient Threeds { get; }
 
     private static string GetFromEnvironmentOrThrow(string env, string message)
     {

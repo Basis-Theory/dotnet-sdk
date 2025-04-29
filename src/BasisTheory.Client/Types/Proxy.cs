@@ -48,6 +48,9 @@ public record Proxy
     [JsonPropertyName("timeout")]
     public int? Timeout { get; set; }
 
+    [JsonPropertyName("client_certificate")]
+    public string? ClientCertificate { get; set; }
+
     [JsonPropertyName("created_by")]
     public string? CreatedBy { get; set; }
 
@@ -63,6 +66,9 @@ public record Proxy
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>
+    /// <remarks>
+    /// [EXPERIMENTAL] This API is experimental and may change in future releases.
+    /// </remarks>
     [JsonExtensionData]
     public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
         new Dictionary<string, JsonElement>();
