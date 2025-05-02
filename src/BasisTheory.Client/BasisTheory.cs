@@ -1,3 +1,4 @@
+using BasisTheory.Client.AccountUpdater;
 using BasisTheory.Client.Core;
 using BasisTheory.Client.Tenants;
 using BasisTheory.Client.Threeds;
@@ -54,6 +55,7 @@ public partial class BasisTheory
         Sessions = new SessionsClient(_client);
         TokenIntents = new TokenIntentsClient(_client);
         Webhooks = new WebhooksClient(_client);
+        AccountUpdater = new AccountUpdaterClient(_client);
         Tenants = new TenantsClient(_client);
         Threeds = new ThreedsClient(_client);
     }
@@ -89,6 +91,8 @@ public partial class BasisTheory
     public TokenIntentsClient TokenIntents { get; init; }
 
     public WebhooksClient Webhooks { get; init; }
+
+    public AccountUpdaterClient AccountUpdater { get; init; }
 
     public TenantsClient Tenants { get; init; }
 

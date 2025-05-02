@@ -1,0 +1,31 @@
+using System.Text.Json.Serialization;
+using BasisTheory.Client.Core;
+
+namespace BasisTheory.Client.AccountUpdater;
+
+public record AccountUpdaterRealTimeRequest
+{
+    /// <summary>
+    /// Card Token identifier
+    /// </summary>
+    [JsonPropertyName("token_id")]
+    public required string TokenId { get; set; }
+
+    /// <summary>
+    /// The 4-digit expiration year of the account number. Not required if the card token already stores this value.
+    /// </summary>
+    [JsonPropertyName("expiration_year")]
+    public int? ExpirationYear { get; set; }
+
+    /// <summary>
+    /// The 2-digit expiration month of the account number. Not required if the card token already stores this value.
+    /// </summary>
+    [JsonPropertyName("expiration_month")]
+    public int? ExpirationMonth { get; set; }
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}
