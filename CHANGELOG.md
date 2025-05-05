@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.4.0...v2.5.0) (2025-05-05)
+
+
+### Features
+
+* adds account updater endpoints ([#59](https://github.com/Basis-Theory/dotnet-sdk/issues/59)) ([a47c82a](https://github.com/Basis-Theory/dotnet-sdk/commit/a47c82a22891d0a2d8d521ab584ad9b5e267a35c))
+
 # [2.4.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.3.0...v2.4.0) (2025-04-29)
 
 
