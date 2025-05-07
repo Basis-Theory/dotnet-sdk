@@ -15,6 +15,9 @@ public record CreateThreeDsSessionResponse
     [JsonPropertyName("cardBrand")]
     public string? CardBrand { get; set; }
 
+    [JsonPropertyName("additional_card_brands")]
+    public IEnumerable<string>? AdditionalCardBrands { get; set; }
+
     [JsonPropertyName("method_url")]
     public string? MethodUrl { get; set; }
 

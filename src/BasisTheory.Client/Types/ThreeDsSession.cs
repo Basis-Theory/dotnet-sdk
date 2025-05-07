@@ -27,6 +27,9 @@ public record ThreeDsSession
     [JsonPropertyName("card_brand")]
     public string? CardBrand { get; set; }
 
+    [JsonPropertyName("additional_card_brands")]
+    public IEnumerable<string>? AdditionalCardBrands { get; set; }
+
     [JsonPropertyName("expiration_date")]
     public DateTime? ExpirationDate { get; set; }
 
