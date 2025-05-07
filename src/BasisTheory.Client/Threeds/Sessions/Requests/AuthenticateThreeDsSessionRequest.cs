@@ -12,6 +12,9 @@ public record AuthenticateThreeDsSessionRequest
     [JsonPropertyName("authentication_type")]
     public required string AuthenticationType { get; set; }
 
+    [JsonPropertyName("card_brand")]
+    public string? CardBrand { get; set; }
+
     [JsonPropertyName("challenge_preference")]
     public string? ChallengePreference { get; set; }
 
