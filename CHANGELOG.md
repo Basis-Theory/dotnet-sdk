@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.5.0...v2.6.0) (2025-05-07)
+
+
+### Features
+
+* add network tokens and 3ds co-badged cards props ([f9e951b](https://github.com/Basis-Theory/dotnet-sdk/commit/f9e951beea3ed2a3ce6b37f0d136a3c5097a9ec2))
+
 # [2.5.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.4.0...v2.5.0) (2025-05-05)
 
 
