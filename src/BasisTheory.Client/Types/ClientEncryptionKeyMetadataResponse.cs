@@ -4,13 +4,13 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record TokenIntentExtras
+public record ClientEncryptionKeyMetadataResponse
 {
-    [JsonPropertyName("tsp_details")]
-    public TokenServiceProviderDetails? TspDetails { get; set; }
+    [JsonPropertyName("id")]
+    public string? Id { get; set; }
 
-    [JsonPropertyName("network_token_ids")]
-    public IEnumerable<string>? NetworkTokenIds { get; set; }
+    [JsonPropertyName("expiresAt")]
+    public DateTime? ExpiresAt { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

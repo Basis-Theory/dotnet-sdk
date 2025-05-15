@@ -8,6 +8,12 @@ public record CreateNetworkTokenRequest
     [JsonPropertyName("data")]
     public Card? Data { get; set; }
 
+    [JsonPropertyName("token_id")]
+    public string? TokenId { get; set; }
+
+    [JsonPropertyName("token_intent_id")]
+    public string? TokenIntentId { get; set; }
+
     [JsonPropertyName("cardholder_info")]
     public CardholderInfo? CardholderInfo { get; set; }
 

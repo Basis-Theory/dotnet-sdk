@@ -54,6 +54,9 @@ public record ThreeDsAuthentication
     [JsonPropertyName("authentication_status_reason")]
     public string? AuthenticationStatusReason { get; set; }
 
+    [JsonPropertyName("authentication_status_reason_code")]
+    public string? AuthenticationStatusReasonCode { get; set; }
+
     [JsonPropertyName("eci")]
     public string? Eci { get; set; }
 

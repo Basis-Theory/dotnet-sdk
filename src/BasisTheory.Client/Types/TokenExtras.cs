@@ -15,6 +15,9 @@ public record TokenExtras
     [JsonPropertyName("deduplication_behavior")]
     public string? DeduplicationBehavior { get; set; }
 
+    [JsonPropertyName("network_token_ids")]
+    public IEnumerable<string>? NetworkTokenIds { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

@@ -27,6 +27,9 @@ public record CreateThreeDsSessionRequest
     [JsonPropertyName("device_info")]
     public ThreeDsDeviceInfo? DeviceInfo { get; set; }
 
+    [JsonPropertyName("authentication_request")]
+    public AuthenticateThreeDsSessionRequest? AuthenticationRequest { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

@@ -46,6 +46,7 @@ public partial class BasisTheory
         Tokens = new TokensClient(_client);
         Enrichments = new EnrichmentsClient(_client);
         Googlepay = new GooglepayClient(_client);
+        Keys = new KeysClient(_client);
         Logs = new LogsClient(_client);
         NetworkTokens = new NetworkTokensClient(_client);
         Permissions = new PermissionsClient(_client);
@@ -73,6 +74,8 @@ public partial class BasisTheory
     public EnrichmentsClient Enrichments { get; init; }
 
     public GooglepayClient Googlepay { get; init; }
+
+    public KeysClient Keys { get; init; }
 
     public LogsClient Logs { get; init; }
 
