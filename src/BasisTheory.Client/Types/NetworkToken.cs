@@ -27,6 +27,12 @@ public record NetworkToken
     [JsonPropertyName("created_at")]
     public DateTime? CreatedAt { get; set; }
 
+    [JsonPropertyName("token_id")]
+    public string? TokenId { get; set; }
+
+    [JsonPropertyName("token_intent_id")]
+    public string? TokenIntentId { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>
