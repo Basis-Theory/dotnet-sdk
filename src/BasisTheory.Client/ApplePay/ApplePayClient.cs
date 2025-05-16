@@ -22,10 +22,10 @@ public partial class ApplePayClient
     public SessionClient Session { get; }
 
     /// <example><code>
-    /// await client.ApplePay.TokenizeAsync(new ApplePayTokenizeRequest());
+    /// await client.ApplePay.CreateAsync(new ApplePayCreateRequest());
     /// </code></example>
-    public async Task<ApplePayTokenizeResponse> TokenizeAsync(
-        ApplePayTokenizeRequest request,
+    public async Task<ApplePayCreateResponse> CreateAsync(
+        ApplePayCreateRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -36,7 +36,7 @@ public partial class ApplePayClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
-                    Path = "connections/apple-pay/tokenize",
+                    Path = "apple-pay",
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -49,7 +49,7 @@ public partial class ApplePayClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<ApplePayTokenizeResponse>(responseBody)!;
+                return JsonUtils.Deserialize<ApplePayCreateResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -77,6 +77,68 @@ public partial class ApplePayClient
                         );
                     case 422:
                         throw new UnprocessableEntityError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.ApplePay.GetAsync("id");
+    /// </code></example>
+    public async Task<ApplePayToken> GetAsync(
+        string id,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new RawClient.JsonApiRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Get,
+                    Path = string.Format("apple-pay/{0}", ValueConvert.ToPathParameterString(id)),
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<ApplePayToken>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryException("Failed to deserialize response", e);
+            }
+        }
+
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
                         );
                 }

@@ -1,45 +1,4 @@
 # Reference
-## ApplePay
-<details><summary><code>client.ApplePay.<a href="/src/BasisTheory.Client/ApplePay/ApplePayClient.cs">TokenizeAsync</a>(ApplePayTokenizeRequest { ... }) -> ApplePayTokenizeResponse</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.ApplePay.TokenizeAsync(new ApplePayTokenizeRequest());
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `ApplePayTokenizeRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Applications
 <details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">ListAsync</a>(ApplicationsListRequest { ... }) -> Pager<Application></code></summary>
 <dl>
@@ -501,6 +460,87 @@ await client.ApplicationTemplates.ListAsync();
 
 ```csharp
 await client.ApplicationTemplates.GetAsync("id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## ApplePay
+<details><summary><code>client.ApplePay.<a href="/src/BasisTheory.Client/ApplePay/ApplePayClient.cs">CreateAsync</a>(ApplePayCreateRequest { ... }) -> ApplePayCreateResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.ApplePay.CreateAsync(new ApplePayCreateRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ApplePayCreateRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ApplePay.<a href="/src/BasisTheory.Client/ApplePay/ApplePayClient.cs">GetAsync</a>(id) -> ApplePayToken</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.ApplePay.GetAsync("id");
 ```
 </dd>
 </dl>
@@ -2956,6 +2996,240 @@ await client.ApplePay.Domain.RegisterAllAsync(new ApplePayDomainRegistrationList
 
 ```csharp
 await client.ApplePay.Session.CreateAsync(new ApplePaySessionRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ApplePaySessionRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Connections ApplePay
+<details><summary><code>client.Connections.ApplePay.<a href="/src/BasisTheory.Client/Connections/ApplePay/ApplePayClient.cs">TokenizeAsync</a>(ApplePayTokenizeRequest { ... }) -> ApplePayTokenizeResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Connections.ApplePay.TokenizeAsync(new ApplePayTokenizeRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ApplePayTokenizeRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Connections ApplePay Domain
+<details><summary><code>client.Connections.ApplePay.Domain.<a href="/src/BasisTheory.Client/Connections/ApplePay/Domain/DomainClient.cs">DeregisterAsync</a>(ApplePayDomainDeregistrationRequest { ... })</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Connections.ApplePay.Domain.DeregisterAsync(
+    new ApplePayDomainDeregistrationRequest { Domain = "domain" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ApplePayDomainDeregistrationRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Connections.ApplePay.Domain.<a href="/src/BasisTheory.Client/Connections/ApplePay/Domain/DomainClient.cs">GetAsync</a>() -> ApplePayDomainRegistrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Connections.ApplePay.Domain.GetAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Connections.ApplePay.Domain.<a href="/src/BasisTheory.Client/Connections/ApplePay/Domain/DomainClient.cs">RegisterAsync</a>(ApplePayDomainRegistrationRequest { ... }) -> ApplePayDomainRegistrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Connections.ApplePay.Domain.RegisterAsync(
+    new ApplePayDomainRegistrationRequest { Domain = "domain" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ApplePayDomainRegistrationRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Connections.ApplePay.Domain.<a href="/src/BasisTheory.Client/Connections/ApplePay/Domain/DomainClient.cs">RegisterAllAsync</a>(ApplePayDomainRegistrationListRequest { ... }) -> ApplePayDomainRegistrationResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Connections.ApplePay.Domain.RegisterAllAsync(
+    new ApplePayDomainRegistrationListRequest()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `ApplePayDomainRegistrationListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Connections ApplePay Session
+<details><summary><code>client.Connections.ApplePay.Session.<a href="/src/BasisTheory.Client/Connections/ApplePay/Session/SessionClient.cs">CreateAsync</a>(ApplePaySessionRequest { ... }) -> string</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Connections.ApplePay.Session.CreateAsync(new ApplePaySessionRequest());
 ```
 </dd>
 </dl>

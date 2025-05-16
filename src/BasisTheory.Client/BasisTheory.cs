@@ -1,4 +1,5 @@
 using BasisTheory.Client.AccountUpdater;
+using BasisTheory.Client.Connections;
 using BasisTheory.Client.Core;
 using BasisTheory.Client.Tenants;
 using BasisTheory.Client.Threeds;
@@ -39,10 +40,10 @@ public partial class BasisTheory
             }
         }
         _client = new RawClient(clientOptions);
-        ApplePay = new ApplePayClient(_client);
         Applications = new ApplicationsClient(_client);
         ApplicationKeys = new ApplicationKeysClient(_client);
         ApplicationTemplates = new ApplicationTemplatesClient(_client);
+        ApplePay = new ApplePayClient(_client);
         Tokens = new TokensClient(_client);
         Enrichments = new EnrichmentsClient(_client);
         Googlepay = new GooglepayClient(_client);
@@ -57,17 +58,18 @@ public partial class BasisTheory
         TokenIntents = new TokenIntentsClient(_client);
         Webhooks = new WebhooksClient(_client);
         AccountUpdater = new AccountUpdaterClient(_client);
+        Connections = new ConnectionsClient(_client);
         Tenants = new TenantsClient(_client);
         Threeds = new ThreedsClient(_client);
     }
-
-    public ApplePayClient ApplePay { get; init; }
 
     public ApplicationsClient Applications { get; init; }
 
     public ApplicationKeysClient ApplicationKeys { get; init; }
 
     public ApplicationTemplatesClient ApplicationTemplates { get; init; }
+
+    public ApplePayClient ApplePay { get; init; }
 
     public TokensClient Tokens { get; init; }
 
@@ -96,6 +98,8 @@ public partial class BasisTheory
     public WebhooksClient Webhooks { get; init; }
 
     public AccountUpdaterClient AccountUpdater { get; init; }
+
+    public ConnectionsClient Connections { get; init; }
 
     public TenantsClient Tenants { get; init; }
 
