@@ -4,7 +4,7 @@ using System.Threading;
 using BasisTheory.Client;
 using BasisTheory.Client.Core;
 
-namespace BasisTheory.Client.ApplePay;
+namespace BasisTheory.Client.Connections.ApplePay;
 
 public partial class SessionClient
 {
@@ -16,7 +16,7 @@ public partial class SessionClient
     }
 
     /// <example><code>
-    /// await client.ApplePay.Session.CreateAsync(new ApplePaySessionRequest());
+    /// await client.Connections.ApplePay.Session.CreateAsync(new ApplePaySessionRequest());
     /// </code></example>
     public async Task<string> CreateAsync(
         ApplePaySessionRequest request,
@@ -30,7 +30,7 @@ public partial class SessionClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
-                    Path = "apple-pay/session",
+                    Path = "connections/apple-pay/session",
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
