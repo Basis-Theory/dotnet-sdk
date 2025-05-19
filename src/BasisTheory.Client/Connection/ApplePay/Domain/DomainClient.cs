@@ -5,7 +5,7 @@ using BasisTheory.Client;
 using BasisTheory.Client.Core;
 using global::System.Threading.Tasks;
 
-namespace BasisTheory.Client.ApplePay;
+namespace BasisTheory.Client.Connection.ApplePay;
 
 public partial class DomainClient
 {
@@ -17,7 +17,7 @@ public partial class DomainClient
     }
 
     /// <example><code>
-    /// await client.ApplePay.Domain.DeregisterAsync(
+    /// await client.Connection.ApplePay.Domain.DeregisterAsync(
     ///     new ApplePayDomainDeregistrationRequest { Domain = "domain" }
     /// );
     /// </code></example>
@@ -33,7 +33,7 @@ public partial class DomainClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
-                    Path = "apple-pay/domain-deregistration",
+                    Path = "connections/apple-pay/domain-deregistration",
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -74,7 +74,7 @@ public partial class DomainClient
     }
 
     /// <example><code>
-    /// await client.ApplePay.Domain.GetAsync();
+    /// await client.Connection.ApplePay.Domain.GetAsync();
     /// </code></example>
     public async Task<ApplePayDomainRegistrationResponse> GetAsync(
         RequestOptions? options = null,
@@ -87,7 +87,7 @@ public partial class DomainClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
-                    Path = "apple-pay/domain-registration",
+                    Path = "connections/apple-pay/domain-registration",
                     Options = options,
                 },
                 cancellationToken
@@ -131,7 +131,7 @@ public partial class DomainClient
     }
 
     /// <example><code>
-    /// await client.ApplePay.Domain.RegisterAsync(
+    /// await client.Connection.ApplePay.Domain.RegisterAsync(
     ///     new ApplePayDomainRegistrationRequest { Domain = "domain" }
     /// );
     /// </code></example>
@@ -147,7 +147,7 @@ public partial class DomainClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
-                    Path = "apple-pay/domain-registration",
+                    Path = "connections/apple-pay/domain-registration",
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -209,7 +209,9 @@ public partial class DomainClient
     }
 
     /// <example><code>
-    /// await client.ApplePay.Domain.RegisterAllAsync(new ApplePayDomainRegistrationListRequest());
+    /// await client.Connection.ApplePay.Domain.RegisterAllAsync(
+    ///     new ApplePayDomainRegistrationListRequest()
+    /// );
     /// </code></example>
     public async Task<ApplePayDomainRegistrationResponse> RegisterAllAsync(
         ApplePayDomainRegistrationListRequest request,
@@ -223,7 +225,7 @@ public partial class DomainClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Put,
-                    Path = "apple-pay/domain-registration",
+                    Path = "connections/apple-pay/domain-registration",
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
