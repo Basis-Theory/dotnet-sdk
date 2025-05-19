@@ -576,6 +576,32 @@ public class TestClient
         }
     }
 
+    [Test]
+    public async Task ShouldSupportClientEncryptionKeyLifecycle()
+    {
+        var client = GetManagementClient();
+
+        var key = await client.Keys.CreateAsync(new ClientEncryptionKeyRequest());
+        AssertIsGuid(key.Id);
+        Assert.That(key.PublicKeyPem, Is.Not.Null);
+
+        var retrievedKey = await client.Keys.GetAsync(key.Id!);
+        Assert.That(retrievedKey.Id, Is.EqualTo(key.Id));
+        Assert.That(retrievedKey.ExpiresAt, Is.Not.Null);
+
+        await client.Keys.DeleteAsync(key.Id!);
+
+        try
+        {
+            await client.Keys.GetAsync(key.Id!);
+            Assert.Fail("Should have raised a 404 for key not found");
+        }
+        catch (Exception e)
+        {
+            Assert.That(e, Is.TypeOf<NotFoundError>());
+        }
+    }
+
     private static async Task<string> UpdateWebhook(BasisTheory client, string webhookId)
     {
         var updateUrl = "https://echo.flock-dev.com/" + Guid.NewGuid();
