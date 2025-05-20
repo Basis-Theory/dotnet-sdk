@@ -1,3 +1,15 @@
+# [3.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.6.0...v3.0.0) (2025-05-20)
+
+
+### Features
+
+* Add Apple Pay Token support ([2e5fe6a](https://github.com/Basis-Theory/dotnet-sdk/commit/2e5fe6ae8acb89219f5a018f12f01e8c3bf61f99))
+
+
+### BREAKING CHANGES
+
+* The old methods for using Apple Pay and Token Intents have moved to the "connection" namespace.
+
 # [2.6.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.5.0...v2.6.0) (2025-05-07)
 
 
