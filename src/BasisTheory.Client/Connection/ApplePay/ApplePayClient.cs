@@ -2,24 +2,31 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using BasisTheory.Client;
+using BasisTheory.Client.Connection.ApplePay;
 using BasisTheory.Client.Core;
 
-namespace BasisTheory.Client.ApplePay;
+namespace BasisTheory.Client.Connection;
 
-public partial class SessionClient
+public partial class ApplePayClient
 {
     private RawClient _client;
 
-    internal SessionClient(RawClient client)
+    internal ApplePayClient(RawClient client)
     {
         _client = client;
+        Domain = new DomainClient(_client);
+        Session = new SessionClient(_client);
     }
 
+    public DomainClient Domain { get; }
+
+    public SessionClient Session { get; }
+
     /// <example><code>
-    /// await client.ApplePay.Session.CreateAsync(new ApplePaySessionRequest());
+    /// await client.Connection.ApplePay.TokenizeAsync(new ApplePayTokenizeRequest());
     /// </code></example>
-    public async Task<string> CreateAsync(
-        ApplePaySessionRequest request,
+    public async Task<ApplePayTokenizeResponse> TokenizeAsync(
+        ApplePayTokenizeRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -30,7 +37,7 @@ public partial class SessionClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
-                    Path = "apple-pay/session",
+                    Path = "connections/apple-pay/tokenize",
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -43,7 +50,7 @@ public partial class SessionClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<string>(responseBody)!;
+                return JsonUtils.Deserialize<ApplePayTokenizeResponse>(responseBody)!;
             }
             catch (JsonException e)
             {
