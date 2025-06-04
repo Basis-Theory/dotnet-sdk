@@ -1,3 +1,10 @@
+# [3.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v3.0.0...v3.1.0) (2025-06-04)
+
+
+### Features
+
+* Add Apple Pay unlink support ([6de68ab](https://github.com/Basis-Theory/dotnet-sdk/commit/6de68ab2750e080c10edc151bc0ac008f5910db3))
+
 # [3.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v2.6.0...v3.0.0) (2025-05-20)
 
 
