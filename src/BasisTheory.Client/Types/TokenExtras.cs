@@ -18,6 +18,9 @@ public record TokenExtras
     [JsonPropertyName("network_token_ids")]
     public IEnumerable<string>? NetworkTokenIds { get; set; }
 
+    [JsonPropertyName("decrypted_payload")]
+    public bool? DecryptedPayload { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

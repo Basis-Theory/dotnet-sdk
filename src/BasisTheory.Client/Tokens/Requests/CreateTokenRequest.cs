@@ -14,6 +14,9 @@ public record CreateTokenRequest
     [JsonPropertyName("data")]
     public object? Data { get; set; }
 
+    [JsonPropertyName("encrypted")]
+    public string? Encrypted { get; set; }
+
     [JsonPropertyName("privacy")]
     public Privacy? Privacy { get; set; }
 
