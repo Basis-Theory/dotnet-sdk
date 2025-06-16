@@ -42,6 +42,9 @@ public record NetworkToken
     [JsonPropertyName("token_intent_id")]
     public string? TokenIntentId { get; set; }
 
+    [JsonPropertyName("_extras")]
+    public NetworkTokenExtras? Extras { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>
