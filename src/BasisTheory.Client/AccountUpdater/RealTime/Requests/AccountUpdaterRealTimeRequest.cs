@@ -23,6 +23,12 @@ public record AccountUpdaterRealTimeRequest
     [JsonPropertyName("expiration_month")]
     public int? ExpirationMonth { get; set; }
 
+    /// <summary>
+    /// Whether deduplication should be enabled when creating the new token. Uses the value of the Deduplicate Tokens setting on the tenant if not set.
+    /// </summary>
+    [JsonPropertyName("deduplicate_token")]
+    public bool? DeduplicateToken { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

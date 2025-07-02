@@ -30,6 +30,9 @@ public record CreateThreeDsSessionRequest
     [JsonPropertyName("authentication_request")]
     public AuthenticateThreeDsSessionRequest? AuthenticationRequest { get; set; }
 
+    [JsonPropertyName("callback_urls")]
+    public ThreeDsCallbackUrls? CallbackUrls { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {
