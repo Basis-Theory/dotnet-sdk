@@ -93,71 +93,6 @@ public partial class TokensClient
         }
     }
 
-    private async Task<TokenPaginatedList> SearchInternalAsync(
-        SearchTokensRequest request,
-        IdempotentRequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = await _client
-            .SendRequestAsync(
-                new RawClient.JsonApiRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "tokens/search",
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<TokenPaginatedList>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
-    }
-
     private async Task<TokenCursorPaginatedList> ListV2InternalAsync(
         TokensListV2Request request,
         RequestOptions? options = null,
@@ -561,45 +496,6 @@ public partial class TokensClient
                 responseBody
             );
         }
-    }
-
-    /// <example><code>
-    /// await client.Tokens.SearchAsync(new SearchTokensRequest());
-    /// </code></example>
-    public async Task<Pager<Token>> SearchAsync(
-        SearchTokensRequest request,
-        IdempotentRequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        if (request is not null)
-        {
-            request = request with { };
-        }
-        var pager = await OffsetPager<
-            SearchTokensRequest,
-            IdempotentRequestOptions?,
-            TokenPaginatedList,
-            int?,
-            object,
-            Token
-        >
-            .CreateInstanceAsync(
-                request,
-                options,
-                SearchInternalAsync,
-                request => request?.Page ?? 0,
-                (request, offset) =>
-                {
-                    request.Page = offset;
-                },
-                null,
-                response => response?.Data?.ToList(),
-                null,
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        return pager;
     }
 
     /// <example><code>

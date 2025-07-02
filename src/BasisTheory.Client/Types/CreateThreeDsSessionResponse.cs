@@ -30,6 +30,9 @@ public record CreateThreeDsSessionResponse
     [JsonPropertyName("recommended_version")]
     public string? RecommendedVersion { get; set; }
 
+    [JsonPropertyName("redirect_url")]
+    public string? RedirectUrl { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>
