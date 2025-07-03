@@ -21,6 +21,9 @@ public record NetworkToken
     [JsonPropertyName("network_token")]
     public CardDetails? NetworkToken_ { get; set; }
 
+    [JsonPropertyName("par")]
+    public string? Par { get; set; }
+
     [JsonPropertyName("status")]
     public string? Status { get; set; }
 
