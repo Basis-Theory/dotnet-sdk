@@ -4,13 +4,10 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record CreateAccountUpdaterJobRequest
+public record CreateDocumentRequest
 {
-    /// <summary>
-    /// Whether deduplication should be enabled when creating new tokens. Uses the value of the Deduplicate Tokens setting on the tenant if not set.
-    /// </summary>
-    [JsonPropertyName("deduplicate_tokens")]
-    public bool? DeduplicateTokens { get; set; }
+    [JsonPropertyName("metadata")]
+    public Dictionary<string, string?>? Metadata { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
