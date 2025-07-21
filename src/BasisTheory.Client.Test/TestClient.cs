@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -597,6 +598,56 @@ public class TestClient
             Assert.Fail("Should have raised a 404 for key not found");
         }
         catch (Exception e)
+        {
+            Assert.That(e, Is.TypeOf<NotFoundError>());
+        }
+    }
+
+    [Test]
+    public async Task ShouldSupportDocumentsLifecycle()
+    {
+        var client = GetPrivateClient();
+
+        // Upload
+        var originalContent = "Hello World";
+        var originalMetadata = new Dictionary<string, string?>
+        {
+            ["attribute 1"] = "value 1",
+        };
+        var uploaded = await client.Documents.UploadAsync(new DocumentsUploadRequest
+        {
+            Document = new FileParameter
+            {
+                Stream = new MemoryStream(Encoding.UTF8.GetBytes(originalContent)),
+                FileName = "hello.txt",
+                ContentType = "text/plain"
+            },
+            Request = new CreateDocumentRequest
+            {
+                Metadata = originalMetadata
+            }
+        });
+
+        // GET info
+        var retrieved = await client.Documents.GetAsync(uploaded.Id!);
+        Assert.That(retrieved.ContentType, Is.EqualTo("text/plain"));
+        Assert.That(retrieved.Metadata, Is.EqualTo(originalMetadata));
+
+        // GET data
+        var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.Add("BT-API-KEY", Environment.GetEnvironmentVariable("BT_PVT_API_KEY"));
+        var response = await httpClient.GetAsync($"{Environment.GetEnvironmentVariable("BT_API_URL")!}/documents/{uploaded.Id}/data");
+        var downloadedContent = await response.Content.ReadAsStringAsync();
+        Assert.That(downloadedContent, Is.EqualTo(originalContent));
+
+
+        // DELETE
+        await client.Documents.DeleteAsync(uploaded.Id!);
+        try
+        {
+            await client.Documents.GetAsync(uploaded.Id!);
+            Assert.Fail("Should have raised a 404 for key not found");
+        } catch (Exception e)
         {
             Assert.That(e, Is.TypeOf<NotFoundError>());
         }
