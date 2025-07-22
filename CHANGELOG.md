@@ -1,3 +1,10 @@
+# [3.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v3.1.0...v3.2.0) (2025-07-22)
+
+
+### Features
+
+* Add documents ([#77](https://github.com/Basis-Theory/dotnet-sdk/issues/77)) ([a24e7f8](https://github.com/Basis-Theory/dotnet-sdk/commit/a24e7f81ff601a83ef9f7550b5f75a85ad26f2ca))
+
 # [3.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v3.0.0...v3.1.0) (2025-06-04)
 
 
