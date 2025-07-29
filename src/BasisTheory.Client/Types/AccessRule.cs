@@ -4,8 +4,13 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record AccessRule
+[Serializable]
+public record AccessRule : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("description")]
     public string? Description { get; set; }
 
@@ -24,12 +29,11 @@ public record AccessRule
     [JsonPropertyName("permissions")]
     public IEnumerable<string>? Permissions { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

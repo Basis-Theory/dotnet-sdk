@@ -1,11 +1,15 @@
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record ProblemDetails
+[Serializable]
+public record ProblemDetails : IJsonOnDeserialized, IJsonOnSerializing
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, object?> _extensionData =
+        new Dictionary<string, object?>();
+
     [JsonPropertyName("type")]
     public string? Type { get; set; }
 
@@ -21,12 +25,14 @@ public record ProblemDetails
     [JsonPropertyName("instance")]
     public string? Instance { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public AdditionalProperties AdditionalProperties { get; set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
+
+    void IJsonOnSerializing.OnSerializing() =>
+        AdditionalProperties.CopyToExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

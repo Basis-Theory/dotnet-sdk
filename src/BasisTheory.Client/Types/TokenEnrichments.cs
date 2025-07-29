@@ -4,20 +4,24 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record TokenEnrichments
+[Serializable]
+public record TokenEnrichments : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("bin_details")]
     public BinDetails? BinDetails { get; set; }
 
     [JsonPropertyName("card_details")]
     public TokenEnrichmentsCardDetails? CardDetails { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

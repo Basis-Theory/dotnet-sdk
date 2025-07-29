@@ -4,8 +4,13 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
-public record CreateTokenIntentResponse
+[Serializable]
+public record CreateTokenIntentResponse : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
@@ -42,12 +47,11 @@ public record CreateTokenIntentResponse
     [JsonPropertyName("_extras")]
     public TokenIntentExtras? Extras { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()
