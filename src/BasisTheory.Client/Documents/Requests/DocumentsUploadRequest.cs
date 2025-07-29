@@ -2,6 +2,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
+[Serializable]
 public record DocumentsUploadRequest
 {
     public FileParameter? Document { get; set; }

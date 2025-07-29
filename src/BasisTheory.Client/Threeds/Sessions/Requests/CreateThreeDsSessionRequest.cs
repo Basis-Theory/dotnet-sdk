@@ -4,6 +4,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.Threeds;
 
+[Serializable]
 public record CreateThreeDsSessionRequest
 {
     [JsonPropertyName("pan")]

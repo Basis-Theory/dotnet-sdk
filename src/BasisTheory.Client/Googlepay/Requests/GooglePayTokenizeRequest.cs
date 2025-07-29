@@ -3,6 +3,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
+[Serializable]
 public record GooglePayTokenizeRequest
 {
     [JsonPropertyName("google_payment_method_token")]
