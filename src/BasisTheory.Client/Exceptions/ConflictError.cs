@@ -3,6 +3,7 @@ namespace BasisTheory.Client;
 /// <summary>
 /// This exception type will be thrown for any non-2XX API responses.
 /// </summary>
+[Serializable]
 public class ConflictError(ProblemDetails body)
     : BasisTheoryApiException("ConflictError", 409, body)
 {

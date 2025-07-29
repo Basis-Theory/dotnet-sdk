@@ -64,49 +64,49 @@ public partial class BasisTheory
         Threeds = new ThreedsClient(_client);
     }
 
-    public ApplicationsClient Applications { get; init; }
+    public ApplicationsClient Applications { get; }
 
-    public ApplicationKeysClient ApplicationKeys { get; init; }
+    public ApplicationKeysClient ApplicationKeys { get; }
 
-    public ApplicationTemplatesClient ApplicationTemplates { get; init; }
+    public ApplicationTemplatesClient ApplicationTemplates { get; }
 
-    public ApplePayClient ApplePay { get; init; }
+    public ApplePayClient ApplePay { get; }
 
-    public DocumentsClient Documents { get; init; }
+    public DocumentsClient Documents { get; }
 
-    public TokensClient Tokens { get; init; }
+    public TokensClient Tokens { get; }
 
-    public EnrichmentsClient Enrichments { get; init; }
+    public EnrichmentsClient Enrichments { get; }
 
-    public GooglepayClient Googlepay { get; init; }
+    public GooglepayClient Googlepay { get; }
 
-    public KeysClient Keys { get; init; }
+    public KeysClient Keys { get; }
 
-    public LogsClient Logs { get; init; }
+    public LogsClient Logs { get; }
 
-    public NetworkTokensClient NetworkTokens { get; init; }
+    public NetworkTokensClient NetworkTokens { get; }
 
-    public PermissionsClient Permissions { get; init; }
+    public PermissionsClient Permissions { get; }
 
-    public ProxiesClient Proxies { get; init; }
+    public ProxiesClient Proxies { get; }
 
-    public ReactorsClient Reactors { get; init; }
+    public ReactorsClient Reactors { get; }
 
-    public RolesClient Roles { get; init; }
+    public RolesClient Roles { get; }
 
-    public SessionsClient Sessions { get; init; }
+    public SessionsClient Sessions { get; }
 
-    public TokenIntentsClient TokenIntents { get; init; }
+    public TokenIntentsClient TokenIntents { get; }
 
-    public WebhooksClient Webhooks { get; init; }
+    public WebhooksClient Webhooks { get; }
 
-    public AccountUpdaterClient AccountUpdater { get; init; }
+    public AccountUpdaterClient AccountUpdater { get; }
 
-    public ConnectionClient Connection { get; init; }
+    public ConnectionClient Connection { get; }
 
-    public TenantsClient Tenants { get; init; }
+    public TenantsClient Tenants { get; }
 
-    public ThreedsClient Threeds { get; init; }
+    public ThreedsClient Threeds { get; }
 
     private static string GetFromEnvironmentOrThrow(string env, string message)
     {
