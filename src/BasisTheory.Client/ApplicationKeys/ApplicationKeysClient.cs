@@ -30,7 +30,7 @@ public partial class ApplicationKeysClient
         _query["type"] = request.Type;
         var response = await _client
             .SendRequestAsync(
-                new RawClient.JsonApiRequest
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -98,7 +98,7 @@ public partial class ApplicationKeysClient
     {
         var response = await _client
             .SendRequestAsync(
-                new RawClient.JsonApiRequest
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -168,7 +168,7 @@ public partial class ApplicationKeysClient
     {
         var response = await _client
             .SendRequestAsync(
-                new RawClient.JsonApiRequest
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -237,7 +237,7 @@ public partial class ApplicationKeysClient
     {
         var response = await _client
             .SendRequestAsync(
-                new RawClient.JsonApiRequest
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,

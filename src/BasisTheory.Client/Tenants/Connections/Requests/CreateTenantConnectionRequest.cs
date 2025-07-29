@@ -4,6 +4,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.Tenants;
 
+[Serializable]
 public record CreateTenantConnectionRequest
 {
     [JsonPropertyName("strategy")]

@@ -3,6 +3,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.Tenants;
 
+[Serializable]
 public record UpdateTenantMemberRequest
 {
     [JsonPropertyName("role")]
