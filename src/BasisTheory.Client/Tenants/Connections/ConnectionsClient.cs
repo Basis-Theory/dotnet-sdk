@@ -32,7 +32,7 @@ public partial class ConnectionsClient
     {
         var response = await _client
             .SendRequestAsync(
-                new RawClient.JsonApiRequest
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
@@ -99,7 +99,7 @@ public partial class ConnectionsClient
     {
         var response = await _client
             .SendRequestAsync(
-                new RawClient.JsonApiRequest
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
