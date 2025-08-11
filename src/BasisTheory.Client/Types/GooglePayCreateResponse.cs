@@ -5,25 +5,13 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ProxyTransform
+public record GooglePayCreateResponse
 {
-    [JsonPropertyName("type")]
-    public string? Type { get; set; }
+    [JsonPropertyName("google_pay")]
+    public GooglePayCreateTokenResponse? GooglePay { get; set; }
 
-    [JsonPropertyName("code")]
-    public string? Code { get; set; }
-
-    [JsonPropertyName("matcher")]
-    public string? Matcher { get; set; }
-
-    [JsonPropertyName("expression")]
-    public string? Expression { get; set; }
-
-    [JsonPropertyName("replacement")]
-    public string? Replacement { get; set; }
-
-    [JsonPropertyName("options")]
-    public TokenizeTransformOptions? Options { get; set; }
+    [JsonPropertyName("token_intent")]
+    public CreateTokenIntentResponse? TokenIntent { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

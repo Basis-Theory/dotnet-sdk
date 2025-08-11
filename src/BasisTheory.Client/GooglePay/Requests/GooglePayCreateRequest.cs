@@ -4,10 +4,13 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record GooglePayTokenizeRequest
+public record GooglePayCreateRequest
 {
-    [JsonPropertyName("google_payment_method_token")]
-    public GooglePayMethodToken? GooglePaymentMethodToken { get; set; }
+    [JsonPropertyName("expires_at")]
+    public string? ExpiresAt { get; set; }
+
+    [JsonPropertyName("google_payment_data")]
+    public GooglePayMethodToken? GooglePaymentData { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

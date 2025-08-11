@@ -5,25 +5,22 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ProxyTransform
+public record CardDetailsResponse
 {
-    [JsonPropertyName("type")]
-    public string? Type { get; set; }
+    [JsonPropertyName("brand")]
+    public string? Brand { get; set; }
 
-    [JsonPropertyName("code")]
-    public string? Code { get; set; }
+    [JsonPropertyName("funding")]
+    public string? Funding { get; set; }
 
-    [JsonPropertyName("matcher")]
-    public string? Matcher { get; set; }
+    [JsonPropertyName("segment")]
+    public string? Segment { get; set; }
 
-    [JsonPropertyName("expression")]
-    public string? Expression { get; set; }
+    [JsonPropertyName("issuer")]
+    public CardIssuerDetails? Issuer { get; set; }
 
-    [JsonPropertyName("replacement")]
-    public string? Replacement { get; set; }
-
-    [JsonPropertyName("options")]
-    public TokenizeTransformOptions? Options { get; set; }
+    [JsonPropertyName("additional")]
+    public IEnumerable<AdditionalCardDetail>? Additional { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

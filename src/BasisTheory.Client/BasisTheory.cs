@@ -44,6 +44,7 @@ public partial class BasisTheory
         ApplicationKeys = new ApplicationKeysClient(_client);
         ApplicationTemplates = new ApplicationTemplatesClient(_client);
         ApplePay = new ApplePayClient(_client);
+        GooglePay = new GooglePayClient(_client);
         Documents = new DocumentsClient(_client);
         Tokens = new TokensClient(_client);
         Enrichments = new EnrichmentsClient(_client);
@@ -71,6 +72,8 @@ public partial class BasisTheory
     public ApplicationTemplatesClient ApplicationTemplates { get; }
 
     public ApplePayClient ApplePay { get; }
+
+    public GooglePayClient GooglePay { get; }
 
     public DocumentsClient Documents { get; }
 

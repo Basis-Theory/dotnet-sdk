@@ -5,7 +5,7 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record GooglePaymentMethodToken
+public record GooglePayMethodToken
 {
     [JsonPropertyName("protocolVersion")]
     public string? ProtocolVersion { get; set; }

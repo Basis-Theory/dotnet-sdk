@@ -18,6 +18,9 @@ public record PatchProxyRequest
     [JsonPropertyName("response_transform")]
     public ProxyTransform? ResponseTransform { get; set; }
 
+    [JsonPropertyName("request_transforms")]
+    public object? RequestTransforms { get; set; }
+
     [JsonPropertyName("application")]
     public Application? Application { get; set; }
 
