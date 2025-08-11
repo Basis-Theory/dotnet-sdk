@@ -634,12 +634,9 @@ public class TestClient
         Assert.That(retrieved.Metadata, Is.EqualTo(originalMetadata));
 
         // GET data
-        var httpClient = new HttpClient();
-        httpClient.DefaultRequestHeaders.Add("BT-API-KEY", Environment.GetEnvironmentVariable("BT_PVT_API_KEY"));
-        var response = await httpClient.GetAsync($"{Environment.GetEnvironmentVariable("BT_API_URL")!}/documents/{uploaded.Id}/data");
-        var downloadedContent = await response.Content.ReadAsStringAsync();
-        Assert.That(downloadedContent, Is.EqualTo(originalContent));
-
+        var data = await client.Documents.Data.GetAsync(uploaded.Id);
+        var content = await new StreamReader(data).ReadToEndAsync();
+        Assert.That(content, Is.EqualTo(originalContent));
 
         // DELETE
         await client.Documents.DeleteAsync(uploaded.Id!);
