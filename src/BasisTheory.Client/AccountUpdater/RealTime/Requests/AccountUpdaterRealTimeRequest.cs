@@ -3,6 +3,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.AccountUpdater;
 
+[Serializable]
 public record AccountUpdaterRealTimeRequest
 {
     /// <summary>

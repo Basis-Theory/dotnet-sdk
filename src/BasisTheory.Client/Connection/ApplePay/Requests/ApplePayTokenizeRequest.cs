@@ -4,6 +4,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.Connection;
 
+[Serializable]
 public record ApplePayTokenizeRequest
 {
     [JsonPropertyName("apple_payment_method_token")]
