@@ -1,9 +1,9 @@
+using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using BasisTheory.Client;
 using BasisTheory.Client.Core;
-using global::System.Threading.Tasks;
 
 namespace BasisTheory.Client.Documents;
 
@@ -16,7 +16,7 @@ public partial class DataClient
         _client = client;
     }
 
-    public async global::System.Threading.Tasks.Task GetAsync(
+    public async Task<System.IO.Stream> GetAsync(
         string documentId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -24,7 +24,7 @@ public partial class DataClient
     {
         var response = await _client
             .SendRequestAsync(
-                new RawClient.JsonApiRequest
+                new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
@@ -37,6 +37,10 @@ public partial class DataClient
                 cancellationToken
             )
             .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return await response.Raw.Content.ReadAsStreamAsync();
+        }
         {
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try

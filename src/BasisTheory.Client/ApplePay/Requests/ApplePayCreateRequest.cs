@@ -3,6 +3,7 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
+[Serializable]
 public record ApplePayCreateRequest
 {
     [JsonPropertyName("expires_at")]
