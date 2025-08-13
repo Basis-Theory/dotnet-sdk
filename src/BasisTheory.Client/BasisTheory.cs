@@ -1,5 +1,4 @@
 using BasisTheory.Client.AccountUpdater;
-using BasisTheory.Client.Connection;
 using BasisTheory.Client.Core;
 using BasisTheory.Client.Tenants;
 using BasisTheory.Client.Threeds;
@@ -44,10 +43,10 @@ public partial class BasisTheory
         ApplicationKeys = new ApplicationKeysClient(_client);
         ApplicationTemplates = new ApplicationTemplatesClient(_client);
         ApplePay = new ApplePayClient(_client);
+        GooglePay = new GooglePayClient(_client);
         Documents = new DocumentsClient(_client);
         Tokens = new TokensClient(_client);
         Enrichments = new EnrichmentsClient(_client);
-        Googlepay = new GooglepayClient(_client);
         Keys = new KeysClient(_client);
         Logs = new LogsClient(_client);
         NetworkTokens = new NetworkTokensClient(_client);
@@ -59,7 +58,6 @@ public partial class BasisTheory
         TokenIntents = new TokenIntentsClient(_client);
         Webhooks = new WebhooksClient(_client);
         AccountUpdater = new AccountUpdaterClient(_client);
-        Connection = new ConnectionClient(_client);
         Tenants = new TenantsClient(_client);
         Threeds = new ThreedsClient(_client);
     }
@@ -72,13 +70,13 @@ public partial class BasisTheory
 
     public ApplePayClient ApplePay { get; }
 
+    public GooglePayClient GooglePay { get; }
+
     public DocumentsClient Documents { get; }
 
     public TokensClient Tokens { get; }
 
     public EnrichmentsClient Enrichments { get; }
-
-    public GooglepayClient Googlepay { get; }
 
     public KeysClient Keys { get; }
 
@@ -101,8 +99,6 @@ public partial class BasisTheory
     public WebhooksClient Webhooks { get; }
 
     public AccountUpdaterClient AccountUpdater { get; }
-
-    public ConnectionClient Connection { get; }
 
     public TenantsClient Tenants { get; }
 

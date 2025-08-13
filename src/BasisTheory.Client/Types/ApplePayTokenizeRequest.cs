@@ -5,16 +5,10 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ApplePaySessionRequest
+public record ApplePayTokenizeRequest
 {
-    [JsonPropertyName("validation_url")]
-    public string? ValidationUrl { get; set; }
-
-    [JsonPropertyName("display_name")]
-    public string? DisplayName { get; set; }
-
-    [JsonPropertyName("domain")]
-    public string? Domain { get; set; }
+    [JsonPropertyName("apple_payment_method_token")]
+    public ApplePayMethodToken? ApplePaymentMethodToken { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

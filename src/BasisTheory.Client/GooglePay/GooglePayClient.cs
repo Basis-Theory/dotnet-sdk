@@ -1,28 +1,24 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
-using BasisTheory.Client;
 using BasisTheory.Client.Core;
-using global::System.Threading.Tasks;
 
-namespace BasisTheory.Client.Connection.ApplePay;
+namespace BasisTheory.Client;
 
-public partial class DomainClient
+public partial class GooglePayClient
 {
     private RawClient _client;
 
-    internal DomainClient(RawClient client)
+    internal GooglePayClient(RawClient client)
     {
         _client = client;
     }
 
     /// <example><code>
-    /// await client.Connection.ApplePay.Domain.DeregisterAsync(
-    ///     new ApplePayDomainDeregistrationRequest { Domain = "domain" }
-    /// );
+    /// await client.GooglePay.CreateAsync(new GooglePayCreateRequest());
     /// </code></example>
-    public async global::System.Threading.Tasks.Task DeregisterAsync(
-        ApplePayDomainDeregistrationRequest request,
+    public async Task<GooglePayCreateResponse> CreateAsync(
+        GooglePayCreateRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -33,7 +29,7 @@ public partial class DomainClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
-                    Path = "connections/apple-pay/domain-deregistration",
+                    Path = "google-pay",
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -43,20 +39,41 @@ public partial class DomainClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            return;
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                return JsonUtils.Deserialize<GooglePayCreateResponse>(responseBody)!;
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryException("Failed to deserialize response", e);
+            }
         }
+
         {
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
                 switch (response.StatusCode)
                 {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                        );
                     case 401:
                         throw new UnauthorizedError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
                         );
                     case 403:
                         throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 409:
+                        throw new ConflictError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 422:
+                        throw new UnprocessableEntityError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
                         );
                 }
@@ -74,9 +91,10 @@ public partial class DomainClient
     }
 
     /// <example><code>
-    /// await client.Connection.ApplePay.Domain.GetAsync();
+    /// await client.GooglePay.GetAsync("id");
     /// </code></example>
-    public async Task<ApplePayDomainRegistrationResponse> GetAsync(
+    public async Task<GooglePayToken> GetAsync(
+        string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -87,7 +105,7 @@ public partial class DomainClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
-                    Path = "connections/apple-pay/domain-registration",
+                    Path = string.Format("google-pay/{0}", ValueConvert.ToPathParameterString(id)),
                     Options = options,
                 },
                 cancellationToken
@@ -98,7 +116,7 @@ public partial class DomainClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<ApplePayDomainRegistrationResponse>(responseBody)!;
+                return JsonUtils.Deserialize<GooglePayToken>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -116,6 +134,12 @@ public partial class DomainClient
                         throw new UnauthorizedError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
                         );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
                 }
             }
             catch (JsonException)
@@ -131,12 +155,10 @@ public partial class DomainClient
     }
 
     /// <example><code>
-    /// await client.Connection.ApplePay.Domain.RegisterAsync(
-    ///     new ApplePayDomainRegistrationRequest { Domain = "domain" }
-    /// );
+    /// await client.GooglePay.DeleteAsync("id");
     /// </code></example>
-    public async Task<ApplePayDomainRegistrationResponse> RegisterAsync(
-        ApplePayDomainRegistrationRequest request,
+    public async Task<string> DeleteAsync(
+        string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -146,10 +168,8 @@ public partial class DomainClient
                 new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "connections/apple-pay/domain-registration",
-                    Body = request,
-                    ContentType = "application/json",
+                    Method = HttpMethod.Delete,
+                    Path = string.Format("google-pay/{0}", ValueConvert.ToPathParameterString(id)),
                     Options = options,
                 },
                 cancellationToken
@@ -160,7 +180,7 @@ public partial class DomainClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<ApplePayDomainRegistrationResponse>(responseBody)!;
+                return JsonUtils.Deserialize<string>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -174,10 +194,6 @@ public partial class DomainClient
             {
                 switch (response.StatusCode)
                 {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
                     case 401:
                         throw new UnauthorizedError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
@@ -186,92 +202,8 @@ public partial class DomainClient
                         throw new ForbiddenError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
                         );
-                    case 422:
-                        throw new UnprocessableEntityError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 503:
-                        throw new ServiceUnavailableError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
-    }
-
-    /// <example><code>
-    /// await client.Connection.ApplePay.Domain.RegisterAllAsync(
-    ///     new ApplePayDomainRegistrationListRequest()
-    /// );
-    /// </code></example>
-    public async Task<ApplePayDomainRegistrationResponse> RegisterAllAsync(
-        ApplePayDomainRegistrationListRequest request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Put,
-                    Path = "connections/apple-pay/domain-registration",
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<ApplePayDomainRegistrationResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 422:
-                        throw new UnprocessableEntityError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 503:
-                        throw new ServiceUnavailableError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
                 }
             }
             catch (JsonException)
