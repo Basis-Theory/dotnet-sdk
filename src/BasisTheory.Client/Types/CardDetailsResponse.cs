@@ -5,10 +5,22 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ApplePayDomainRegistrationListRequest
+public record CardDetailsResponse
 {
-    [JsonPropertyName("domains")]
-    public IEnumerable<string>? Domains { get; set; }
+    [JsonPropertyName("brand")]
+    public string? Brand { get; set; }
+
+    [JsonPropertyName("funding")]
+    public string? Funding { get; set; }
+
+    [JsonPropertyName("segment")]
+    public string? Segment { get; set; }
+
+    [JsonPropertyName("issuer")]
+    public CardIssuerDetails? Issuer { get; set; }
+
+    [JsonPropertyName("additional")]
+    public IEnumerable<AdditionalCardDetail>? Additional { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
