@@ -18,6 +18,12 @@ public record PatchProxyRequest
     [JsonPropertyName("response_transform")]
     public ProxyTransform? ResponseTransform { get; set; }
 
+    [JsonPropertyName("request_transforms")]
+    public IEnumerable<ProxyTransform>? RequestTransforms { get; set; }
+
+    [JsonPropertyName("response_transforms")]
+    public IEnumerable<ProxyTransform>? ResponseTransforms { get; set; }
+
     [JsonPropertyName("application")]
     public Application? Application { get; set; }
 
