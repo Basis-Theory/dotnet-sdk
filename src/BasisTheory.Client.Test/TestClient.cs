@@ -121,6 +121,7 @@ public class TestClient
         );
 
         await client.Proxies.DeleteAsync(proxyId);
+        await client.Applications.DeleteAsync(applicationId);
     }
 
     [Test]
@@ -217,6 +218,7 @@ public class TestClient
         AssertIsGuid(asyncReactResponse.AsyncReactorRequestId);
 
         await managementClient.Reactors.DeleteAsync(reactorId);
+        await managementClient.Applications.DeleteAsync(applicationId);
     }
 
     [Test]
