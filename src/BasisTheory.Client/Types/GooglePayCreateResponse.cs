@@ -5,10 +5,13 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ApplePayDomainRegistrationRequest
+public record GooglePayCreateResponse
 {
-    [JsonPropertyName("domain")]
-    public required string Domain { get; set; }
+    [JsonPropertyName("google_pay")]
+    public GooglePayCreateTokenResponse? GooglePay { get; set; }
+
+    [JsonPropertyName("token_intent")]
+    public CreateTokenIntentResponse? TokenIntent { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

@@ -5,10 +5,19 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ApplePayDomainDeregistrationRequest
+public record ProxyTransformOptions
 {
-    [JsonPropertyName("domain")]
-    public required string Domain { get; set; }
+    [JsonPropertyName("token")]
+    public CreateTokenRequest? Token { get; set; }
+
+    [JsonPropertyName("identifier")]
+    public string? Identifier { get; set; }
+
+    [JsonPropertyName("value")]
+    public string? Value { get; set; }
+
+    [JsonPropertyName("location")]
+    public string? Location { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
