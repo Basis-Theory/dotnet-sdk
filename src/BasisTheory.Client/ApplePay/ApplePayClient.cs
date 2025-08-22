@@ -158,9 +158,9 @@ public partial class ApplePayClient
     }
 
     /// <example><code>
-    /// await client.ApplePay.UnlinkAsync("id");
+    /// await client.ApplePay.DeleteAsync("id");
     /// </code></example>
-    public async Task<string> UnlinkAsync(
+    public async Task<string> DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -171,11 +171,8 @@ public partial class ApplePayClient
                 new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = string.Format(
-                        "apple-pay/{0}/unlink",
-                        ValueConvert.ToPathParameterString(id)
-                    ),
+                    Method = HttpMethod.Delete,
+                    Path = string.Format("apple-pay/{0}", ValueConvert.ToPathParameterString(id)),
                     Options = options,
                 },
                 cancellationToken
@@ -208,10 +205,8 @@ public partial class ApplePayClient
                         throw new ForbiddenError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
                         );
-                    case 422:
-                        throw new UnprocessableEntityError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
                 }
             }
             catch (JsonException)

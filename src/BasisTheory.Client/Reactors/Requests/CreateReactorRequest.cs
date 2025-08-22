@@ -18,6 +18,12 @@ public record CreateReactorRequest
     [JsonPropertyName("configuration")]
     public Dictionary<string, string?>? Configuration { get; set; }
 
+    [JsonPropertyName("dependencies")]
+    public Dictionary<string, string?>? Dependencies { get; set; }
+
+    [JsonPropertyName("runtime")]
+    public string? Runtime { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

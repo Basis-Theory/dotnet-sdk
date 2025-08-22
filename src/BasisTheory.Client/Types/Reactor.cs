@@ -40,6 +40,12 @@ public record Reactor
     [JsonPropertyName("configuration")]
     public Dictionary<string, string?>? Configuration { get; set; }
 
+    [JsonPropertyName("dependencies")]
+    public Dictionary<string, string?>? Dependencies { get; set; }
+
+    [JsonPropertyName("runtime")]
+    public string? Runtime { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>
