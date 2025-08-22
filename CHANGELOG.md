@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v4.0.0...v4.1.0) (2025-08-22)
+
+
+### Features
+
+* Add DELETE endpoint for ApplePay ([303c605](https://github.com/Basis-Theory/dotnet-sdk/commit/303c6052d46ae4d66d3fd780548c4b9c9b947c66))
+
 # [4.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v3.3.0...v4.0.0) (2025-08-14)
 
 
