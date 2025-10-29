@@ -50,6 +50,18 @@ public record AccountUpdaterJob
     public IEnumerable<string>? Errors { get; set; }
 
     /// <summary>
+    /// Total number of requests processed
+    /// </summary>
+    [JsonPropertyName("requests")]
+    public int? Requests { get; set; }
+
+    /// <summary>
+    /// Summary count breakdown by result code for all processed rows
+    /// </summary>
+    [JsonPropertyName("results")]
+    public Dictionary<string, int>? Results { get; set; }
+
+    /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>
     /// <remarks>

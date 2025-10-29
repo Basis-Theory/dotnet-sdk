@@ -43,6 +43,9 @@ public record GooglePayToken
     [JsonPropertyName("details")]
     public TokenServiceProviderDetails? Details { get; set; }
 
+    [JsonPropertyName("fingerprint")]
+    public string? Fingerprint { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

@@ -7,10 +7,10 @@ namespace BasisTheory.Client;
 [Serializable]
 public record ClientEncryptionKeyMetadataResponse
 {
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    [JsonPropertyName("key_id")]
+    public string? KeyId { get; set; }
 
-    [JsonPropertyName("expiresAt")]
+    [JsonPropertyName("expires_at")]
     public DateTime? ExpiresAt { get; set; }
 
     /// <summary>

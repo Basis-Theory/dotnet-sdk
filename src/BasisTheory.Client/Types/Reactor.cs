@@ -19,6 +19,9 @@ public record Reactor
     [JsonPropertyName("formula")]
     public ReactorFormula? Formula { get; set; }
 
+    [JsonPropertyName("state")]
+    public string? State { get; set; }
+
     [JsonPropertyName("code")]
     public string? Code { get; set; }
 
@@ -40,11 +43,11 @@ public record Reactor
     [JsonPropertyName("configuration")]
     public Dictionary<string, string?>? Configuration { get; set; }
 
-    [JsonPropertyName("dependencies")]
-    public Dictionary<string, string?>? Dependencies { get; set; }
-
     [JsonPropertyName("runtime")]
     public string? Runtime { get; set; }
+
+    [JsonPropertyName("options")]
+    public RuntimeOptions? Options { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

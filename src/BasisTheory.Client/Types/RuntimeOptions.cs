@@ -5,13 +5,10 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record TokenPaginatedList
+public record RuntimeOptions
 {
-    [JsonPropertyName("pagination")]
-    public Pagination? Pagination { get; set; }
-
-    [JsonPropertyName("data")]
-    public IEnumerable<Token>? Data { get; set; }
+    [JsonPropertyName("dependencies")]
+    public Dictionary<string, string?>? Dependencies { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

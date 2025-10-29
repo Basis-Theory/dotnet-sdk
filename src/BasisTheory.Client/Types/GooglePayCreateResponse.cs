@@ -8,7 +8,7 @@ namespace BasisTheory.Client;
 public record GooglePayCreateResponse
 {
     [JsonPropertyName("google_pay")]
-    public GooglePayCreateTokenResponse? GooglePay { get; set; }
+    public GooglePayToken? GooglePay { get; set; }
 
     [JsonPropertyName("token_intent")]
     public CreateTokenIntentResponse? TokenIntent { get; set; }

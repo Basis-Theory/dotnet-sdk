@@ -43,6 +43,9 @@ public record ApplePayToken
     [JsonPropertyName("authentication")]
     public Authentication? Authentication { get; set; }
 
+    [JsonPropertyName("fingerprint")]
+    public string? Fingerprint { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

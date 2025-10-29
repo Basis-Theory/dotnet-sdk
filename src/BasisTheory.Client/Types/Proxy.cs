@@ -22,6 +22,9 @@ public record Proxy
     [JsonPropertyName("destination_url")]
     public string? DestinationUrl { get; set; }
 
+    [JsonPropertyName("state")]
+    public string? State { get; set; }
+
     [JsonPropertyName("request_reactor_id")]
     public string? RequestReactorId { get; set; }
 

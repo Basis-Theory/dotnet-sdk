@@ -1,103 +1,23 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
-using BasisTheory.Client.ApplePay;
+using BasisTheory.Client;
 using BasisTheory.Client.Core;
+using global::System.Threading.Tasks;
 
-namespace BasisTheory.Client;
+namespace BasisTheory.Client.ApplePay;
 
-public partial class ApplePayClient
+public partial class MerchantClient
 {
     private RawClient _client;
 
-    internal ApplePayClient(RawClient client)
+    internal MerchantClient(RawClient client)
     {
         _client = client;
-        Merchant = new MerchantClient(_client);
-        Domain = new DomainClient(_client);
-        Session = new SessionClient(_client);
-    }
-
-    public MerchantClient Merchant { get; }
-
-    public DomainClient Domain { get; }
-
-    public SessionClient Session { get; }
-
-    /// <example><code>
-    /// await client.ApplePay.CreateAsync(new ApplePayCreateRequest());
-    /// </code></example>
-    public async Task<ApplePayCreateResponse> CreateAsync(
-        ApplePayCreateRequest request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "apple-pay",
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<ApplePayCreateResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 422:
-                        throw new UnprocessableEntityError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
     }
 
     /// <example><code>
-    /// await client.ApplePay.GetAsync("id");
+    /// await client.ApplePay.Merchant.GetAsync("id");
     /// </code></example>
     public async Task<ApplePayToken> GetAsync(
         string id,
@@ -111,7 +31,10 @@ public partial class ApplePayClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
-                    Path = string.Format("apple-pay/{0}", ValueConvert.ToPathParameterString(id)),
+                    Path = string.Format(
+                        "apple-pay/merchant-registration/{0}",
+                        ValueConvert.ToPathParameterString(id)
+                    ),
                     Options = options,
                 },
                 cancellationToken
@@ -161,9 +84,9 @@ public partial class ApplePayClient
     }
 
     /// <example><code>
-    /// await client.ApplePay.DeleteAsync("id");
+    /// await client.ApplePay.Merchant.DeleteAsync("id");
     /// </code></example>
-    public async Task<string> DeleteAsync(
+    public async global::System.Threading.Tasks.Task DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -175,7 +98,67 @@ public partial class ApplePayClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
-                    Path = string.Format("apple-pay/{0}", ValueConvert.ToPathParameterString(id)),
+                    Path = string.Format(
+                        "apple-pay/merchant-registration/{0}",
+                        ValueConvert.ToPathParameterString(id)
+                    ),
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return;
+        }
+        {
+            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <example><code>
+    /// await client.ApplePay.Merchant.CreateAsync(new ApplePayMerchantRegisterRequest());
+    /// </code></example>
+    public async Task<ApplePayMerchant> CreateAsync(
+        ApplePayMerchantRegisterRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    BaseUrl = _client.Options.BaseUrl,
+                    Method = HttpMethod.Post,
+                    Path = "apple-pay/merchant-registration",
+                    Body = request,
+                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken
@@ -186,7 +169,7 @@ public partial class ApplePayClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<string>(responseBody)!;
+                return JsonUtils.Deserialize<ApplePayMerchant>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -208,8 +191,6 @@ public partial class ApplePayClient
                         throw new ForbiddenError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
                         );
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
                 }
             }
             catch (JsonException)
