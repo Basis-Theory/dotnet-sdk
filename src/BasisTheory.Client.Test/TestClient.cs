@@ -585,18 +585,18 @@ public class TestClient
         var client = GetManagementClient();
 
         var key = await client.Keys.CreateAsync(new ClientEncryptionKeyRequest());
-        AssertIsGuid(key.Id);
+        AssertIsGuid(key.KeyId);
         Assert.That(key.PublicKeyPem, Is.Not.Null);
 
-        var retrievedKey = await client.Keys.GetAsync(key.Id!);
-        Assert.That(retrievedKey.Id, Is.EqualTo(key.Id));
+        var retrievedKey = await client.Keys.GetAsync(key.KeyId!);
+        Assert.That(retrievedKey.KeyId, Is.EqualTo(key.KeyId));
         Assert.That(retrievedKey.ExpiresAt, Is.Not.Null);
 
-        await client.Keys.DeleteAsync(key.Id!);
+        await client.Keys.DeleteAsync(key.KeyId!);
 
         try
         {
-            await client.Keys.GetAsync(key.Id!);
+            await client.Keys.GetAsync(key.KeyId!);
             Assert.Fail("Should have raised a 404 for key not found");
         }
         catch (Exception e)
