@@ -25,6 +25,9 @@ public record ThreeDsAuthentication
     [JsonPropertyName("acs_transaction_id")]
     public string? AcsTransactionId { get; set; }
 
+    [JsonPropertyName("acs_operator_id")]
+    public string? AcsOperatorId { get; set; }
+
     [JsonPropertyName("ds_transaction_id")]
     public string? DsTransactionId { get; set; }
 

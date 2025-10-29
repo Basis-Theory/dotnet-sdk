@@ -8,7 +8,7 @@ namespace BasisTheory.Client;
 public record ApplePayCreateResponse
 {
     [JsonPropertyName("apple_pay")]
-    public ApplePayCreateTokenResponse? ApplePay { get; set; }
+    public ApplePayToken? ApplePay { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

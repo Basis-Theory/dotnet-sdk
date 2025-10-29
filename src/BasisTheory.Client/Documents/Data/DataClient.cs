@@ -16,6 +16,9 @@ public partial class DataClient
         _client = client;
     }
 
+    /// <example><code>
+    /// await client.Documents.Data.GetAsync("documentId");
+    /// </code></example>
     public async Task<System.IO.Stream> GetAsync(
         string documentId,
         RequestOptions? options = null,
