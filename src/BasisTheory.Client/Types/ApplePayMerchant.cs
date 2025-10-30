@@ -5,31 +5,22 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ApplePayCreateTokenResponse
+public record ApplePayMerchant
 {
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
-    [JsonPropertyName("type")]
-    public string? Type { get; set; }
-
     [JsonPropertyName("tenant_id")]
     public string? TenantId { get; set; }
 
-    [JsonPropertyName("status")]
-    public string? Status { get; set; }
-
-    [JsonPropertyName("expires_at")]
-    public DateTime? ExpiresAt { get; set; }
+    [JsonPropertyName("merchant_identifier")]
+    public string? MerchantIdentifier { get; set; }
 
     [JsonPropertyName("created_by")]
     public string? CreatedBy { get; set; }
 
     [JsonPropertyName("created_at")]
     public DateTime? CreatedAt { get; set; }
-
-    [JsonPropertyName("card")]
-    public CardDetails? Card { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

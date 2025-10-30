@@ -7,13 +7,13 @@ namespace BasisTheory.Client;
 [Serializable]
 public record ClientEncryptionKeyResponse
 {
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    [JsonPropertyName("key_id")]
+    public string? KeyId { get; set; }
 
-    [JsonPropertyName("publicKeyPEM")]
+    [JsonPropertyName("public_key_pem")]
     public string? PublicKeyPem { get; set; }
 
-    [JsonPropertyName("expiresAt")]
+    [JsonPropertyName("expires_at")]
     public DateTime? ExpiresAt { get; set; }
 
     /// <summary>

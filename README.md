@@ -3,7 +3,7 @@
 [![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2FBasis-Theory%2Fdotnet-sdk)
 [![nuget shield](https://img.shields.io/nuget/v/BasisTheory.Client)](https://nuget.org/packages/BasisTheory.Client)
 
-The BasisTheory C# library provides convenient access to the BasisTheory API from C#.
+The BasisTheory C# library provides convenient access to the BasisTheory APIs from C#.
 
 ## Documentation
 
