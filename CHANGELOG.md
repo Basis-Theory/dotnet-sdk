@@ -1,3 +1,15 @@
+# [5.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v4.1.0...v5.0.0) (2025-10-30)
+
+
+### Features
+
+* renaming keys endpoint properties, and removing get tokens v1  ([#93](https://github.com/Basis-Theory/dotnet-sdk/issues/93)) ([e40bc87](https://github.com/Basis-Theory/dotnet-sdk/commit/e40bc870ec1a54d8942775512a486217fc7bcf47))
+
+
+### BREAKING CHANGES
+
+* The get tokens v1 endpoint was removed, and the properties of the keys endpoint were renamed
+
 # [4.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v4.0.0...v4.1.0) (2025-08-22)
 
 
