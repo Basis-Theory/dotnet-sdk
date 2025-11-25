@@ -2,11 +2,11 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using BasisTheory.Client;
-using BasisTheory.Client.ApplePay.Merchant;
 using BasisTheory.Client.Core;
+using BasisTheory.Client.GooglePay.Merchant;
 using global::System.Threading.Tasks;
 
-namespace BasisTheory.Client.ApplePay;
+namespace BasisTheory.Client.GooglePay;
 
 public partial class MerchantClient
 {
@@ -21,9 +21,9 @@ public partial class MerchantClient
     public CertificatesClient Certificates { get; }
 
     /// <example><code>
-    /// await client.ApplePay.Merchant.GetAsync("id");
+    /// await client.GooglePay.Merchant.GetAsync("id");
     /// </code></example>
-    public async Task<ApplePayMerchant> GetAsync(
+    public async Task<GooglePayMerchant> GetAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -36,7 +36,7 @@ public partial class MerchantClient
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format(
-                        "apple-pay/merchant-registration/{0}",
+                        "google-pay/merchant-registration/{0}",
                         ValueConvert.ToPathParameterString(id)
                     ),
                     Options = options,
@@ -49,7 +49,7 @@ public partial class MerchantClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<ApplePayMerchant>(responseBody)!;
+                return JsonUtils.Deserialize<GooglePayMerchant>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -88,7 +88,7 @@ public partial class MerchantClient
     }
 
     /// <example><code>
-    /// await client.ApplePay.Merchant.DeleteAsync("id");
+    /// await client.GooglePay.Merchant.DeleteAsync("id");
     /// </code></example>
     public async global::System.Threading.Tasks.Task DeleteAsync(
         string id,
@@ -103,7 +103,7 @@ public partial class MerchantClient
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
                     Path = string.Format(
-                        "apple-pay/merchant-registration/{0}",
+                        "google-pay/merchant-registration/{0}",
                         ValueConvert.ToPathParameterString(id)
                     ),
                     Options = options,
@@ -146,10 +146,10 @@ public partial class MerchantClient
     }
 
     /// <example><code>
-    /// await client.ApplePay.Merchant.CreateAsync(new ApplePayMerchantRegisterRequest());
+    /// await client.GooglePay.Merchant.CreateAsync(new GooglePayMerchantRegisterRequest());
     /// </code></example>
-    public async Task<ApplePayMerchant> CreateAsync(
-        ApplePayMerchantRegisterRequest request,
+    public async Task<GooglePayMerchant> CreateAsync(
+        GooglePayMerchantRegisterRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -160,7 +160,7 @@ public partial class MerchantClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
-                    Path = "apple-pay/merchant-registration",
+                    Path = "google-pay/merchant-registration",
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -173,7 +173,7 @@ public partial class MerchantClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<ApplePayMerchant>(responseBody)!;
+                return JsonUtils.Deserialize<GooglePayMerchant>(responseBody)!;
             }
             catch (JsonException e)
             {

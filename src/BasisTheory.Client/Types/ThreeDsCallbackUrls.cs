@@ -13,6 +13,9 @@ public record ThreeDsCallbackUrls
     [JsonPropertyName("failure")]
     public string? Failure { get; set; }
 
+    [JsonPropertyName("branding")]
+    public ThreeDsBrandingOptions? Branding { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

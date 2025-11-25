@@ -5,28 +5,10 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ProxyTransformOptions
+public record ThreeDsBrandingOptions
 {
-    [JsonPropertyName("token")]
-    public CreateTokenRequest? Token { get; set; }
-
-    [JsonPropertyName("identifier")]
-    public string? Identifier { get; set; }
-
-    [JsonPropertyName("value")]
-    public string? Value { get; set; }
-
-    [JsonPropertyName("location")]
-    public string? Location { get; set; }
-
-    [JsonPropertyName("runtime")]
-    public string? Runtime { get; set; }
-
-    [JsonPropertyName("dependencies")]
-    public Dictionary<string, string?>? Dependencies { get; set; }
-
-    [JsonPropertyName("warm_concurrency")]
-    public int? WarmConcurrency { get; set; }
+    [JsonPropertyName("hide_basis_theory_branding")]
+    public bool? HideBasisTheoryBranding { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

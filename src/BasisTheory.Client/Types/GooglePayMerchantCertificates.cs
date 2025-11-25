@@ -5,28 +5,25 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ProxyTransformOptions
+public record GooglePayMerchantCertificates
 {
-    [JsonPropertyName("token")]
-    public CreateTokenRequest? Token { get; set; }
+    [JsonPropertyName("id")]
+    public string? Id { get; set; }
 
-    [JsonPropertyName("identifier")]
-    public string? Identifier { get; set; }
+    [JsonPropertyName("tenant_id")]
+    public string? TenantId { get; set; }
 
-    [JsonPropertyName("value")]
-    public string? Value { get; set; }
+    [JsonPropertyName("merchant_certificate_expiration_date")]
+    public DateTime? MerchantCertificateExpirationDate { get; set; }
 
-    [JsonPropertyName("location")]
-    public string? Location { get; set; }
+    [JsonPropertyName("merchant_certificate_fingerprint")]
+    public string? MerchantCertificateFingerprint { get; set; }
 
-    [JsonPropertyName("runtime")]
-    public string? Runtime { get; set; }
+    [JsonPropertyName("created_by")]
+    public string? CreatedBy { get; set; }
 
-    [JsonPropertyName("dependencies")]
-    public Dictionary<string, string?>? Dependencies { get; set; }
-
-    [JsonPropertyName("warm_concurrency")]
-    public int? WarmConcurrency { get; set; }
+    [JsonPropertyName("created_at")]
+    public DateTime? CreatedAt { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
