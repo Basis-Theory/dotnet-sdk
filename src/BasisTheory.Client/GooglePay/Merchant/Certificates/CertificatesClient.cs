@@ -2,28 +2,25 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using BasisTheory.Client;
-using BasisTheory.Client.ApplePay.Merchant;
 using BasisTheory.Client.Core;
 using global::System.Threading.Tasks;
 
-namespace BasisTheory.Client.ApplePay;
+namespace BasisTheory.Client.GooglePay.Merchant;
 
-public partial class MerchantClient
+public partial class CertificatesClient
 {
     private RawClient _client;
 
-    internal MerchantClient(RawClient client)
+    internal CertificatesClient(RawClient client)
     {
         _client = client;
-        Certificates = new CertificatesClient(_client);
     }
 
-    public CertificatesClient Certificates { get; }
-
     /// <example><code>
-    /// await client.ApplePay.Merchant.GetAsync("id");
+    /// await client.GooglePay.Merchant.Certificates.GetAsync("merchantId", "id");
     /// </code></example>
-    public async Task<ApplePayMerchant> GetAsync(
+    public async Task<GooglePayMerchantCertificates> GetAsync(
+        string merchantId,
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -36,7 +33,8 @@ public partial class MerchantClient
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format(
-                        "apple-pay/merchant-registration/{0}",
+                        "google-pay/merchant-registration/{0}/certificates/{1}",
+                        ValueConvert.ToPathParameterString(merchantId),
                         ValueConvert.ToPathParameterString(id)
                     ),
                     Options = options,
@@ -49,7 +47,7 @@ public partial class MerchantClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<ApplePayMerchant>(responseBody)!;
+                return JsonUtils.Deserialize<GooglePayMerchantCertificates>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -88,9 +86,10 @@ public partial class MerchantClient
     }
 
     /// <example><code>
-    /// await client.ApplePay.Merchant.DeleteAsync("id");
+    /// await client.GooglePay.Merchant.Certificates.DeleteAsync("merchantId", "id");
     /// </code></example>
     public async global::System.Threading.Tasks.Task DeleteAsync(
+        string merchantId,
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -103,7 +102,8 @@ public partial class MerchantClient
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
                     Path = string.Format(
-                        "apple-pay/merchant-registration/{0}",
+                        "google-pay/merchant-registration/{0}/certificates/{1}",
+                        ValueConvert.ToPathParameterString(merchantId),
                         ValueConvert.ToPathParameterString(id)
                     ),
                     Options = options,
@@ -146,10 +146,14 @@ public partial class MerchantClient
     }
 
     /// <example><code>
-    /// await client.ApplePay.Merchant.CreateAsync(new ApplePayMerchantRegisterRequest());
+    /// await client.GooglePay.Merchant.Certificates.CreateAsync(
+    ///     "merchantId",
+    ///     new GooglePayMerchantCertificatesRegisterRequest()
+    /// );
     /// </code></example>
-    public async Task<ApplePayMerchant> CreateAsync(
-        ApplePayMerchantRegisterRequest request,
+    public async Task<GooglePayMerchantCertificates> CreateAsync(
+        string merchantId,
+        GooglePayMerchantCertificatesRegisterRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -160,7 +164,10 @@ public partial class MerchantClient
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
-                    Path = "apple-pay/merchant-registration",
+                    Path = string.Format(
+                        "google-pay/merchant-registration/{0}/certificates",
+                        ValueConvert.ToPathParameterString(merchantId)
+                    ),
                     Body = request,
                     ContentType = "application/json",
                     Options = options,
@@ -173,7 +180,7 @@ public partial class MerchantClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<ApplePayMerchant>(responseBody)!;
+                return JsonUtils.Deserialize<GooglePayMerchantCertificates>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -195,6 +202,8 @@ public partial class MerchantClient
                         throw new ForbiddenError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
                         );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
                 }
             }
             catch (JsonException)

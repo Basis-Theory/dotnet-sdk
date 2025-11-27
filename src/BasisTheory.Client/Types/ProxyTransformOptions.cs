@@ -25,6 +25,18 @@ public record ProxyTransformOptions
     [JsonPropertyName("dependencies")]
     public Dictionary<string, string?>? Dependencies { get; set; }
 
+    [JsonPropertyName("permissions")]
+    public IEnumerable<string>? Permissions { get; set; }
+
+    [JsonPropertyName("warm_concurrency")]
+    public int? WarmConcurrency { get; set; }
+
+    [JsonPropertyName("timeout")]
+    public int? Timeout { get; set; }
+
+    [JsonPropertyName("resources")]
+    public string? Resources { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

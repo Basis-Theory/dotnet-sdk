@@ -5,16 +5,22 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ThreeDsCallbackUrls
+public record GooglePayMerchant
 {
-    [JsonPropertyName("success")]
-    public string? Success { get; set; }
+    [JsonPropertyName("id")]
+    public string? Id { get; set; }
 
-    [JsonPropertyName("failure")]
-    public string? Failure { get; set; }
+    [JsonPropertyName("tenant_id")]
+    public string? TenantId { get; set; }
 
-    [JsonPropertyName("branding")]
-    public ThreeDsBrandingOptions? Branding { get; set; }
+    [JsonPropertyName("merchant_identifier")]
+    public string? MerchantIdentifier { get; set; }
+
+    [JsonPropertyName("created_by")]
+    public string? CreatedBy { get; set; }
+
+    [JsonPropertyName("created_at")]
+    public DateTime? CreatedAt { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
