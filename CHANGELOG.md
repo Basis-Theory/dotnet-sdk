@@ -1,3 +1,10 @@
+# [5.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v5.0.0...v5.1.0) (2025-12-02)
+
+
+### Features
+
+* supporting new environments ([23917f1](https://github.com/Basis-Theory/dotnet-sdk/commit/23917f15c3ae8bf4964c203428fce2a2d5847a17))
+
 # [5.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v4.1.0...v5.0.0) (2025-10-30)
 
 
