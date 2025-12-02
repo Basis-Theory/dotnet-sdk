@@ -5,16 +5,10 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ThreeDsCallbackUrls
+public record ThreeDsBrandingOptions
 {
-    [JsonPropertyName("success")]
-    public string? Success { get; set; }
-
-    [JsonPropertyName("failure")]
-    public string? Failure { get; set; }
-
-    [JsonPropertyName("branding")]
-    public ThreeDsBrandingOptions? Branding { get; set; }
+    [JsonPropertyName("hide_basis_theory_branding")]
+    public bool? HideBasisTheoryBranding { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
