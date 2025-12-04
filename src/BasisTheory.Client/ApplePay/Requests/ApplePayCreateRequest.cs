@@ -12,6 +12,9 @@ public record ApplePayCreateRequest
     [JsonPropertyName("apple_payment_data")]
     public ApplePayMethodToken? ApplePaymentData { get; set; }
 
+    [JsonPropertyName("merchant_registration_id")]
+    public string? MerchantRegistrationId { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

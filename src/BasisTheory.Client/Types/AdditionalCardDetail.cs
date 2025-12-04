@@ -19,6 +19,9 @@ public record AdditionalCardDetail
     [JsonPropertyName("issuer")]
     public CardIssuerDetails? Issuer { get; set; }
 
+    [JsonPropertyName("binRange")]
+    public IEnumerable<CardBinRange>? BinRange { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

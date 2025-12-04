@@ -5,25 +5,13 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record CardDetailsResponse
+public record CardBinRange
 {
-    [JsonPropertyName("brand")]
-    public string? Brand { get; set; }
+    [JsonPropertyName("binMin")]
+    public string? BinMin { get; set; }
 
-    [JsonPropertyName("funding")]
-    public string? Funding { get; set; }
-
-    [JsonPropertyName("segment")]
-    public string? Segment { get; set; }
-
-    [JsonPropertyName("issuer")]
-    public CardIssuerDetails? Issuer { get; set; }
-
-    [JsonPropertyName("binRange")]
-    public IEnumerable<CardBinRange>? BinRange { get; set; }
-
-    [JsonPropertyName("additional")]
-    public IEnumerable<AdditionalCardDetail>? Additional { get; set; }
+    [JsonPropertyName("binMax")]
+    public string? BinMax { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
