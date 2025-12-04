@@ -15,6 +15,9 @@ public record ApplePaySessionRequest
     [JsonPropertyName("domain")]
     public string? Domain { get; set; }
 
+    [JsonPropertyName("merchant_registration_id")]
+    public string? MerchantRegistrationId { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {
