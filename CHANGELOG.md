@@ -1,3 +1,10 @@
+# [5.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v5.1.0...v5.2.0) (2025-12-09)
+
+
+### Features
+
+* Change Reactor Runtime to object ([f8f64ef](https://github.com/Basis-Theory/dotnet-sdk/commit/f8f64efe9f2ea3ec987e9f945de1991349211a86))
+
 # [5.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v5.0.0...v5.1.0) (2025-12-02)
 
 
