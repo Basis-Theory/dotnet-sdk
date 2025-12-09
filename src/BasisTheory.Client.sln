@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasisTheory.Client", "BasisTheory.Client\BasisTheory.Client.csproj", "{C382A785-EED1-4938-B12E-80525F0E3E86}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasisTheory.Client", "BasisTheory.Client\BasisTheory.Client.csproj", "{9B76F755-44B9-44BD-86BE-6EF0ACBFD2D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasisTheory.Client.Test", "BasisTheory.Client.Test\BasisTheory.Client.Test.csproj", "{7215FD98-1B45-4951-8E44-1052CD572ED1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasisTheory.Client.Test", "BasisTheory.Client.Test\BasisTheory.Client.Test.csproj", "{9802695E-8472-4951-9208-FB9D88EAC41D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,13 +16,13 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C382A785-EED1-4938-B12E-80525F0E3E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C382A785-EED1-4938-B12E-80525F0E3E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C382A785-EED1-4938-B12E-80525F0E3E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C382A785-EED1-4938-B12E-80525F0E3E86}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7215FD98-1B45-4951-8E44-1052CD572ED1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7215FD98-1B45-4951-8E44-1052CD572ED1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7215FD98-1B45-4951-8E44-1052CD572ED1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7215FD98-1B45-4951-8E44-1052CD572ED1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B76F755-44B9-44BD-86BE-6EF0ACBFD2D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B76F755-44B9-44BD-86BE-6EF0ACBFD2D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B76F755-44B9-44BD-86BE-6EF0ACBFD2D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B76F755-44B9-44BD-86BE-6EF0ACBFD2D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9802695E-8472-4951-9208-FB9D88EAC41D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9802695E-8472-4951-9208-FB9D88EAC41D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9802695E-8472-4951-9208-FB9D88EAC41D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9802695E-8472-4951-9208-FB9D88EAC41D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
