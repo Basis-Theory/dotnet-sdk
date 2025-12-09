@@ -5,8 +5,11 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record RuntimeOptions
+public record Runtime
 {
+    [JsonPropertyName("image")]
+    public string? Image { get; set; }
+
     [JsonPropertyName("dependencies")]
     public Dictionary<string, string?>? Dependencies { get; set; }
 
