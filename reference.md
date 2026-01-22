@@ -1,6 +1,6 @@
 # Reference
 ## Applications
-<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">ListAsync</a>(ApplicationsListRequest { ... }) -> Core.Pager<Application></code></summary>
+<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">ListAsync</a>(ApplicationsListRequest { ... }) -> Core.Pager&lt;Application&gt;</code></summary>
 <dl>
 <dd>
 
@@ -236,7 +236,7 @@ await client.Applications.GetByKeyAsync();
 </details>
 
 ## ApplicationKeys
-<details><summary><code>client.ApplicationKeys.<a href="/src/BasisTheory.Client/ApplicationKeys/ApplicationKeysClient.cs">ListAsync</a>(id, ApplicationKeysListRequest { ... }) -> IEnumerable<ApplicationKey></code></summary>
+<details><summary><code>client.ApplicationKeys.<a href="/src/BasisTheory.Client/ApplicationKeys/ApplicationKeysClient.cs">ListAsync</a>(id, ApplicationKeysListRequest { ... }) -> IEnumerable&lt;ApplicationKey&gt;</code></summary>
 <dl>
 <dd>
 
@@ -421,7 +421,7 @@ await client.ApplicationKeys.DeleteAsync("id", "keyId");
 </details>
 
 ## ApplicationTemplates
-<details><summary><code>client.ApplicationTemplates.<a href="/src/BasisTheory.Client/ApplicationTemplates/ApplicationTemplatesClient.cs">ListAsync</a>() -> IEnumerable<ApplicationTemplate></code></summary>
+<details><summary><code>client.ApplicationTemplates.<a href="/src/BasisTheory.Client/ApplicationTemplates/ApplicationTemplatesClient.cs">ListAsync</a>() -> IEnumerable&lt;ApplicationTemplate&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1058,7 +1058,7 @@ await client.Tokens.CreateAsync(new CreateTokenRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">ListV2Async</a>(TokensListV2Request { ... }) -> Core.Pager<Token></code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">ListV2Async</a>(TokensListV2Request { ... }) -> Core.Pager&lt;Token&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1098,7 +1098,7 @@ await client.Tokens.ListV2Async(new TokensListV2Request());
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">SearchV2Async</a>(SearchTokensRequestV2 { ... }) -> Core.Pager<Token></code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">SearchV2Async</a>(SearchTokensRequestV2 { ... }) -> Core.Pager&lt;Token&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1222,7 +1222,7 @@ await client.Enrichments.GetcarddetailsAsync(new EnrichmentsGetCardDetailsReques
 </details>
 
 ## Keys
-<details><summary><code>client.Keys.<a href="/src/BasisTheory.Client/Keys/KeysClient.cs">ListAsync</a>() -> IEnumerable<ClientEncryptionKeyMetadataResponse></code></summary>
+<details><summary><code>client.Keys.<a href="/src/BasisTheory.Client/Keys/KeysClient.cs">ListAsync</a>() -> IEnumerable&lt;ClientEncryptionKeyMetadataResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1368,7 +1368,7 @@ await client.Keys.DeleteAsync("id");
 </details>
 
 ## Logs
-<details><summary><code>client.Logs.<a href="/src/BasisTheory.Client/Logs/LogsClient.cs">ListAsync</a>(LogsListRequest { ... }) -> Core.Pager<Log></code></summary>
+<details><summary><code>client.Logs.<a href="/src/BasisTheory.Client/Logs/LogsClient.cs">ListAsync</a>(LogsListRequest { ... }) -> Core.Pager&lt;Log&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1408,7 +1408,7 @@ await client.Logs.ListAsync(new LogsListRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Logs.<a href="/src/BasisTheory.Client/Logs/LogsClient.cs">GetEntityTypesAsync</a>() -> IEnumerable<LogEntityType></code></summary>
+<details><summary><code>client.Logs.<a href="/src/BasisTheory.Client/Logs/LogsClient.cs">GetEntityTypesAsync</a>() -> IEnumerable&lt;LogEntityType&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1675,7 +1675,7 @@ await client.NetworkTokens.ResumeAsync("id");
 </details>
 
 ## Permissions
-<details><summary><code>client.Permissions.<a href="/src/BasisTheory.Client/Permissions/PermissionsClient.cs">ListAsync</a>(PermissionsListRequest { ... }) -> IEnumerable<Permission></code></summary>
+<details><summary><code>client.Permissions.<a href="/src/BasisTheory.Client/Permissions/PermissionsClient.cs">ListAsync</a>(PermissionsListRequest { ... }) -> IEnumerable&lt;Permission&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1716,7 +1716,7 @@ await client.Permissions.ListAsync(new PermissionsListRequest());
 </details>
 
 ## Proxies
-<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">ListAsync</a>(ProxiesListRequest { ... }) -> Core.Pager<Proxy></code></summary>
+<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">ListAsync</a>(ProxiesListRequest { ... }) -> Core.Pager&lt;Proxy&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1978,7 +1978,7 @@ await client.Proxies.PatchAsync("id", new PatchProxyRequest());
 </details>
 
 ## Reactors
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ListAsync</a>(ReactorsListRequest { ... }) -> Core.Pager<Reactor></code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ListAsync</a>(ReactorsListRequest { ... }) -> Core.Pager&lt;Reactor&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2234,7 +2234,7 @@ await client.Reactors.PatchAsync("id", new PatchReactorRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsync</a>(id, ReactRequest { ... }) -> ReactResponse</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsync</a>(id, object { ... }) -> ReactResponse</code></summary>
 <dl>
 <dd>
 
@@ -2247,7 +2247,7 @@ await client.Reactors.PatchAsync("id", new PatchReactorRequest());
 <dd>
 
 ```csharp
-await client.Reactors.ReactAsync("id", new ReactRequest());
+await client.Reactors.ReactAsync("id", new Dictionary<object, object?>() { { "key", "value" } });
 ```
 </dd>
 </dl>
@@ -2270,7 +2270,7 @@ await client.Reactors.ReactAsync("id", new ReactRequest());
 <dl>
 <dd>
 
-**request:** `ReactRequest` 
+**request:** `object` 
     
 </dd>
 </dl>
@@ -2282,7 +2282,7 @@ await client.Reactors.ReactAsync("id", new ReactRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsyncAsync</a>(id, ReactRequestAsync { ... }) -> AsyncReactResponse</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsyncAsync</a>(id, object { ... }) -> AsyncReactResponse</code></summary>
 <dl>
 <dd>
 
@@ -2295,7 +2295,10 @@ await client.Reactors.ReactAsync("id", new ReactRequest());
 <dd>
 
 ```csharp
-await client.Reactors.ReactAsyncAsync("id", new ReactRequestAsync());
+await client.Reactors.ReactAsyncAsync(
+    "id",
+    new Dictionary<object, object?>() { { "key", "value" } }
+);
 ```
 </dd>
 </dl>
@@ -2318,7 +2321,7 @@ await client.Reactors.ReactAsyncAsync("id", new ReactRequestAsync());
 <dl>
 <dd>
 
-**request:** `ReactRequestAsync` 
+**request:** `object` 
     
 </dd>
 </dl>
@@ -2331,7 +2334,7 @@ await client.Reactors.ReactAsyncAsync("id", new ReactRequestAsync());
 </details>
 
 ## Roles
-<details><summary><code>client.Roles.<a href="/src/BasisTheory.Client/Roles/RolesClient.cs">ListAsync</a>() -> IEnumerable<Role></code></summary>
+<details><summary><code>client.Roles.<a href="/src/BasisTheory.Client/Roles/RolesClient.cs">ListAsync</a>() -> IEnumerable&lt;Role&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3964,7 +3967,7 @@ await client.Tenants.Connections.DeleteAsync();
 </details>
 
 ## Tenants Invitations
-<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">ListAsync</a>(Tenants.InvitationsListRequest { ... }) -> Core.Pager<TenantInvitationResponse></code></summary>
+<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">ListAsync</a>(Tenants.InvitationsListRequest { ... }) -> Core.Pager&lt;TenantInvitationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4615,7 +4618,7 @@ await client.Threeds.Sessions.GetAsync("id");
 </details>
 
 ## Webhooks Events
-<details><summary><code>client.Webhooks.Events.<a href="/src/BasisTheory.Client/Webhooks/Events/EventsClient.cs">ListAsync</a>() -> IEnumerable<string></code></summary>
+<details><summary><code>client.Webhooks.Events.<a href="/src/BasisTheory.Client/Webhooks/Events/EventsClient.cs">ListAsync</a>() -> IEnumerable&lt;string&gt;</code></summary>
 <dl>
 <dd>
 

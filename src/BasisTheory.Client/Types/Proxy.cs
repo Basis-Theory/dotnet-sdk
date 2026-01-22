@@ -61,6 +61,9 @@ public record Proxy
     [JsonPropertyName("client_certificate")]
     public string? ClientCertificate { get; set; }
 
+    [JsonPropertyName("requested")]
+    public RequestedProxy? Requested { get; set; }
+
     [JsonPropertyName("created_by")]
     public string? CreatedBy { get; set; }
 

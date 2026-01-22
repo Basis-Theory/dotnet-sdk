@@ -18,6 +18,9 @@ public record CreateNetworkTokenRequest
     [JsonPropertyName("cardholder_info")]
     public CardholderInfo? CardholderInfo { get; set; }
 
+    [JsonPropertyName("merchant_id")]
+    public string? MerchantId { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {
