@@ -1,3 +1,15 @@
+# [6.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v5.2.0...v6.0.0) (2026-01-22)
+
+
+### Features
+
+* Updating Reactor Request objects ([6d15b6c](https://github.com/Basis-Theory/dotnet-sdk/commit/6d15b6c8b8a26ce38a57d39e9e25e337ddeadc41))
+
+
+### BREAKING CHANGES
+
+* This version removes the existing Reactors Request objects for Reactors and Reactors Async, allowing the use of dynamic objects
+
 # [5.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v5.1.0...v5.2.0) (2025-12-09)
 
 
