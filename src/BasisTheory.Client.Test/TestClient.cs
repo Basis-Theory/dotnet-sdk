@@ -195,9 +195,9 @@ public class TestClient
         var client = GetPrivateClient();
         var reactResponse = await client.Reactors.ReactAsync(
             reactorId,
-            new ReactRequest
+            new
             {
-                Args = new
+                args = new
                 {
                     foo = "bar"
                 }
@@ -207,9 +207,9 @@ public class TestClient
 
         var asyncReactResponse = await client.Reactors.ReactAsyncAsync(
             reactorId,
-            new ReactRequestAsync
+            new
             {
-                Args = new
+                args = new
                 {
                     foo = "bar"
                 }
@@ -710,9 +710,9 @@ public class TestClient
             {"key2", "Key2-" + Guid.NewGuid()},
         };
         var react = await client.Reactors.ReactAsync(reactorId,
-            new ReactRequest
+            new
             {
-                Args = args
+                args
             });
         Assert.That(react.Raw.GetJsonElementValue<string>("key1"), Is.EqualTo(args["key1"]));
         Assert.That(react.Raw.GetJsonElementValue<string>("key2"), Is.EqualTo(args["key2"]));
