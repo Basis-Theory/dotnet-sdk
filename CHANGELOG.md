@@ -1,3 +1,10 @@
+# [6.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.0.0...v6.1.0) (2026-01-27)
+
+
+### Features
+
+* add disable_detokenization to proxy configuration  ([64d293b](https://github.com/Basis-Theory/dotnet-sdk/commit/64d293bc9e02b9ef7c32a7f27496c393e05eef3c))
+
 # [6.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v5.2.0...v6.0.0) (2026-01-22)
 
 
