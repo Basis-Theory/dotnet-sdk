@@ -64,6 +64,9 @@ public record ThreeDsSession
     [JsonPropertyName("authentication")]
     public ThreeDsAuthentication? Authentication { get; set; }
 
+    [JsonPropertyName("metadata")]
+    public Dictionary<string, string?>? Metadata { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

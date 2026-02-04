@@ -30,6 +30,12 @@ public record AccountUpdaterRealTimeRequest
     [JsonPropertyName("deduplicate_token")]
     public bool? DeduplicateToken { get; set; }
 
+    /// <summary>
+    /// Tenant merchant identifier
+    /// </summary>
+    [JsonPropertyName("merchant_id")]
+    public string? MerchantId { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

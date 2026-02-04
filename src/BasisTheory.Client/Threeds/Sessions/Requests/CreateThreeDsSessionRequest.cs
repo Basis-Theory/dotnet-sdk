@@ -34,6 +34,9 @@ public record CreateThreeDsSessionRequest
     [JsonPropertyName("callback_urls")]
     public ThreeDsCallbackUrls? CallbackUrls { get; set; }
 
+    [JsonPropertyName("metadata")]
+    public Dictionary<string, string?>? Metadata { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {
