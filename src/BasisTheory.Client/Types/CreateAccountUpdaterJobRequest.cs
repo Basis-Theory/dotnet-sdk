@@ -14,6 +14,12 @@ public record CreateAccountUpdaterJobRequest
     public bool? DeduplicateTokens { get; set; }
 
     /// <summary>
+    /// Tenant merchant identifier
+    /// </summary>
+    [JsonPropertyName("merchant_id")]
+    public string? MerchantId { get; set; }
+
+    /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>
     /// <remarks>
