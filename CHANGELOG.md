@@ -1,3 +1,10 @@
+# [6.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.1.0...v6.2.0) (2026-02-04)
+
+
+### Features
+
+* Adding 3DS metadata attribute + merchant id ([466ca02](https://github.com/Basis-Theory/dotnet-sdk/commit/466ca02bdf5a9c297d6887107ee5e3a87ee76f2c))
+
 # [6.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.0.0...v6.1.0) (2026-01-27)
 
 
