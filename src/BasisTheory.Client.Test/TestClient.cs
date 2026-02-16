@@ -575,7 +575,7 @@ public class TestClient
         }
         catch (UnprocessableEntityError e)
         {
-            Assert.That(e.Body.Detail.Contains("Failed to decrypt token"));
+            Assert.That(e.Body.Detail.Contains("Failed to decrypt Google payment request"));
         }
     }
 
