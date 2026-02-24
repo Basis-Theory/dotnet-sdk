@@ -1,3 +1,10 @@
+# [6.3.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.2.0...v6.3.0) (2026-02-24)
+
+
+### Features
+
+* Updating API contracts ([#112](https://github.com/Basis-Theory/dotnet-sdk/issues/112)) ([d9fb1a7](https://github.com/Basis-Theory/dotnet-sdk/commit/d9fb1a76314e2e8c5a4207ef4697b02acc814c37))
+
 # [6.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.1.0...v6.2.0) (2026-02-04)
 
 
