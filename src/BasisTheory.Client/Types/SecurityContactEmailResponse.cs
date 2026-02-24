@@ -5,28 +5,10 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record Runtime
+public record SecurityContactEmailResponse
 {
-    [JsonPropertyName("image")]
-    public string? Image { get; set; }
-
-    [JsonPropertyName("dependencies")]
-    public Dictionary<string, string?>? Dependencies { get; set; }
-
-    [JsonPropertyName("resolutions")]
-    public Dictionary<string, string?>? Resolutions { get; set; }
-
-    [JsonPropertyName("warm_concurrency")]
-    public int? WarmConcurrency { get; set; }
-
-    [JsonPropertyName("timeout")]
-    public int? Timeout { get; set; }
-
-    [JsonPropertyName("resources")]
-    public string? Resources { get; set; }
-
-    [JsonPropertyName("permissions")]
-    public IEnumerable<string>? Permissions { get; set; }
+    [JsonPropertyName("email")]
+    public string? Email { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
