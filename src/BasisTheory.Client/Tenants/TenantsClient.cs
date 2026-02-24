@@ -9,12 +9,15 @@ public partial class TenantsClient
     internal TenantsClient(RawClient client)
     {
         _client = client;
+        SecurityContact = new SecurityContactClient(_client);
         Connections = new ConnectionsClient(_client);
         Invitations = new InvitationsClient(_client);
         Members = new MembersClient(_client);
         Owner = new OwnerClient(_client);
         Self = new SelfClient(_client);
     }
+
+    public SecurityContactClient SecurityContact { get; }
 
     public ConnectionsClient Connections { get; }
 
