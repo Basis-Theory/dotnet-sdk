@@ -1,6 +1,5 @@
 using BasisTheory.Client.AccountUpdater;
 using BasisTheory.Client.Core;
-using BasisTheory.Client.Tenants;
 using BasisTheory.Client.Threeds;
 
 namespace BasisTheory.Client;
@@ -54,11 +53,11 @@ public partial class BasisTheory
         Proxies = new ProxiesClient(_client);
         Reactors = new ReactorsClient(_client);
         Roles = new RolesClient(_client);
+        Tenants = new TenantsClient(_client);
         Sessions = new SessionsClient(_client);
         TokenIntents = new TokenIntentsClient(_client);
         Webhooks = new WebhooksClient(_client);
         AccountUpdater = new AccountUpdaterClient(_client);
-        Tenants = new TenantsClient(_client);
         Threeds = new ThreedsClient(_client);
     }
 
@@ -92,6 +91,8 @@ public partial class BasisTheory
 
     public RolesClient Roles { get; }
 
+    public TenantsClient Tenants { get; }
+
     public SessionsClient Sessions { get; }
 
     public TokenIntentsClient TokenIntents { get; }
@@ -99,8 +100,6 @@ public partial class BasisTheory
     public WebhooksClient Webhooks { get; }
 
     public AccountUpdaterClient AccountUpdater { get; }
-
-    public TenantsClient Tenants { get; }
 
     public ThreedsClient Threeds { get; }
 
