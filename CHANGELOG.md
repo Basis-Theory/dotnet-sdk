@@ -1,3 +1,10 @@
+# [6.4.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.3.0...v6.4.0) (2026-03-31)
+
+
+### Features
+
+* Add metatdata to 3DS authenticate session ([2772d44](https://github.com/Basis-Theory/dotnet-sdk/commit/2772d4412bb51799ad9bb7f5d710165eb5877eb0))
+
 # [6.3.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.2.0...v6.3.0) (2026-02-24)
 
 
