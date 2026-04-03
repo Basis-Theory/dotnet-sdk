@@ -5,25 +5,22 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record CreateAccountUpdaterJobRequest
+public record MppCredentialsRequest
 {
-    /// <summary>
-    /// Whether deduplication should be enabled when creating new tokens. Uses the value of the Deduplicate Tokens setting on the tenant if not set.
-    /// </summary>
-    [JsonPropertyName("deduplicate_tokens")]
-    public bool? DeduplicateTokens { get; set; }
+    [JsonPropertyName("challenge")]
+    public required MppChallenge Challenge { get; set; }
 
     /// <summary>
-    /// Tenant merchant identifier
+    /// Mutually exclusive with card_id
     /// </summary>
-    [JsonPropertyName("merchant_id")]
-    public string? MerchantId { get; set; }
+    [JsonPropertyName("source")]
+    public MppSource? Source { get; set; }
 
     /// <summary>
-    /// Version of the result CSV format. Version '1' returns base columns. Version '1.1' adds new_fingerprint and new_brand columns.
+    /// Mutually exclusive with source
     /// </summary>
-    [JsonPropertyName("result_version")]
-    public CreateAccountUpdaterJobRequestResultVersion? ResultVersion { get; set; }
+    [JsonPropertyName("card_id")]
+    public string? CardId { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
