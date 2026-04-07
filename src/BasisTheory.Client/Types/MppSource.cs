@@ -5,25 +5,34 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record CreateAccountUpdaterJobRequest
+public record MppSource
 {
-    /// <summary>
-    /// Whether deduplication should be enabled when creating new tokens. Uses the value of the Deduplicate Tokens setting on the tenant if not set.
-    /// </summary>
-    [JsonPropertyName("deduplicate_tokens")]
-    public bool? DeduplicateTokens { get; set; }
+    [JsonPropertyName("type")]
+    public required MppSourceType Type { get; set; }
 
     /// <summary>
-    /// Tenant merchant identifier
+    /// Token ID (required for token, network_token, apple_pay, google_pay)
     /// </summary>
-    [JsonPropertyName("merchant_id")]
-    public string? MerchantId { get; set; }
+    [JsonPropertyName("id")]
+    public string? Id { get; set; }
 
     /// <summary>
-    /// Version of the result CSV format. Version '1' returns base columns. Version '1.1' adds new_fingerprint and new_brand columns.
+    /// Enrollment ID (VIC only, mutually exclusive with id)
     /// </summary>
-    [JsonPropertyName("result_version")]
-    public CreateAccountUpdaterJobRequestResultVersion? ResultVersion { get; set; }
+    [JsonPropertyName("enrollment_id")]
+    public string? EnrollmentId { get; set; }
+
+    /// <summary>
+    /// Required for VIC with token id
+    /// </summary>
+    [JsonPropertyName("consumer")]
+    public Consumer? Consumer { get; set; }
+
+    /// <summary>
+    /// Agent ID (VIC only)
+    /// </summary>
+    [JsonPropertyName("agent_id")]
+    public string? AgentId { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

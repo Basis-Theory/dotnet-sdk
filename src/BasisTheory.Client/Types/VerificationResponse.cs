@@ -5,25 +5,31 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record CreateAccountUpdaterJobRequest
+public record VerificationResponse
 {
-    /// <summary>
-    /// Whether deduplication should be enabled when creating new tokens. Uses the value of the Deduplicate Tokens setting on the tenant if not set.
-    /// </summary>
-    [JsonPropertyName("deduplicate_tokens")]
-    public bool? DeduplicateTokens { get; set; }
+    [JsonPropertyName("status")]
+    public VerificationResponseStatus? Status { get; set; }
+
+    [JsonPropertyName("methods")]
+    public IEnumerable<VerificationResponseMethodsItem>? Methods { get; set; }
 
     /// <summary>
-    /// Tenant merchant identifier
+    /// Visa passkey/FIDO context for device binding or authentication
     /// </summary>
-    [JsonPropertyName("merchant_id")]
-    public string? MerchantId { get; set; }
+    [JsonPropertyName("passkey_context")]
+    public VerificationResponsePasskeyContext? PasskeyContext { get; set; }
 
     /// <summary>
-    /// Version of the result CSV format. Version '1' returns base columns. Version '1.1' adds new_fingerprint and new_brand columns.
+    /// Card network brand (present in Mastercard responses)
     /// </summary>
-    [JsonPropertyName("result_version")]
-    public CreateAccountUpdaterJobRequestResultVersion? ResultVersion { get; set; }
+    [JsonPropertyName("brand")]
+    public VerificationResponseBrand? Brand { get; set; }
+
+    /// <summary>
+    /// Mastercard authentication context
+    /// </summary>
+    [JsonPropertyName("auth_context")]
+    public object? AuthContext { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
