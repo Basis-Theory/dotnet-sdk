@@ -1,49 +1,58 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client.Core;
-using global::System.Threading.Tasks;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client;
 
-public partial class ApplicationsClient
+public partial class ApplicationsClient : IApplicationsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal ApplicationsClient(RawClient client)
     {
         _client = client;
     }
 
-    private async Task<ApplicationPaginatedList> ListInternalAsync(
+    private WithRawResponseTask<ApplicationPaginatedList> ListInternalAsync(
         ApplicationsListRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        _query["id"] = request.Id;
-        _query["type"] = request.Type;
-        if (request.Page != null)
-        {
-            _query["page"] = request.Page.Value.ToString();
-        }
-        if (request.Start != null)
-        {
-            _query["start"] = request.Start;
-        }
-        if (request.Size != null)
-        {
-            _query["size"] = request.Size.Value.ToString();
-        }
+        return new WithRawResponseTask<ApplicationPaginatedList>(
+            ListInternalAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    private async Task<WithRawResponse<ApplicationPaginatedList>> ListInternalAsyncCore(
+        ApplicationsListRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new global::BasisTheory.Client.Core.QueryStringBuilder.Builder(
+            capacity: 5
+        )
+            .Add("id", request.Id)
+            .Add("type", request.Type)
+            .Add("page", request.Page)
+            .Add("start", request.Start)
+            .Add("size", request.Size)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = "applications",
-                    Query = _query,
+                    QueryString = _queryString,
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -51,19 +60,37 @@ public partial class ApplicationsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<ApplicationPaginatedList>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<ApplicationPaginatedList>(responseBody)!;
+                return new WithRawResponse<ApplicationPaginatedList>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -92,8 +119,369 @@ public partial class ApplicationsClient
         }
     }
 
+    private async Task<WithRawResponse<Application>> CreateAsyncCore(
+        CreateApplicationRequest request,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "applications",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<Application>(responseBody)!;
+                return new WithRawResponse<Application>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<Application>> GetAsyncCore(
+        string id,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = string.Format(
+                        "applications/{0}",
+                        ValueConvert.ToPathParameterString(id)
+                    ),
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<Application>(responseBody)!;
+                return new WithRawResponse<Application>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<Application>> UpdateAsyncCore(
+        string id,
+        UpdateApplicationRequest request,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Put,
+                    Path = string.Format(
+                        "applications/{0}",
+                        ValueConvert.ToPathParameterString(id)
+                    ),
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<Application>(responseBody)!;
+                return new WithRawResponse<Application>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<Application>> GetByKeyAsyncCore(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = "applications/key",
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<Application>(responseBody)!;
+                return new WithRawResponse<Application>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
     /// <example><code>
-    /// await client.Applications.ListAsync(new ApplicationsListRequest());
+    /// await client.Applications.ListAsync(
+    ///     new ApplicationsListRequest
+    ///     {
+    ///         Page = 1,
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<Pager<Application>> ListAsync(
         ApplicationsListRequest request,
@@ -101,29 +489,27 @@ public partial class ApplicationsClient
         CancellationToken cancellationToken = default
     )
     {
-        if (request is not null)
-        {
-            request = request with { };
-        }
+        request = request with { };
         var pager = await OffsetPager<
             ApplicationsListRequest,
             RequestOptions?,
             ApplicationPaginatedList,
-            int?,
+            int,
             object,
             Application
         >
             .CreateInstanceAsync(
                 request,
                 options,
-                ListInternalAsync,
-                request => request?.Page ?? 0,
+                async (request, options, cancellationToken) =>
+                    await ListInternalAsync(request, options, cancellationToken),
+                request => request.Page ?? 0,
                 (request, offset) =>
                 {
                     request.Page = offset;
                 },
                 null,
-                response => response?.Data?.ToList(),
+                response => response.Data?.ToList(),
                 null,
                 cancellationToken
             )
@@ -136,231 +522,69 @@ public partial class ApplicationsClient
     ///     new CreateApplicationRequest { Name = "name", Type = "type" }
     /// );
     /// </code></example>
-    public async Task<Application> CreateAsync(
+    public WithRawResponseTask<Application> CreateAsync(
         CreateApplicationRequest request,
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "applications",
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<Application>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<Application>(
+            CreateAsyncCore(request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Applications.GetAsync("id");
     /// </code></example>
-    public async Task<Application> GetAsync(
+    public WithRawResponseTask<Application> GetAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = string.Format(
-                        "applications/{0}",
-                        ValueConvert.ToPathParameterString(id)
-                    ),
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<Application>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<Application>(GetAsyncCore(id, options, cancellationToken));
     }
 
     /// <example><code>
     /// await client.Applications.UpdateAsync("id", new UpdateApplicationRequest { Name = "name" });
     /// </code></example>
-    public async Task<Application> UpdateAsync(
+    public WithRawResponseTask<Application> UpdateAsync(
         string id,
         UpdateApplicationRequest request,
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Put,
-                    Path = string.Format(
-                        "applications/{0}",
-                        ValueConvert.ToPathParameterString(id)
-                    ),
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<Application>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<Application>(
+            UpdateAsyncCore(id, request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Applications.DeleteAsync("id");
     /// </code></example>
-    public async global::System.Threading.Tasks.Task DeleteAsync(
+    public async Task DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "applications/{0}",
                         ValueConvert.ToPathParameterString(id)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -371,7 +595,9 @@ public partial class ApplicationsClient
             return;
         }
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -403,59 +629,11 @@ public partial class ApplicationsClient
     /// <example><code>
     /// await client.Applications.GetByKeyAsync();
     /// </code></example>
-    public async Task<Application> GetByKeyAsync(
+    public WithRawResponseTask<Application> GetByKeyAsync(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = "applications/key",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<Application>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<Application>(GetByKeyAsyncCore(options, cancellationToken));
     }
 }

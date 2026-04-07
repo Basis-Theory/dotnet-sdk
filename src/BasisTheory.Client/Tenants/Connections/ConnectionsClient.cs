@@ -1,43 +1,39 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client.Tenants;
 
-public partial class ConnectionsClient
+public partial class ConnectionsClient : IConnectionsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal ConnectionsClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <example><code>
-    /// await client.Tenants.Connections.CreateAsync(
-    ///     new CreateTenantConnectionRequest
-    ///     {
-    ///         Strategy = "strategy",
-    ///         Options = new TenantConnectionOptions(),
-    ///     }
-    /// );
-    /// </code></example>
-    public async Task<CreateTenantConnectionResponse> CreateAsync(
+    private async Task<WithRawResponse<CreateTenantConnectionResponse>> CreateAsyncCore(
         CreateTenantConnectionRequest request,
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = "tenants/self/connections",
                     Body = request,
+                    Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
                 },
@@ -46,19 +42,39 @@ public partial class ConnectionsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<CreateTenantConnectionResponse>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<CreateTenantConnectionResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<CreateTenantConnectionResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -89,21 +105,24 @@ public partial class ConnectionsClient
         }
     }
 
-    /// <example><code>
-    /// await client.Tenants.Connections.DeleteAsync();
-    /// </code></example>
-    public async Task<CreateTenantConnectionResponse> DeleteAsync(
+    private async Task<WithRawResponse<CreateTenantConnectionResponse>> DeleteAsyncCore(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
                     Path = "tenants/self/connections",
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -111,19 +130,39 @@ public partial class ConnectionsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<CreateTenantConnectionResponse>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<CreateTenantConnectionResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<CreateTenantConnectionResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -150,5 +189,38 @@ public partial class ConnectionsClient
                 responseBody
             );
         }
+    }
+
+    /// <example><code>
+    /// await client.Tenants.Connections.CreateAsync(
+    ///     new CreateTenantConnectionRequest
+    ///     {
+    ///         Strategy = "strategy",
+    ///         Options = new TenantConnectionOptions(),
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<CreateTenantConnectionResponse> CreateAsync(
+        CreateTenantConnectionRequest request,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<CreateTenantConnectionResponse>(
+            CreateAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Tenants.Connections.DeleteAsync();
+    /// </code></example>
+    public WithRawResponseTask<CreateTenantConnectionResponse> DeleteAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<CreateTenantConnectionResponse>(
+            DeleteAsyncCore(options, cancellationToken)
+        );
     }
 }

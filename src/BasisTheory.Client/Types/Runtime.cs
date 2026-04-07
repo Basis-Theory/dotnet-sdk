@@ -1,20 +1,24 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client;
 
 [Serializable]
-public record Runtime
+public record Runtime : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("image")]
     public string? Image { get; set; }
 
     [JsonPropertyName("dependencies")]
-    public Dictionary<string, string?>? Dependencies { get; set; }
+    public Dictionary<string, string>? Dependencies { get; set; }
 
     [JsonPropertyName("resolutions")]
-    public Dictionary<string, string?>? Resolutions { get; set; }
+    public Dictionary<string, string>? Resolutions { get; set; }
 
     [JsonPropertyName("warm_concurrency")]
     public int? WarmConcurrency { get; set; }
@@ -28,15 +32,11 @@ public record Runtime
     [JsonPropertyName("permissions")]
     public IEnumerable<string>? Permissions { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    /// <remarks>
-    /// [EXPERIMENTAL] This API is experimental and may change in future releases.
-    /// </remarks>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

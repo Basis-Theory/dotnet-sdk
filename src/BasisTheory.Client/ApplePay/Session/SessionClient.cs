@@ -1,37 +1,38 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client.ApplePay;
 
-public partial class SessionClient
+public partial class SessionClient : ISessionClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal SessionClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <example><code>
-    /// await client.ApplePay.Session.CreateAsync(new ApplePaySessionRequest());
-    /// </code></example>
-    public async Task<string> CreateAsync(
+    private async Task<WithRawResponse<string>> CreateAsyncCore(
         ApplePaySessionRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = "apple-pay/session",
                     Body = request,
+                    Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
                 },
@@ -40,19 +41,37 @@ public partial class SessionClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<string>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<string>(responseBody)!;
+                return new WithRawResponse<string>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -85,5 +104,19 @@ public partial class SessionClient
                 responseBody
             );
         }
+    }
+
+    /// <example><code>
+    /// await client.ApplePay.Session.CreateAsync(new ApplePaySessionRequest());
+    /// </code></example>
+    public WithRawResponseTask<string> CreateAsync(
+        ApplePaySessionRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<string>(
+            CreateAsyncCore(request, options, cancellationToken)
+        );
     }
 }

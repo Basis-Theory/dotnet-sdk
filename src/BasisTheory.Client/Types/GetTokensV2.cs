@@ -1,12 +1,16 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client;
 
 [Serializable]
-public record GetTokensV2
+public record GetTokensV2 : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("type")]
     public string? Type { get; set; }
 
@@ -17,7 +21,7 @@ public record GetTokensV2
     public string? Fingerprint { get; set; }
 
     [JsonPropertyName("metadata")]
-    public Dictionary<string, string?>? Metadata { get; set; }
+    public Dictionary<string, string>? Metadata { get; set; }
 
     [JsonPropertyName("start")]
     public string? Start { get; set; }
@@ -25,15 +29,11 @@ public record GetTokensV2
     [JsonPropertyName("size")]
     public int? Size { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    /// <remarks>
-    /// [EXPERIMENTAL] This API is experimental and may change in future releases.
-    /// </remarks>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

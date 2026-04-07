@@ -1,15 +1,12 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client.Core;
-using BasisTheory.Client.Documents;
-using global::System.Threading.Tasks;
+using global::BasisTheory.Client.Core;
+using global::BasisTheory.Client.Documents;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client;
 
-public partial class DocumentsClient
+public partial class DocumentsClient : IDocumentsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal DocumentsClient(RawClient client)
     {
@@ -17,19 +14,25 @@ public partial class DocumentsClient
         Data = new DataClient(_client);
     }
 
-    public DataClient Data { get; }
+    public IDataClient Data { get; }
 
-    public async Task<Document> UploadAsync(
+    private async Task<WithRawResponse<Document>> UploadAsyncCore(
         DocumentsUploadRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var multipartFormRequest_ = new MultipartFormRequest
         {
-            BaseUrl = _client.Options.BaseUrl,
             Method = HttpMethod.Post,
             Path = "documents",
+            Headers = _headers,
             Options = options,
         };
         multipartFormRequest_.AddFileParameterPart("document", request.Document);
@@ -39,19 +42,37 @@ public partial class DocumentsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<Document>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<Document>(responseBody)!;
+                return new WithRawResponse<Document>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -82,22 +103,25 @@ public partial class DocumentsClient
         }
     }
 
-    /// <example><code>
-    /// await client.Documents.GetAsync("id");
-    /// </code></example>
-    public async Task<Document> GetAsync(
+    private async Task<WithRawResponse<Document>> GetAsyncCore(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format("documents/{0}", ValueConvert.ToPathParameterString(id)),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -105,19 +129,37 @@ public partial class DocumentsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<Document>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<Document>(responseBody)!;
+                return new WithRawResponse<Document>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -147,21 +189,53 @@ public partial class DocumentsClient
     }
 
     /// <example><code>
-    /// await client.Documents.DeleteAsync("id");
+    /// await client.Documents.UploadAsync(new DocumentsUploadRequest());
     /// </code></example>
-    public async global::System.Threading.Tasks.Task DeleteAsync(
+    public WithRawResponseTask<Document> UploadAsync(
+        DocumentsUploadRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<Document>(
+            UploadAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Documents.GetAsync("id");
+    /// </code></example>
+    public WithRawResponseTask<Document> GetAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        return new WithRawResponseTask<Document>(GetAsyncCore(id, options, cancellationToken));
+    }
+
+    /// <example><code>
+    /// await client.Documents.DeleteAsync("id");
+    /// </code></example>
+    public async Task DeleteAsync(
+        string id,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
                     Path = string.Format("documents/{0}", ValueConvert.ToPathParameterString(id)),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -172,7 +246,9 @@ public partial class DocumentsClient
             return;
         }
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)

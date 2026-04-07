@@ -1,59 +1,38 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client.Core;
-using global::System.Threading.Tasks;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client;
 
-public partial class TokensClient
+public partial class TokensClient : ITokensClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal TokensClient(RawClient client)
     {
         _client = client;
     }
 
-    private async Task<TokenCursorPaginatedList> ListV2InternalAsync(
-        TokensListV2Request request,
+    private async Task<WithRawResponse<object>> DetokenizeAsyncCore(
+        object request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        if (request.Type != null)
-        {
-            _query["type"] = request.Type;
-        }
-        if (request.Container != null)
-        {
-            _query["container"] = request.Container;
-        }
-        if (request.Fingerprint != null)
-        {
-            _query["fingerprint"] = request.Fingerprint;
-        }
-        if (request.Metadata != null)
-        {
-            _query["metadata"] = JsonUtils.Serialize(request.Metadata);
-        }
-        if (request.Start != null)
-        {
-            _query["start"] = request.Start;
-        }
-        if (request.Size != null)
-        {
-            _query["size"] = request.Size.Value.ToString();
-        }
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = "v2/tokens",
-                    Query = _query,
+                    Method = HttpMethod.Post,
+                    Path = "detokenize",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken
@@ -61,19 +40,521 @@ public partial class TokensClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<TokenCursorPaginatedList>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<object>(responseBody)!;
+                return new WithRawResponse<object>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 409:
+                        throw new ConflictError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<object>> TokenizeAsyncCore(
+        object request,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "tokenize",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<object>(responseBody)!;
+                return new WithRawResponse<object>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 409:
+                        throw new ConflictError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<Token>> GetAsyncCore(
+        string id,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = string.Format("tokens/{0}", ValueConvert.ToPathParameterString(id)),
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<Token>(responseBody)!;
+                return new WithRawResponse<Token>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<Token>> UpdateAsyncCore(
+        string id,
+        UpdateTokenRequest request,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethodExtensions.Patch,
+                    Path = string.Format("tokens/{0}", ValueConvert.ToPathParameterString(id)),
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/merge-patch+json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<Token>(responseBody)!;
+                return new WithRawResponse<Token>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+                    case 409:
+                        throw new ConflictError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<Token>> CreateAsyncCore(
+        CreateTokenRequest request,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = "tokens",
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<Token>(responseBody)!;
+                return new WithRawResponse<Token>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 409:
+                        throw new ConflictError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private WithRawResponseTask<TokenCursorPaginatedList> ListV2InternalAsync(
+        TokensListV2Request request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<TokenCursorPaginatedList>(
+            ListV2InternalAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    private async Task<WithRawResponse<TokenCursorPaginatedList>> ListV2InternalAsyncCore(
+        TokensListV2Request request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new global::BasisTheory.Client.Core.QueryStringBuilder.Builder(
+            capacity: 6
+        )
+            .Add("type", request.Type)
+            .Add("container", request.Container)
+            .Add("fingerprint", request.Fingerprint)
+            .Add("metadata", request.Metadata)
+            .Add("start", request.Start)
+            .Add("size", request.Size)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Get,
+                    Path = "v2/tokens",
+                    QueryString = _queryString,
+                    Headers = _headers,
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<TokenCursorPaginatedList>(responseBody)!;
+                return new WithRawResponse<TokenCursorPaginatedList>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -100,20 +581,38 @@ public partial class TokensClient
         }
     }
 
-    private async Task<TokenCursorPaginatedList> SearchV2InternalAsync(
+    private WithRawResponseTask<TokenCursorPaginatedList> SearchV2InternalAsync(
         SearchTokensRequestV2 request,
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        return new WithRawResponseTask<TokenCursorPaginatedList>(
+            SearchV2InternalAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    private async Task<WithRawResponse<TokenCursorPaginatedList>> SearchV2InternalAsyncCore(
+        SearchTokensRequestV2 request,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = "v2/tokens/search",
                     Body = request,
+                    Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
                 },
@@ -122,19 +621,37 @@ public partial class TokensClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<TokenCursorPaginatedList>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<TokenCursorPaginatedList>(responseBody)!;
+                return new WithRawResponse<TokenCursorPaginatedList>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -168,227 +685,65 @@ public partial class TokensClient
     /// <example><code>
     /// await client.Tokens.DetokenizeAsync(new Dictionary&lt;object, object?&gt;() { { "key", "value" } });
     /// </code></example>
-    public async Task<object> DetokenizeAsync(
+    public WithRawResponseTask<object> DetokenizeAsync(
         object request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "detokenize",
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<object>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 409:
-                        throw new ConflictError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<object>(
+            DetokenizeAsyncCore(request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Tokens.TokenizeAsync(new Dictionary&lt;object, object?&gt;() { { "key", "value" } });
     /// </code></example>
-    public async Task<object> TokenizeAsync(
+    public WithRawResponseTask<object> TokenizeAsync(
         object request,
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "tokenize",
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<object>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 409:
-                        throw new ConflictError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<object>(
+            TokenizeAsyncCore(request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Tokens.GetAsync("id");
     /// </code></example>
-    public async Task<Token> GetAsync(
+    public WithRawResponseTask<Token> GetAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Get,
-                    Path = string.Format("tokens/{0}", ValueConvert.ToPathParameterString(id)),
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<Token>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<Token>(GetAsyncCore(id, options, cancellationToken));
     }
 
     /// <example><code>
     /// await client.Tokens.DeleteAsync("id");
     /// </code></example>
-    public async global::System.Threading.Tasks.Task DeleteAsync(
+    public async Task DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
                     Path = string.Format("tokens/{0}", ValueConvert.ToPathParameterString(id)),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -399,7 +754,9 @@ public partial class TokensClient
             return;
         }
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -435,152 +792,41 @@ public partial class TokensClient
     /// <example><code>
     /// await client.Tokens.UpdateAsync("id", new UpdateTokenRequest());
     /// </code></example>
-    public async Task<Token> UpdateAsync(
+    public WithRawResponseTask<Token> UpdateAsync(
         string id,
         UpdateTokenRequest request,
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethodExtensions.Patch,
-                    Path = string.Format("tokens/{0}", ValueConvert.ToPathParameterString(id)),
-                    Body = request,
-                    ContentType = "application/merge-patch+json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<Token>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-                    case 409:
-                        throw new ConflictError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<Token>(
+            UpdateAsyncCore(id, request, options, cancellationToken)
+        );
     }
 
     /// <example><code>
     /// await client.Tokens.CreateAsync(new CreateTokenRequest());
     /// </code></example>
-    public async Task<Token> CreateAsync(
+    public WithRawResponseTask<Token> CreateAsync(
         CreateTokenRequest request,
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = "tokens",
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<Token>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 409:
-                        throw new ConflictError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<Token>(CreateAsyncCore(request, options, cancellationToken));
     }
 
     /// <example><code>
-    /// await client.Tokens.ListV2Async(new TokensListV2Request());
+    /// await client.Tokens.ListV2Async(
+    ///     new TokensListV2Request
+    ///     {
+    ///         Type = "type",
+    ///         Container = "container",
+    ///         Fingerprint = "fingerprint",
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<Pager<Token>> ListV2Async(
         TokensListV2Request request,
@@ -602,13 +848,14 @@ public partial class TokensClient
             .CreateInstanceAsync(
                 request,
                 options,
-                ListV2InternalAsync,
+                async (request, options, cancellationToken) =>
+                    await ListV2InternalAsync(request, options, cancellationToken),
                 (request, cursor) =>
                 {
                     request.Start = cursor;
                 },
-                response => response?.Pagination?.Next,
-                response => response?.Data?.ToList(),
+                response => response.Pagination?.Next,
+                response => response.Data?.ToList(),
                 cancellationToken
             )
             .ConfigureAwait(false);
@@ -638,13 +885,14 @@ public partial class TokensClient
             .CreateInstanceAsync(
                 request,
                 options,
-                SearchV2InternalAsync,
+                async (request, options, cancellationToken) =>
+                    await SearchV2InternalAsync(request, options, cancellationToken),
                 (request, cursor) =>
                 {
                     request.Start = cursor;
                 },
-                response => response?.Pagination?.Next,
-                response => response?.Data?.ToList(),
+                response => response.Pagination?.Next,
+                response => response.Data?.ToList(),
                 cancellationToken
             )
             .ConfigureAwait(false);

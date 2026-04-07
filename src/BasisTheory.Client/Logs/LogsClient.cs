@@ -1,62 +1,60 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client;
 
-public partial class LogsClient
+public partial class LogsClient : ILogsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal LogsClient(RawClient client)
     {
         _client = client;
     }
 
-    private async Task<LogPaginatedList> ListInternalAsync(
+    private WithRawResponseTask<LogPaginatedList> ListInternalAsync(
         LogsListRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        if (request.EntityType != null)
-        {
-            _query["entity_type"] = request.EntityType;
-        }
-        if (request.EntityId != null)
-        {
-            _query["entity_id"] = request.EntityId;
-        }
-        if (request.StartDate != null)
-        {
-            _query["start_date"] = request.StartDate.Value.ToString(Constants.DateTimeFormat);
-        }
-        if (request.EndDate != null)
-        {
-            _query["end_date"] = request.EndDate.Value.ToString(Constants.DateTimeFormat);
-        }
-        if (request.Page != null)
-        {
-            _query["page"] = request.Page.Value.ToString();
-        }
-        if (request.Start != null)
-        {
-            _query["start"] = request.Start;
-        }
-        if (request.Size != null)
-        {
-            _query["size"] = request.Size.Value.ToString();
-        }
+        return new WithRawResponseTask<LogPaginatedList>(
+            ListInternalAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    private async Task<WithRawResponse<LogPaginatedList>> ListInternalAsyncCore(
+        LogsListRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new global::BasisTheory.Client.Core.QueryStringBuilder.Builder(
+            capacity: 7
+        )
+            .Add("entity_type", request.EntityType)
+            .Add("entity_id", request.EntityId)
+            .Add("start_date", request.StartDate)
+            .Add("end_date", request.EndDate)
+            .Add("page", request.Page)
+            .Add("start", request.Start)
+            .Add("size", request.Size)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = "logs",
-                    Query = _query,
+                    QueryString = _queryString,
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -64,19 +62,37 @@ public partial class LogsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<LogPaginatedList>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<LogPaginatedList>(responseBody)!;
+                return new WithRawResponse<LogPaginatedList>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -107,60 +123,24 @@ public partial class LogsClient
         }
     }
 
-    /// <example><code>
-    /// await client.Logs.ListAsync(new LogsListRequest());
-    /// </code></example>
-    public async Task<Pager<Log>> ListAsync(
-        LogsListRequest request,
+    private async Task<WithRawResponse<IEnumerable<LogEntityType>>> GetEntityTypesAsyncCore(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        if (request is not null)
-        {
-            request = request with { };
-        }
-        var pager = await OffsetPager<
-            LogsListRequest,
-            RequestOptions?,
-            LogPaginatedList,
-            int?,
-            object,
-            Log
-        >
-            .CreateInstanceAsync(
-                request,
-                options,
-                ListInternalAsync,
-                request => request?.Page ?? 0,
-                (request, offset) =>
-                {
-                    request.Page = offset;
-                },
-                null,
-                response => response?.Data?.ToList(),
-                null,
-                cancellationToken
-            )
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
             .ConfigureAwait(false);
-        return pager;
-    }
-
-    /// <example><code>
-    /// await client.Logs.GetEntityTypesAsync();
-    /// </code></example>
-    public async Task<IEnumerable<LogEntityType>> GetEntityTypesAsync(
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = "logs/entity-types",
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -168,19 +148,37 @@ public partial class LogsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<IEnumerable<LogEntityType>>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<IEnumerable<LogEntityType>>(responseBody)!;
+                return new WithRawResponse<IEnumerable<LogEntityType>>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -205,5 +203,66 @@ public partial class LogsClient
                 responseBody
             );
         }
+    }
+
+    /// <example><code>
+    /// await client.Logs.ListAsync(
+    ///     new LogsListRequest
+    ///     {
+    ///         EntityType = "entity_type",
+    ///         EntityId = "entity_id",
+    ///         StartDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///         EndDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///         Page = 1,
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<Pager<Log>> ListAsync(
+        LogsListRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        request = request with { };
+        var pager = await OffsetPager<
+            LogsListRequest,
+            RequestOptions?,
+            LogPaginatedList,
+            int,
+            object,
+            Log
+        >
+            .CreateInstanceAsync(
+                request,
+                options,
+                async (request, options, cancellationToken) =>
+                    await ListInternalAsync(request, options, cancellationToken),
+                request => request.Page ?? 0,
+                (request, offset) =>
+                {
+                    request.Page = offset;
+                },
+                null,
+                response => response.Data?.ToList(),
+                null,
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        return pager;
+    }
+
+    /// <example><code>
+    /// await client.Logs.GetEntityTypesAsync();
+    /// </code></example>
+    public WithRawResponseTask<IEnumerable<LogEntityType>> GetEntityTypesAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<IEnumerable<LogEntityType>>(
+            GetEntityTypesAsyncCore(options, cancellationToken)
+        );
     }
 }

@@ -1,10 +1,10 @@
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.Tenants;
 
-public partial class TenantsClient
+public partial class TenantsClient : ITenantsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal TenantsClient(RawClient client)
     {
@@ -17,15 +17,15 @@ public partial class TenantsClient
         Self = new SelfClient(_client);
     }
 
-    public SecurityContactClient SecurityContact { get; }
+    public ISecurityContactClient SecurityContact { get; }
 
-    public ConnectionsClient Connections { get; }
+    public IConnectionsClient Connections { get; }
 
-    public InvitationsClient Invitations { get; }
+    public IInvitationsClient Invitations { get; }
 
-    public MembersClient Members { get; }
+    public IMembersClient Members { get; }
 
-    public OwnerClient Owner { get; }
+    public IOwnerClient Owner { get; }
 
-    public SelfClient Self { get; }
+    public ISelfClient Self { get; }
 }

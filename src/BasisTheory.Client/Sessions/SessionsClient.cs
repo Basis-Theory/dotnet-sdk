@@ -1,35 +1,36 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client.Core;
-using global::System.Threading.Tasks;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client;
 
-public partial class SessionsClient
+public partial class SessionsClient : ISessionsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal SessionsClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <example><code>
-    /// await client.Sessions.CreateAsync();
-    /// </code></example>
-    public async Task<CreateSessionResponse> CreateAsync(
+    private async Task<WithRawResponse<CreateSessionResponse>> CreateAsyncCore(
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = "sessions",
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -37,19 +38,37 @@ public partial class SessionsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<CreateSessionResponse>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<CreateSessionResponse>(responseBody)!;
+                return new WithRawResponse<CreateSessionResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -81,22 +100,42 @@ public partial class SessionsClient
     }
 
     /// <example><code>
+    /// await client.Sessions.CreateAsync();
+    /// </code></example>
+    public WithRawResponseTask<CreateSessionResponse> CreateAsync(
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<CreateSessionResponse>(
+            CreateAsyncCore(options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
     /// await client.Sessions.AuthorizeAsync(new AuthorizeSessionRequest { Nonce = "nonce" });
     /// </code></example>
-    public async global::System.Threading.Tasks.Task AuthorizeAsync(
+    public async Task AuthorizeAsync(
         AuthorizeSessionRequest request,
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = "sessions/authorize",
                     Body = request,
+                    Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
                 },
@@ -108,7 +147,9 @@ public partial class SessionsClient
             return;
         }
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)

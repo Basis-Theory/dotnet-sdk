@@ -1,42 +1,40 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client.AccountUpdater;
 
-public partial class JobsClient
+public partial class JobsClient : IJobsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal JobsClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <summary>
-    /// Returns the account updater batch job
-    /// </summary>
-    /// <example><code>
-    /// await client.AccountUpdater.Jobs.GetAsync("id");
-    /// </code></example>
-    public async Task<AccountUpdaterJob> GetAsync(
+    private async Task<WithRawResponse<AccountUpdaterJob>> GetAsyncCore(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "account-updater/jobs/{0}",
                         ValueConvert.ToPathParameterString(id)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -44,19 +42,37 @@ public partial class JobsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<AccountUpdaterJob>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<AccountUpdaterJob>(responseBody)!;
+                return new WithRawResponse<AccountUpdaterJob>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -85,35 +101,33 @@ public partial class JobsClient
         }
     }
 
-    /// <summary>
-    /// Returns a list of account updater batch jobs
-    /// </summary>
-    /// <example><code>
-    /// await client.AccountUpdater.Jobs.ListAsync(new JobsListRequest());
-    /// </code></example>
-    public async Task<AccountUpdaterJobList> ListAsync(
+    private async Task<WithRawResponse<AccountUpdaterJobList>> ListAsyncCore(
         JobsListRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        if (request.Size != null)
-        {
-            _query["size"] = request.Size.Value.ToString();
-        }
-        if (request.Start != null)
-        {
-            _query["start"] = request.Start;
-        }
+        var _queryString = new global::BasisTheory.Client.Core.QueryStringBuilder.Builder(
+            capacity: 2
+        )
+            .Add("size", request.Size)
+            .Add("start", request.Start)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = "account-updater/jobs",
-                    Query = _query,
+                    QueryString = _queryString,
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -121,19 +135,37 @@ public partial class JobsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<AccountUpdaterJobList>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<AccountUpdaterJobList>(responseBody)!;
+                return new WithRawResponse<AccountUpdaterJobList>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -160,24 +192,24 @@ public partial class JobsClient
         }
     }
 
-    /// <summary>
-    /// Returns the created account updater batch job
-    /// </summary>
-    /// <example><code>
-    /// await client.AccountUpdater.Jobs.CreateAsync();
-    /// </code></example>
-    public async Task<AccountUpdaterJob> CreateAsync(
+    private async Task<WithRawResponse<AccountUpdaterJob>> CreateAsyncCore(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = "account-updater/jobs",
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -185,19 +217,37 @@ public partial class JobsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<AccountUpdaterJob>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<AccountUpdaterJob>(responseBody)!;
+                return new WithRawResponse<AccountUpdaterJob>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -226,5 +276,55 @@ public partial class JobsClient
                 responseBody
             );
         }
+    }
+
+    /// <summary>
+    /// Returns the account updater batch job
+    /// </summary>
+    /// <example><code>
+    /// await client.AccountUpdater.Jobs.GetAsync("id");
+    /// </code></example>
+    public WithRawResponseTask<AccountUpdaterJob> GetAsync(
+        string id,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<AccountUpdaterJob>(
+            GetAsyncCore(id, options, cancellationToken)
+        );
+    }
+
+    /// <summary>
+    /// Returns a list of account updater batch jobs
+    /// </summary>
+    /// <example><code>
+    /// await client.AccountUpdater.Jobs.ListAsync(new JobsListRequest { Size = 1, Start = "start" });
+    /// </code></example>
+    public WithRawResponseTask<AccountUpdaterJobList> ListAsync(
+        JobsListRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<AccountUpdaterJobList>(
+            ListAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    /// <summary>
+    /// Returns the created account updater batch job
+    /// </summary>
+    /// <example><code>
+    /// await client.AccountUpdater.Jobs.CreateAsync();
+    /// </code></example>
+    public WithRawResponseTask<AccountUpdaterJob> CreateAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<AccountUpdaterJob>(
+            CreateAsyncCore(options, cancellationToken)
+        );
     }
 }

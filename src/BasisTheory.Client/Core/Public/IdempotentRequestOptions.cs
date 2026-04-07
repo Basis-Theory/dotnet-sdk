@@ -1,18 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
 [Serializable]
 public partial class IdempotentRequestOptions : IIdempotentRequestOptions
 {
-    /// <summary>
-    /// The http headers sent with the request.
-    /// </summary>
-    Headers IRequestOptions.Headers { get; init; } = new();
-
     /// <summary>
     /// The Base URL for the API.
     /// </summary>
@@ -48,7 +40,7 @@ public partial class IdempotentRequestOptions : IIdempotentRequestOptions
     } = [];
 
     /// <summary>
-    /// The http client used to make requests.
+    /// The max number of retries to attempt.
     /// </summary>
     public int? MaxRetries { get;
 #if NET5_0_OR_GREATER
@@ -100,10 +92,8 @@ public partial class IdempotentRequestOptions : IIdempotentRequestOptions
 #endif
     }
 
-    Headers IIdempotentRequestOptions.GetIdempotencyHeaders()
+    Dictionary<string, string> IIdempotentRequestOptions.GetIdempotencyHeaders()
     {
-        return new Headers(
-            new Dictionary<string, string> { ["BT-IDEMPOTENCY-KEY"] = IdempotencyKey }
-        );
+        return new Dictionary<string, string>() { ["BT-IDEMPOTENCY-KEY"] = IdempotencyKey };
     }
 }

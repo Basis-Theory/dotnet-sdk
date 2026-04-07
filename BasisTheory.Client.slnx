@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/BasisTheory.Client.Test/BasisTheory.Client.Test.csproj" />
+  <Project Path="src/BasisTheory.Client/BasisTheory.Client.csproj" />
+</Solution>

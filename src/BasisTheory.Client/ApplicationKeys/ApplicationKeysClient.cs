@@ -1,44 +1,48 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client.Core;
-using global::System.Threading.Tasks;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client;
 
-public partial class ApplicationKeysClient
+public partial class ApplicationKeysClient : IApplicationKeysClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal ApplicationKeysClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <example><code>
-    /// await client.ApplicationKeys.ListAsync("id", new ApplicationKeysListRequest());
-    /// </code></example>
-    public async Task<IEnumerable<ApplicationKey>> ListAsync(
+    private async Task<WithRawResponse<IEnumerable<ApplicationKey>>> ListAsyncCore(
         string id,
         ApplicationKeysListRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        _query["id"] = request.Id;
-        _query["type"] = request.Type;
+        var _queryString = new global::BasisTheory.Client.Core.QueryStringBuilder.Builder(
+            capacity: 2
+        )
+            .Add("id", request.Id)
+            .Add("type", request.Type)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "applications/{0}/keys",
                         ValueConvert.ToPathParameterString(id)
                     ),
-                    Query = _query,
+                    QueryString = _queryString,
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -46,19 +50,39 @@ public partial class ApplicationKeysClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<IEnumerable<ApplicationKey>>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<IEnumerable<ApplicationKey>>(
+                    responseBody
+                )!;
+                return new WithRawResponse<IEnumerable<ApplicationKey>>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -87,25 +111,29 @@ public partial class ApplicationKeysClient
         }
     }
 
-    /// <example><code>
-    /// await client.ApplicationKeys.CreateAsync("id");
-    /// </code></example>
-    public async Task<ApplicationKey> CreateAsync(
+    private async Task<WithRawResponse<ApplicationKey>> CreateAsyncCore(
         string id,
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = string.Format(
                         "applications/{0}/keys",
                         ValueConvert.ToPathParameterString(id)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -113,19 +141,37 @@ public partial class ApplicationKeysClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<ApplicationKey>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<ApplicationKey>(responseBody)!;
+                return new WithRawResponse<ApplicationKey>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -156,27 +202,30 @@ public partial class ApplicationKeysClient
         }
     }
 
-    /// <example><code>
-    /// await client.ApplicationKeys.GetAsync("id", "keyId");
-    /// </code></example>
-    public async Task<ApplicationKey> GetAsync(
+    private async Task<WithRawResponse<ApplicationKey>> GetAsyncCore(
         string id,
         string keyId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "applications/{0}/keys/{1}",
                         ValueConvert.ToPathParameterString(id),
                         ValueConvert.ToPathParameterString(keyId)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -184,19 +233,37 @@ public partial class ApplicationKeysClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<ApplicationKey>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<ApplicationKey>(responseBody)!;
+                return new WithRawResponse<ApplicationKey>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -226,26 +293,76 @@ public partial class ApplicationKeysClient
     }
 
     /// <example><code>
-    /// await client.ApplicationKeys.DeleteAsync("id", "keyId");
+    /// await client.ApplicationKeys.ListAsync("id", new ApplicationKeysListRequest());
     /// </code></example>
-    public async global::System.Threading.Tasks.Task DeleteAsync(
+    public WithRawResponseTask<IEnumerable<ApplicationKey>> ListAsync(
+        string id,
+        ApplicationKeysListRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<IEnumerable<ApplicationKey>>(
+            ListAsyncCore(id, request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.ApplicationKeys.CreateAsync("id");
+    /// </code></example>
+    public WithRawResponseTask<ApplicationKey> CreateAsync(
+        string id,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<ApplicationKey>(
+            CreateAsyncCore(id, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.ApplicationKeys.GetAsync("id", "keyId");
+    /// </code></example>
+    public WithRawResponseTask<ApplicationKey> GetAsync(
         string id,
         string keyId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        return new WithRawResponseTask<ApplicationKey>(
+            GetAsyncCore(id, keyId, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.ApplicationKeys.DeleteAsync("id", "keyId");
+    /// </code></example>
+    public async Task DeleteAsync(
+        string id,
+        string keyId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "applications/{0}/keys/{1}",
                         ValueConvert.ToPathParameterString(id),
                         ValueConvert.ToPathParameterString(keyId)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -256,7 +373,9 @@ public partial class ApplicationKeysClient
             return;
         }
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)

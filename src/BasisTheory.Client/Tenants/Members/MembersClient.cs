@@ -1,52 +1,47 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client;
-using BasisTheory.Client.Core;
-using global::System.Threading.Tasks;
+using global::BasisTheory.Client;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client.Tenants;
 
-public partial class MembersClient
+public partial class MembersClient : IMembersClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal MembersClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <example><code>
-    /// await client.Tenants.Members.ListAsync(new MembersListRequest());
-    /// </code></example>
-    public async Task<TenantMemberResponsePaginatedList> ListAsync(
+    private async Task<WithRawResponse<TenantMemberResponsePaginatedList>> ListAsyncCore(
         MembersListRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        _query["user_id"] = request.UserId;
-        if (request.Page != null)
-        {
-            _query["page"] = request.Page.Value.ToString();
-        }
-        if (request.Start != null)
-        {
-            _query["start"] = request.Start;
-        }
-        if (request.Size != null)
-        {
-            _query["size"] = request.Size.Value.ToString();
-        }
+        var _queryString = new global::BasisTheory.Client.Core.QueryStringBuilder.Builder(
+            capacity: 4
+        )
+            .Add("user_id", request.UserId)
+            .Add("page", request.Page)
+            .Add("start", request.Start)
+            .Add("size", request.Size)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = "tenants/self/members",
-                    Query = _query,
+                    QueryString = _queryString,
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -54,19 +49,39 @@ public partial class MembersClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<TenantMemberResponsePaginatedList>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<TenantMemberResponsePaginatedList>(
+                    responseBody
+                )!;
+                return new WithRawResponse<TenantMemberResponsePaginatedList>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -93,30 +108,31 @@ public partial class MembersClient
         }
     }
 
-    /// <example><code>
-    /// await client.Tenants.Members.UpdateAsync(
-    ///     "memberId",
-    ///     new UpdateTenantMemberRequest { Role = "role" }
-    /// );
-    /// </code></example>
-    public async Task<TenantMemberResponse> UpdateAsync(
+    private async Task<WithRawResponse<TenantMemberResponse>> UpdateAsyncCore(
         string memberId,
         UpdateTenantMemberRequest request,
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Put,
                     Path = string.Format(
                         "tenants/self/members/{0}",
                         ValueConvert.ToPathParameterString(memberId)
                     ),
                     Body = request,
+                    Headers = _headers,
                     ContentType = "application/json-patch+json",
                     Options = options,
                 },
@@ -125,19 +141,37 @@ public partial class MembersClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<TenantMemberResponse>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<TenantMemberResponse>(responseBody)!;
+                return new WithRawResponse<TenantMemberResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -167,24 +201,69 @@ public partial class MembersClient
     }
 
     /// <example><code>
+    /// await client.Tenants.Members.ListAsync(
+    ///     new MembersListRequest
+    ///     {
+    ///         Page = 1,
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<TenantMemberResponsePaginatedList> ListAsync(
+        MembersListRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<TenantMemberResponsePaginatedList>(
+            ListAsyncCore(request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Tenants.Members.UpdateAsync(
+    ///     "memberId",
+    ///     new UpdateTenantMemberRequest { Role = "role" }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<TenantMemberResponse> UpdateAsync(
+        string memberId,
+        UpdateTenantMemberRequest request,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<TenantMemberResponse>(
+            UpdateAsyncCore(memberId, request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
     /// await client.Tenants.Members.DeleteAsync("memberId");
     /// </code></example>
-    public async global::System.Threading.Tasks.Task DeleteAsync(
+    public async Task DeleteAsync(
         string memberId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "tenants/self/members/{0}",
                         ValueConvert.ToPathParameterString(memberId)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -195,7 +274,9 @@ public partial class MembersClient
             return;
         }
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)

@@ -1,0 +1,17 @@
+{
+  "cliVersion": "4.62.4",
+  "generatorName": "fernapi/fern-csharp-sdk",
+  "generatorVersion": "2.58.0",
+  "generatorConfig": {
+    "namespace": "BasisTheory.Client",
+    "client-class-name": "BasisTheory",
+    "additional-properties": false,
+    "enable-forward-compatible-enums": false,
+    "generate-mock-server-tests": false,
+    "inline-path-parameters": false,
+    "simplify-object-dictionaries": true,
+    "use-discriminated-unions": false
+  },
+  "originGitCommit": "9f5087e691fd8b88f869b8b323536001e9f48fc9",
+  "sdkVersion": "0.0.1"
+}

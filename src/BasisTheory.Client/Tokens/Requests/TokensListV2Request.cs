@@ -1,5 +1,5 @@
-using System.Text.Json.Serialization;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client;
 
@@ -16,7 +16,7 @@ public record TokensListV2Request
     public string? Fingerprint { get; set; }
 
     [JsonIgnore]
-    public Dictionary<string, string?>? Metadata { get; set; }
+    public Dictionary<string, string>? Metadata { get; set; }
 
     [JsonIgnore]
     public string? Start { get; set; }
