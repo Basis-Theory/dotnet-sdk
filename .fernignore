@@ -8,4 +8,5 @@ CHANGELOG.md
 package.json
 yarn.lock
 
+src/BasisTheory.Client.Test/AgenticTests.cs
 src/BasisTheory.Client.Test/TestClient.cs
