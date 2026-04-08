@@ -1,3 +1,10 @@
+# [6.5.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.4.0...v6.5.0) (2026-04-08)
+
+
+### Features
+
+* Add Agentic ([#119](https://github.com/Basis-Theory/dotnet-sdk/issues/119)) ([fe1d18d](https://github.com/Basis-Theory/dotnet-sdk/commit/fe1d18d940b4676a171437f7983559787b4ef37d))
+
 # [6.4.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.3.0...v6.4.0) (2026-03-31)
 
 
