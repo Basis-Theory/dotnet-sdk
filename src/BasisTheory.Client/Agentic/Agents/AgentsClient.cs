@@ -63,9 +63,7 @@ public partial class AgentsClient
                 switch (response.StatusCode)
                 {
                     case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
+                        throw new BadRequestError(JsonUtils.Deserialize<object>(responseBody));
                     case 401:
                         throw new UnauthorizedError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
@@ -272,9 +270,7 @@ public partial class AgentsClient
                 switch (response.StatusCode)
                 {
                     case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
+                        throw new BadRequestError(JsonUtils.Deserialize<object>(responseBody));
                     case 401:
                         throw new UnauthorizedError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)

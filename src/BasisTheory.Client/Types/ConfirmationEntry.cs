@@ -23,6 +23,18 @@ public record ConfirmationEntry
     public bool? MandatesCompleted { get; set; }
 
     /// <summary>
+    /// Transaction amount for Visa confirmation
+    /// </summary>
+    [JsonPropertyName("amount")]
+    public string? Amount { get; set; }
+
+    /// <summary>
+    /// ISO 4217 currency code (e.g. USD)
+    /// </summary>
+    [JsonPropertyName("currency_code")]
+    public string? CurrencyCode { get; set; }
+
+    /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>
     /// <remarks>

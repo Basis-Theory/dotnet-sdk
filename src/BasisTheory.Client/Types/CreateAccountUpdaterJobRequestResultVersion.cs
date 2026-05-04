@@ -12,4 +12,7 @@ public enum CreateAccountUpdaterJobRequestResultVersion
 
     [EnumMember(Value = "1.1")]
     One1,
+
+    [EnumMember(Value = "1.2")]
+    One2,
 }

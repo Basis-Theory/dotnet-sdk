@@ -34,6 +34,15 @@ public record ApplePayToken
     [JsonPropertyName("modified_at")]
     public DateTime? ModifiedAt { get; set; }
 
+    [JsonPropertyName("transaction_id")]
+    public string? TransactionId { get; set; }
+
+    [JsonPropertyName("payment_data_type")]
+    public string? PaymentDataType { get; set; }
+
+    [JsonPropertyName("device_manufacturer_identifier")]
+    public string? DeviceManufacturerIdentifier { get; set; }
+
     [JsonPropertyName("card")]
     public CardDetails? Card { get; set; }
 

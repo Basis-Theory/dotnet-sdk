@@ -20,7 +20,7 @@ public record CreateAccountUpdaterJobRequest
     public string? MerchantId { get; set; }
 
     /// <summary>
-    /// Version of the result CSV format. Version '1' returns base columns. Version '1.1' adds new_fingerprint and new_brand columns.
+    /// Version of the result CSV format. Version '1' returns base columns. Version '1.1' adds new_fingerprint and new_brand columns. Version '1.2' adds the new_last4 column on top of 1.1.
     /// </summary>
     [JsonPropertyName("result_version")]
     public CreateAccountUpdaterJobRequestResultVersion? ResultVersion { get; set; }
