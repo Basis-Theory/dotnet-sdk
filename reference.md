@@ -2425,6 +2425,47 @@ await client.Sessions.AuthorizeAsync(new AuthorizeSessionRequest { Nonce = "nonc
 </dl>
 </details>
 
+## Tenants
+<details><summary><code>client.Tenants.<a href="/src/BasisTheory.Client/Tenants/TenantsClient.cs">OwnerTransferAsync</a>(TransferTenantOwnerRequest { ... }) -> TenantMemberResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.OwnerTransferAsync(new TransferTenantOwnerRequest { MemberId = "member_id" });
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TransferTenantOwnerRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## TokenIntents
 <details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">GetAsync</a>(id) -> TokenIntent</code></summary>
 <dl>
@@ -4745,7 +4786,11 @@ await client.ApplePay.Merchant.Certificates.DeleteAsync("merchantId", "id");
 ```csharp
 await client.ApplePay.Merchant.Certificates.CreateAsync(
     "merchantId",
-    new ApplePayMerchantCertificatesRegisterRequest()
+    new ApplePayMerchantCertificatesRegisterRequest
+    {
+        PaymentProcessorCertificateData = "payment_processor_certificate_data",
+        PaymentProcessorCertificatePassword = "payment_processor_certificate_password",
+    }
 );
 ```
 </dd>

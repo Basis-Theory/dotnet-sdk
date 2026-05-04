@@ -13,10 +13,10 @@ public record ApplePayMerchantCertificatesRegisterRequest
     public string? MerchantCertificatePassword { get; set; }
 
     [JsonPropertyName("payment_processor_certificate_data")]
-    public string? PaymentProcessorCertificateData { get; set; }
+    public required string PaymentProcessorCertificateData { get; set; }
 
     [JsonPropertyName("payment_processor_certificate_password")]
-    public string? PaymentProcessorCertificatePassword { get; set; }
+    public required string PaymentProcessorCertificatePassword { get; set; }
 
     [JsonPropertyName("domain")]
     public string? Domain { get; set; }

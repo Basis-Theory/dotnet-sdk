@@ -62,6 +62,12 @@ public record AccountUpdaterJob
     public Dictionary<string, int>? Results { get; set; }
 
     /// <summary>
+    /// Pre-signed URL for downloading the job results CSV. Only present on completed jobs.
+    /// </summary>
+    [JsonPropertyName("downloadUrl")]
+    public string? DownloadUrl { get; set; }
+
+    /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>
     /// <remarks>
