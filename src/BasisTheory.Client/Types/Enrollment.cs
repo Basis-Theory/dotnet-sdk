@@ -10,6 +10,12 @@ public record Enrollment
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
+    /// <summary>
+    /// Basis Theory card token ID used for enrollment
+    /// </summary>
+    [JsonPropertyName("token_id")]
+    public string? TokenId { get; set; }
+
     [JsonPropertyName("provider")]
     public EnrollmentProvider? Provider { get; set; }
 
