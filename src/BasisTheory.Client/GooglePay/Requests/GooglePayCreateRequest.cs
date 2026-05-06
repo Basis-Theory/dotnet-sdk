@@ -12,6 +12,9 @@ public record GooglePayCreateRequest
     [JsonPropertyName("google_payment_data")]
     public GooglePayMethodToken? GooglePaymentData { get; set; }
 
+    [JsonPropertyName("merchant_registration_id")]
+    public string? MerchantRegistrationId { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

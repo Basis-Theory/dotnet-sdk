@@ -34,6 +34,9 @@ public record CreateThreeDsSessionResponse
     [JsonPropertyName("redirect_url")]
     public string? RedirectUrl { get; set; }
 
+    [JsonPropertyName("metadata")]
+    public Dictionary<string, string?>? Metadata { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

@@ -44,10 +44,10 @@ public record Reactor
     public Dictionary<string, string?>? Configuration { get; set; }
 
     [JsonPropertyName("runtime")]
-    public string? Runtime { get; set; }
+    public Runtime? Runtime { get; set; }
 
-    [JsonPropertyName("options")]
-    public RuntimeOptions? Options { get; set; }
+    [JsonPropertyName("requested")]
+    public RequestedReactor? Requested { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

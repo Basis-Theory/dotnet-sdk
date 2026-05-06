@@ -1,0 +1,46 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using BasisTheory.Client.Core;
+
+namespace BasisTheory.Client;
+
+[Serializable]
+public record Runtime
+{
+    [JsonPropertyName("image")]
+    public string? Image { get; set; }
+
+    [JsonPropertyName("dependencies")]
+    public Dictionary<string, string?>? Dependencies { get; set; }
+
+    [JsonPropertyName("resolutions")]
+    public Dictionary<string, string?>? Resolutions { get; set; }
+
+    [JsonPropertyName("warm_concurrency")]
+    public int? WarmConcurrency { get; set; }
+
+    [JsonPropertyName("timeout")]
+    public int? Timeout { get; set; }
+
+    [JsonPropertyName("resources")]
+    public string? Resources { get; set; }
+
+    [JsonPropertyName("permissions")]
+    public IEnumerable<string>? Permissions { get; set; }
+
+    /// <summary>
+    /// Additional properties received from the response, if any.
+    /// </summary>
+    /// <remarks>
+    /// [EXPERIMENTAL] This API is experimental and may change in future releases.
+    /// </remarks>
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
+        new Dictionary<string, JsonElement>();
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}
