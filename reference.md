@@ -2425,6 +2425,47 @@ await client.Sessions.AuthorizeAsync(new AuthorizeSessionRequest { Nonce = "nonc
 </dl>
 </details>
 
+## Tenants
+<details><summary><code>client.Tenants.<a href="/src/BasisTheory.Client/Tenants/TenantsClient.cs">OwnerTransferAsync</a>(TransferTenantOwnerRequest { ... }) -> TenantMemberResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.OwnerTransferAsync(new TransferTenantOwnerRequest { MemberId = "member_id" });
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TransferTenantOwnerRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## TokenIntents
 <details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">GetAsync</a>(id) -> TokenIntent</code></summary>
 <dl>
@@ -3075,6 +3116,1252 @@ await client.AccountUpdater.RealTime.InvokeAsync(
 </dl>
 </details>
 
+## Agentic Agents
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">CreateAsync</a>(Agentic.CreateAgentRequest { ... }) -> Agent</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.CreateAsync(new CreateAgentRequest { Name = "name" });
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Agentic.CreateAgentRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">GetAsync</a>(agentId) -> Agent</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.GetAsync("agent_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">DeleteAsync</a>(agentId)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.DeleteAsync("agent_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">UpdateAsync</a>(agentId, Agentic.UpdateAgentRequest { ... }) -> Agent</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.UpdateAsync("agent_id", new UpdateAgentRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Agentic.UpdateAgentRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic Enrollments
+<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">ListAsync</a>(Agentic.EnrollmentsListRequest { ... }) -> Core.Pager&lt;Enrollment&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List all enrollments for the current tenant with cursor-based pagination.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Enrollments.ListAsync(new EnrollmentsListRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Agentic.EnrollmentsListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">CreateAsync</a>(Agentic.CreateEnrollmentRequest { ... }) -> Enrollment</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Enroll a card token with a card network (Visa or Mastercard).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Enrollments.CreateAsync(
+    new CreateEnrollmentRequest
+    {
+        TokenId = "token_id",
+        Consumer = new Consumer { Email = "email" },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Agentic.CreateEnrollmentRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">GetAsync</a>(enrollmentId) -> Enrollment</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Enrollments.GetAsync("enrollment_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**enrollmentId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">DeleteAsync</a>(enrollmentId)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Soft-deletes the enrollment by marking its status as deleted.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Enrollments.DeleteAsync("enrollment_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**enrollmentId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">RetryAsync</a>(enrollmentId) -> Enrollment</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retry enrolling a card that previously failed. Only failed enrollments can be retried.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Enrollments.RetryAsync("enrollment_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**enrollmentId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic Agents Instructions
+<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">ListAsync</a>(agentId, Agentic.Agents.InstructionsListRequest { ... }) -> Core.Pager&lt;Instruction&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List all purchase instructions for an agent with cursor-based pagination and optional enrollment filter.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.Instructions.ListAsync("agent_id", new InstructionsListRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Agentic.Agents.InstructionsListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">CreateAsync</a>(agentId, Agentic.Agents.CreateInstructionRequest { ... }) -> Instruction</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a new payment instruction for an agent, linked to an enrollment.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.Instructions.CreateAsync(
+    "agent_id",
+    new CreateInstructionRequest
+    {
+        EnrollmentId = "enrollment_id",
+        Amount = new Amount { Value = "100.00" },
+        Description = "description",
+        ExpiresAt = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Agentic.Agents.CreateInstructionRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">GetAsync</a>(agentId, instructionId) -> Instruction</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.Instructions.GetAsync("agent_id", "instruction_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**instructionId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">DeleteAsync</a>(agentId, instructionId)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.Instructions.DeleteAsync("agent_id", "instruction_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**instructionId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">UpdateAsync</a>(agentId, instructionId, Agentic.Agents.UpdateInstructionRequest { ... }) -> Instruction</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.Instructions.UpdateAsync(
+    "agent_id",
+    "instruction_id",
+    new UpdateInstructionRequest()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**instructionId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Agentic.Agents.UpdateInstructionRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic Agents Instructions Credentials
+<details><summary><code>client.Agentic.Agents.Instructions.Credentials.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/Credentials/CredentialsClient.cs">CreateAsync</a>(agentId, instructionId, Agentic.Agents.Instructions.GetCredentialsRequest { ... }) -> Credentials</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve payment credentials (card number, expiration, CVC) for a purchase instruction.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.Instructions.Credentials.CreateAsync(
+    "agent_id",
+    "instruction_id",
+    new GetCredentialsRequest
+    {
+        Merchant = new AgenticMerchant
+        {
+            Name = "name",
+            Url = "url",
+            CountryCode = "country_code",
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**instructionId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Agentic.Agents.Instructions.GetCredentialsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic Agents Instructions Verify
+<details><summary><code>client.Agentic.Agents.Instructions.Verify.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/Verify/VerifyClient.cs">StartAsync</a>(agentId, instructionId, StartVerificationRequest { ... }) -> VerificationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Initiate cardholder verification for a purchase instruction that requires it.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.Instructions.Verify.StartAsync(
+    "agent_id",
+    "instruction_id",
+    new StartVerificationRequest
+    {
+        DeviceContext = new DeviceContext
+        {
+            ScreenHeight = 1,
+            ScreenWidth = 1,
+            UserAgentString = "user_agent_string",
+            LanguageCode = "language_code",
+            TimeZone = "time_zone",
+            JavaScriptEnabled = true,
+            ClientDeviceId = "client_device_id",
+            ClientReferenceId = "client_reference_id",
+            PlatformType = DeviceContextPlatformType.Web,
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**instructionId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `StartVerificationRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Agents.Instructions.Verify.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/Verify/VerifyClient.cs">PasskeyAsync</a>(agentId, instructionId, Agentic.Agents.Instructions.SubmitPasskeyRequest { ... }) -> Instruction</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Submit passkey/FIDO assertion data to complete instruction verification.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.Instructions.Verify.PasskeyAsync(
+    "agent_id",
+    "instruction_id",
+    new SubmitPasskeyRequest
+    {
+        AssuranceData = new Dictionary<string, object>() { { "key", "value" } },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**instructionId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Agentic.Agents.Instructions.SubmitPasskeyRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic Enrollments Verify
+<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">StartAsync</a>(enrollmentId, StartVerificationRequest { ... }) -> VerificationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Initiates the cardholder verification flow for a pending enrollment.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Enrollments.Verify.StartAsync(
+    "enrollment_id",
+    new StartVerificationRequest
+    {
+        DeviceContext = new DeviceContext
+        {
+            ScreenHeight = 1,
+            ScreenWidth = 1,
+            UserAgentString = "user_agent_string",
+            LanguageCode = "language_code",
+            TimeZone = "time_zone",
+            JavaScriptEnabled = true,
+            ClientDeviceId = "client_device_id",
+            ClientReferenceId = "client_reference_id",
+            PlatformType = DeviceContextPlatformType.Web,
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**enrollmentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `StartVerificationRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">MethodAsync</a>(enrollmentId, Agentic.Enrollments.SelectMethodRequest { ... }) -> VerificationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Choose the OTP delivery method (SMS, email, etc.) for enrollment verification.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Enrollments.Verify.MethodAsync(
+    "enrollment_id",
+    new SelectMethodRequest { MethodId = "method_id" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**enrollmentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Agentic.Enrollments.SelectMethodRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">OtpAsync</a>(enrollmentId, Agentic.Enrollments.SubmitOtpRequest { ... }) -> VerificationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Submit the one-time password received by the cardholder.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Enrollments.Verify.OtpAsync(
+    "enrollment_id",
+    new SubmitOtpRequest { OtpCode = "otp_code" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**enrollmentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Agentic.Enrollments.SubmitOtpRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">CompleteAsync</a>(enrollmentId, Agentic.Enrollments.CompleteVerificationRequest { ... }) -> VerificationResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Complete the verification flow (e.g. after passkey creation). Body is optional — Visa sends empty body, Mastercard sends assurance_data.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Enrollments.Verify.CompleteAsync(
+    "enrollment_id",
+    new CompleteVerificationRequest()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**enrollmentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Agentic.Enrollments.CompleteVerificationRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## ApplePay Merchant
 <details><summary><code>client.ApplePay.Merchant.<a href="/src/BasisTheory.Client/ApplePay/Merchant/MerchantClient.cs">GetAsync</a>(id) -> ApplePayMerchant</code></summary>
 <dl>
@@ -3499,7 +4786,11 @@ await client.ApplePay.Merchant.Certificates.DeleteAsync("merchantId", "id");
 ```csharp
 await client.ApplePay.Merchant.Certificates.CreateAsync(
     "merchantId",
-    new ApplePayMerchantCertificatesRegisterRequest()
+    new ApplePayMerchantCertificatesRegisterRequest
+    {
+        PaymentProcessorCertificateData = "payment_processor_certificate_data",
+        PaymentProcessorCertificatePassword = "payment_processor_certificate_password",
+    }
 );
 ```
 </dd>
@@ -3883,6 +5174,74 @@ await client.Reactors.Results.GetAsync("id", "requestId");
 <dd>
 
 **requestId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Tenants SecurityContact
+<details><summary><code>client.Tenants.SecurityContact.<a href="/src/BasisTheory.Client/Tenants/SecurityContact/SecurityContactClient.cs">GetAsync</a>() -> SecurityContactEmailResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.SecurityContact.GetAsync();
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tenants.SecurityContact.<a href="/src/BasisTheory.Client/Tenants/SecurityContact/SecurityContactClient.cs">UpdateAsync</a>(Tenants.SecurityContactEmailRequest { ... }) -> SecurityContactEmailResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.SecurityContact.UpdateAsync(
+    new SecurityContactEmailRequest { Email = "email" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Tenants.SecurityContactEmailRequest` 
     
 </dd>
 </dl>
@@ -4288,6 +5647,322 @@ await client.Tenants.Members.DeleteAsync("memberId");
 <dd>
 
 **memberId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Tenants Merchants
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">ListAsync</a>(tenantId, Tenants.MerchantsListRequest { ... }) -> Core.Pager&lt;TenantMerchant&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.ListAsync("tenantId", new MerchantsListRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Tenants.MerchantsListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">CreateAsync</a>(tenantId, TenantMerchantRequest { ... }) -> TenantMerchant</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.CreateAsync(
+    "tenantId",
+    new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TenantMerchantRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">GetAsync</a>(tenantId, merchantId) -> TenantMerchant</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.GetAsync("tenantId", "merchantId");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchantId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">DeleteAsync</a>(tenantId, merchantId) -> TenantMerchant</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.DeleteAsync("tenantId", "merchantId");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchantId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">UpdateAsync</a>(tenantId, merchantId, TenantMerchantRequest { ... }) -> TenantMerchant</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.UpdateAsync(
+    "tenantId",
+    "merchantId",
+    new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TenantMerchantRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">RequestOnboardingAsync</a>(tenantId, merchantId, Tenants.ServiceOnboardingRequest { ... }) -> TenantMerchant</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.RequestOnboardingAsync(
+    "tenantId",
+    "merchantId",
+    new ServiceOnboardingRequest()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Tenants.ServiceOnboardingRequest` 
     
 </dd>
 </dl>

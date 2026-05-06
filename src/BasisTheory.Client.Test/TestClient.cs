@@ -217,6 +217,7 @@ public class TestClient
         );
         AssertIsGuid(asyncReactResponse.AsyncReactorRequestId);
 
+        await WaitForReactorResults(reactorId, asyncReactResponse.AsyncReactorRequestId);
         await managementClient.Reactors.DeleteAsync(reactorId);
         await managementClient.Applications.DeleteAsync(applicationId);
     }
@@ -575,7 +576,7 @@ public class TestClient
         }
         catch (UnprocessableEntityError e)
         {
-            Assert.That(e.Body.Detail.Contains("Failed to decrypt token"));
+            Assert.That(e.Body.Detail.Contains("Failed to decrypt Google payment request"));
         }
     }
 
@@ -716,6 +717,29 @@ public class TestClient
             });
         Assert.That(react.Raw.GetJsonElementValue<string>("key1"), Is.EqualTo(args["key1"]));
         Assert.That(react.Raw.GetJsonElementValue<string>("key2"), Is.EqualTo(args["key2"]));
+    }
+
+    private static async Task WaitForReactorResults(string? reactorId, string? requestId)
+    {
+        var client = GetPrivateClient();
+        var timeout = TimeSpan.FromSeconds(30);
+        var pollInterval = TimeSpan.FromSeconds(1);
+        var deadline = DateTime.UtcNow + timeout;
+
+        while (DateTime.UtcNow < deadline)
+        {
+            try
+            {
+                await client.Reactors.Results.GetAsync(reactorId!, requestId!);
+                return;
+            }
+            catch (NotFoundError)
+            {
+                await Task.Delay(pollInterval);   
+            }
+        }
+
+        Assert.Fail("Reactor did not become available within 30 seconds");
     }
 
     private static async Task<string?> CreateReactor(BasisTheory managementClient, string? appliationId)

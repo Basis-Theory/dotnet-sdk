@@ -13,6 +13,9 @@ public record Runtime
     [JsonPropertyName("dependencies")]
     public Dictionary<string, string?>? Dependencies { get; set; }
 
+    [JsonPropertyName("resolutions")]
+    public Dictionary<string, string?>? Resolutions { get; set; }
+
     [JsonPropertyName("warm_concurrency")]
     public int? WarmConcurrency { get; set; }
 
