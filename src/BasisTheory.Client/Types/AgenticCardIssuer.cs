@@ -4,32 +4,23 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
+/// <summary>
+/// Card issuer information
+/// </summary>
 [Serializable]
-public record Enrollment
+public record AgenticCardIssuer
 {
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
+    /// <summary>
+    /// Issuer name
+    /// </summary>
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
 
     /// <summary>
-    /// Basis Theory card token ID used for enrollment
+    /// Issuer country code
     /// </summary>
-    [JsonPropertyName("token_id")]
-    public string? TokenId { get; set; }
-
-    [JsonPropertyName("provider")]
-    public EnrollmentProvider? Provider { get; set; }
-
-    [JsonPropertyName("status")]
-    public EnrollmentStatus? Status { get; set; }
-
-    [JsonPropertyName("card")]
-    public AgenticCard? Card { get; set; }
-
-    [JsonPropertyName("agent_ids")]
-    public IEnumerable<string>? AgentIds { get; set; }
-
-    [JsonPropertyName("created_at")]
-    public DateTime? CreatedAt { get; set; }
+    [JsonPropertyName("country")]
+    public string? Country { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

@@ -4,26 +4,29 @@ using BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 
+/// <summary>
+/// Card issuer country details
+/// </summary>
 [Serializable]
-public record CreateAccountUpdaterJobRequest
+public record AgenticCardIssuerCountry
 {
     /// <summary>
-    /// Whether deduplication should be enabled when creating new tokens. Uses the value of the Deduplicate Tokens setting on the tenant if not set.
+    /// ISO 3166-1 alpha-2 country code
     /// </summary>
-    [JsonPropertyName("deduplicate_tokens")]
-    public bool? DeduplicateTokens { get; set; }
+    [JsonPropertyName("alpha2")]
+    public string? Alpha2 { get; set; }
 
     /// <summary>
-    /// Tenant merchant identifier
+    /// Country name
     /// </summary>
-    [JsonPropertyName("merchant_id")]
-    public string? MerchantId { get; set; }
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
 
     /// <summary>
-    /// Version of the result CSV format. Version '1' returns base columns. Version '1.1' adds new_fingerprint and new_brand columns. Version '1.2' adds the new_last4 column on top of 1.1.
+    /// ISO 3166-1 numeric country code
     /// </summary>
-    [JsonPropertyName("result_version")]
-    public CreateAccountUpdaterJobRequestResultVersion? ResultVersion { get; set; }
+    [JsonPropertyName("numeric")]
+    public string? Numeric { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

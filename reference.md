@@ -2425,6 +2425,47 @@ await client.Sessions.AuthorizeAsync(new AuthorizeSessionRequest { Nonce = "nonc
 </dl>
 </details>
 
+## Tenants
+<details><summary><code>client.Tenants.<a href="/src/BasisTheory.Client/Tenants/TenantsClient.cs">OwnerTransferAsync</a>(TransferTenantOwnerRequest { ... }) -> TenantMemberResponse</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.OwnerTransferAsync(new TransferTenantOwnerRequest { MemberId = "member_id" });
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `TransferTenantOwnerRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## TokenIntents
 <details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">GetAsync</a>(id) -> TokenIntent</code></summary>
 <dl>
@@ -4745,7 +4786,11 @@ await client.ApplePay.Merchant.Certificates.DeleteAsync("merchantId", "id");
 ```csharp
 await client.ApplePay.Merchant.Certificates.CreateAsync(
     "merchantId",
-    new ApplePayMerchantCertificatesRegisterRequest()
+    new ApplePayMerchantCertificatesRegisterRequest
+    {
+        PaymentProcessorCertificateData = "payment_processor_certificate_data",
+        PaymentProcessorCertificatePassword = "payment_processor_certificate_password",
+    }
 );
 ```
 </dd>
@@ -5602,6 +5647,322 @@ await client.Tenants.Members.DeleteAsync("memberId");
 <dd>
 
 **memberId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Tenants Merchants
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">ListAsync</a>(tenantId, Tenants.MerchantsListRequest { ... }) -> Core.Pager&lt;TenantMerchant&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.ListAsync("tenantId", new MerchantsListRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Tenants.MerchantsListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">CreateAsync</a>(tenantId, TenantMerchantRequest { ... }) -> TenantMerchant</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.CreateAsync(
+    "tenantId",
+    new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TenantMerchantRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">GetAsync</a>(tenantId, merchantId) -> TenantMerchant</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.GetAsync("tenantId", "merchantId");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchantId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">DeleteAsync</a>(tenantId, merchantId) -> TenantMerchant</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.DeleteAsync("tenantId", "merchantId");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchantId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">UpdateAsync</a>(tenantId, merchantId, TenantMerchantRequest { ... }) -> TenantMerchant</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.UpdateAsync(
+    "tenantId",
+    "merchantId",
+    new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TenantMerchantRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">RequestOnboardingAsync</a>(tenantId, merchantId, Tenants.ServiceOnboardingRequest { ... }) -> TenantMerchant</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Tenants.Merchants.RequestOnboardingAsync(
+    "tenantId",
+    "merchantId",
+    new ServiceOnboardingRequest()
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**tenantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**merchantId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `Tenants.ServiceOnboardingRequest` 
     
 </dd>
 </dl>
