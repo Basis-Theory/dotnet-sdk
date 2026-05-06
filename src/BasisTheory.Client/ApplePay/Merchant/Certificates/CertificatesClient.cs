@@ -148,7 +148,11 @@ public partial class CertificatesClient
     /// <example><code>
     /// await client.ApplePay.Merchant.Certificates.CreateAsync(
     ///     "merchantId",
-    ///     new ApplePayMerchantCertificatesRegisterRequest()
+    ///     new ApplePayMerchantCertificatesRegisterRequest
+    ///     {
+    ///         PaymentProcessorCertificateData = "payment_processor_certificate_data",
+    ///         PaymentProcessorCertificatePassword = "payment_processor_certificate_password",
+    ///     }
     /// );
     /// </code></example>
     public async Task<ApplePayMerchantCertificates> CreateAsync(

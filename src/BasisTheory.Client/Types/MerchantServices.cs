@@ -1,0 +1,34 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using BasisTheory.Client.Core;
+
+namespace BasisTheory.Client;
+
+[Serializable]
+public record MerchantServices
+{
+    [JsonPropertyName("account_updater")]
+    public ServiceStatus? AccountUpdater { get; set; }
+
+    [JsonPropertyName("network_token")]
+    public ServiceStatus? NetworkToken { get; set; }
+
+    [JsonPropertyName("agentic_commerce")]
+    public ServiceStatus? AgenticCommerce { get; set; }
+
+    /// <summary>
+    /// Additional properties received from the response, if any.
+    /// </summary>
+    /// <remarks>
+    /// [EXPERIMENTAL] This API is experimental and may change in future releases.
+    /// </remarks>
+    [JsonExtensionData]
+    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
+        new Dictionary<string, JsonElement>();
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}

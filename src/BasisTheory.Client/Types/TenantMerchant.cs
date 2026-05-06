@@ -5,22 +5,22 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ApplePayToken
+public record TenantMerchant
 {
     [JsonPropertyName("id")]
     public string? Id { get; set; }
 
-    [JsonPropertyName("type")]
-    public string? Type { get; set; }
-
     [JsonPropertyName("tenant_id")]
     public string? TenantId { get; set; }
 
-    [JsonPropertyName("status")]
-    public string? Status { get; set; }
+    [JsonPropertyName("name")]
+    public string? Name { get; set; }
 
-    [JsonPropertyName("expires_at")]
-    public DateTime? ExpiresAt { get; set; }
+    [JsonPropertyName("details")]
+    public MerchantDetails? Details { get; set; }
+
+    [JsonPropertyName("services")]
+    public MerchantServices? Services { get; set; }
 
     [JsonPropertyName("created_by")]
     public string? CreatedBy { get; set; }
@@ -33,27 +33,6 @@ public record ApplePayToken
 
     [JsonPropertyName("modified_at")]
     public DateTime? ModifiedAt { get; set; }
-
-    [JsonPropertyName("transaction_id")]
-    public string? TransactionId { get; set; }
-
-    [JsonPropertyName("payment_data_type")]
-    public string? PaymentDataType { get; set; }
-
-    [JsonPropertyName("device_manufacturer_identifier")]
-    public string? DeviceManufacturerIdentifier { get; set; }
-
-    [JsonPropertyName("card")]
-    public CardDetails? Card { get; set; }
-
-    [JsonPropertyName("data")]
-    public object? Data { get; set; }
-
-    [JsonPropertyName("authentication")]
-    public Authentication? Authentication { get; set; }
-
-    [JsonPropertyName("fingerprint")]
-    public string? Fingerprint { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.
