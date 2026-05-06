@@ -5,6 +5,19 @@
 
 The BasisTheory C# library provides convenient access to the BasisTheory APIs from C#.
 
+## Table of Contents
+
+- [Documentation](#documentation)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Exception Handling](#exception-handling)
+- [Pagination](#pagination)
+- [Advanced](#advanced)
+  - [Retries](#retries)
+  - [Timeouts](#timeouts)
+- [Contributing](#contributing)
+- [Requirements](#requirements)
+
 ## Documentation
 
 API reference documentation is available [here](https://api.basistheory.com).

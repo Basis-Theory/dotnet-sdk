@@ -20,10 +20,7 @@ public record ProxyTransformOptions
     public string? Location { get; set; }
 
     [JsonPropertyName("runtime")]
-    public string? Runtime { get; set; }
-
-    [JsonPropertyName("dependencies")]
-    public Dictionary<string, string?>? Dependencies { get; set; }
+    public Runtime? Runtime { get; set; }
 
     /// <summary>
     /// Additional properties received from the response, if any.

@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using BasisTheory.Client;
+using BasisTheory.Client.ApplePay.Merchant;
 using BasisTheory.Client.Core;
 using global::System.Threading.Tasks;
 
@@ -14,12 +15,15 @@ public partial class MerchantClient
     internal MerchantClient(RawClient client)
     {
         _client = client;
+        Certificates = new CertificatesClient(_client);
     }
+
+    public CertificatesClient Certificates { get; }
 
     /// <example><code>
     /// await client.ApplePay.Merchant.GetAsync("id");
     /// </code></example>
-    public async Task<ApplePayToken> GetAsync(
+    public async Task<ApplePayMerchant> GetAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -45,7 +49,7 @@ public partial class MerchantClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<ApplePayToken>(responseBody)!;
+                return JsonUtils.Deserialize<ApplePayMerchant>(responseBody)!;
             }
             catch (JsonException e)
             {

@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using BasisTheory.Client.Core;
+using BasisTheory.Client.GooglePay;
 
 namespace BasisTheory.Client;
 
@@ -12,7 +13,10 @@ public partial class GooglePayClient
     internal GooglePayClient(RawClient client)
     {
         _client = client;
+        Merchant = new MerchantClient(_client);
     }
+
+    public MerchantClient Merchant { get; }
 
     /// <example><code>
     /// await client.GooglePay.CreateAsync(new GooglePayCreateRequest());
