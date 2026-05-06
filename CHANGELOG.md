@@ -1,3 +1,50 @@
+# [6.5.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.4.0...v6.5.0) (2026-04-08)
+
+
+### Features
+
+* Add Agentic ([#119](https://github.com/Basis-Theory/dotnet-sdk/issues/119)) ([fe1d18d](https://github.com/Basis-Theory/dotnet-sdk/commit/fe1d18d940b4676a171437f7983559787b4ef37d))
+
+# [6.4.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.3.0...v6.4.0) (2026-03-31)
+
+
+### Features
+
+* Add metatdata to 3DS authenticate session ([2772d44](https://github.com/Basis-Theory/dotnet-sdk/commit/2772d4412bb51799ad9bb7f5d710165eb5877eb0))
+
+# [6.3.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.2.0...v6.3.0) (2026-02-24)
+
+
+### Features
+
+* Updating API contracts ([#112](https://github.com/Basis-Theory/dotnet-sdk/issues/112)) ([d9fb1a7](https://github.com/Basis-Theory/dotnet-sdk/commit/d9fb1a76314e2e8c5a4207ef4697b02acc814c37))
+
+# [6.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.1.0...v6.2.0) (2026-02-04)
+
+
+### Features
+
+* Adding 3DS metadata attribute + merchant id ([466ca02](https://github.com/Basis-Theory/dotnet-sdk/commit/466ca02bdf5a9c297d6887107ee5e3a87ee76f2c))
+
+# [6.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.0.0...v6.1.0) (2026-01-27)
+
+
+### Features
+
+* add disable_detokenization to proxy configuration  ([64d293b](https://github.com/Basis-Theory/dotnet-sdk/commit/64d293bc9e02b9ef7c32a7f27496c393e05eef3c))
+
+# [6.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v5.2.0...v6.0.0) (2026-01-22)
+
+
+### Features
+
+* Updating Reactor Request objects ([6d15b6c](https://github.com/Basis-Theory/dotnet-sdk/commit/6d15b6c8b8a26ce38a57d39e9e25e337ddeadc41))
+
+
+### BREAKING CHANGES
+
+* This version removes the existing Reactors Request objects for Reactors and Reactors Async, allowing the use of dynamic objects
+
 # [5.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v5.1.0...v5.2.0) (2025-12-09)
 
 

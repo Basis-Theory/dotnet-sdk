@@ -33,6 +33,9 @@ public record PatchProxyRequest
     [JsonPropertyName("require_auth")]
     public bool? RequireAuth { get; set; }
 
+    [JsonPropertyName("disable_detokenization")]
+    public bool? DisableDetokenization { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

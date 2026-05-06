@@ -4,10 +4,10 @@ using BasisTheory.Client.Core;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ReactRequestAsync
+public record TransferTenantOwnerRequest
 {
-    [JsonPropertyName("args")]
-    public object? Args { get; set; }
+    [JsonPropertyName("member_id")]
+    public required string MemberId { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

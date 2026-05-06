@@ -46,6 +46,9 @@ public record Reactor
     [JsonPropertyName("runtime")]
     public Runtime? Runtime { get; set; }
 
+    [JsonPropertyName("requested")]
+    public RequestedReactor? Requested { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

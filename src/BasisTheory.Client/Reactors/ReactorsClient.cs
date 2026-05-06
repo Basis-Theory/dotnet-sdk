@@ -459,11 +459,11 @@ public partial class ReactorsClient
     }
 
     /// <example><code>
-    /// await client.Reactors.ReactAsync("id", new ReactRequest());
+    /// await client.Reactors.ReactAsync("id", new Dictionary&lt;object, object?&gt;() { { "key", "value" } });
     /// </code></example>
     public async Task<ReactResponse> ReactAsync(
         string id,
-        ReactRequest request,
+        object request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -537,11 +537,14 @@ public partial class ReactorsClient
     }
 
     /// <example><code>
-    /// await client.Reactors.ReactAsyncAsync("id", new ReactRequestAsync());
+    /// await client.Reactors.ReactAsyncAsync(
+    ///     "id",
+    ///     new Dictionary&lt;object, object?&gt;() { { "key", "value" } }
+    /// );
     /// </code></example>
     public async Task<AsyncReactResponse> ReactAsyncAsync(
         string id,
-        ReactRequestAsync request,
+        object request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
