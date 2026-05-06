@@ -1,3 +1,10 @@
+# [6.6.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.5.0...v6.6.0) (2026-05-06)
+
+
+### Features
+
+* **SDK:** update accountUpdatedJob Schema ([#123](https://github.com/Basis-Theory/dotnet-sdk/issues/123)) ([ea15ef1](https://github.com/Basis-Theory/dotnet-sdk/commit/ea15ef153a628191426b26d0dec213c70e4151f6))
+
 # [6.5.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.4.0...v6.5.0) (2026-04-08)
 
 
