@@ -1,3 +1,10 @@
+# [6.8.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.7.0...v6.8.0) (2026-05-15)
+
+
+### Features
+
+* **SDK:** remove additionalProperties on AgenticCard ([7125561](https://github.com/Basis-Theory/dotnet-sdk/commit/7125561d79f230fce0ea9eb06efe516e863bf524))
+
 # [6.7.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.6.0...v6.7.0) (2026-05-15)
 
 
