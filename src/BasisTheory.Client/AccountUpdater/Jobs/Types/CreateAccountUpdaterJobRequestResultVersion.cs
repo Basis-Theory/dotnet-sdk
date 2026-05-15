@@ -2,7 +2,7 @@ using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using BasisTheory.Client.Core;
 
-namespace BasisTheory.Client;
+namespace BasisTheory.Client.AccountUpdater;
 
 [JsonConverter(typeof(EnumSerializer<CreateAccountUpdaterJobRequestResultVersion>))]
 public enum CreateAccountUpdaterJobRequestResultVersion

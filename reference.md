@@ -3020,7 +3020,7 @@ await client.AccountUpdater.Jobs.ListAsync(new JobsListRequest());
 </dl>
 </details>
 
-<details><summary><code>client.AccountUpdater.Jobs.<a href="/src/BasisTheory.Client/AccountUpdater/Jobs/JobsClient.cs">CreateAsync</a>() -> AccountUpdaterJob</code></summary>
+<details><summary><code>client.AccountUpdater.Jobs.<a href="/src/BasisTheory.Client/AccountUpdater/Jobs/JobsClient.cs">CreateAsync</a>(AccountUpdater.CreateAccountUpdaterJobRequest { ... }) -> AccountUpdaterJob</code></summary>
 <dl>
 <dd>
 
@@ -3047,8 +3047,23 @@ Returns the created account updater batch job
 <dd>
 
 ```csharp
-await client.AccountUpdater.Jobs.CreateAsync();
+await client.AccountUpdater.Jobs.CreateAsync(new CreateAccountUpdaterJobRequest());
 ```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `AccountUpdater.CreateAccountUpdaterJobRequest` 
+    
 </dd>
 </dl>
 </dd>
