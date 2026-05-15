@@ -28,6 +28,18 @@ public record Enrollment
     [JsonPropertyName("agent_ids")]
     public IEnumerable<string>? AgentIds { get; set; }
 
+    /// <summary>
+    /// Display label shown to the cardholder during Mastercard managed-authentication challenges.
+    /// </summary>
+    [JsonPropertyName("wallet_name")]
+    public string? WalletName { get; set; }
+
+    /// <summary>
+    /// Enrollment type — `agentic` (default) for agent-driven payments, `autofill` for direct credential autofill.
+    /// </summary>
+    [JsonPropertyName("type")]
+    public EnrollmentType? Type { get; set; }
+
     [JsonPropertyName("created_at")]
     public DateTime? CreatedAt { get; set; }
 

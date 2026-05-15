@@ -22,6 +22,9 @@ public enum VerificationResponseStatus
     [EnumMember(Value = "passkey_required")]
     PasskeyRequired,
 
+    [EnumMember(Value = "redirect_required")]
+    RedirectRequired,
+
     [EnumMember(Value = "verified")]
     Verified,
 }
