@@ -16,6 +16,14 @@ public record Instruction
     [JsonPropertyName("status")]
     public InstructionStatus? Status { get; set; }
 
+    /// <summary>
+    /// Inherited from the parent enrollment. `agentic` instructions require cardholder
+    /// verification before credentials can be retrieved; `autofill` instructions are
+    /// auto-approved on creation and credentials can be retrieved immediately.
+    /// </summary>
+    [JsonPropertyName("type")]
+    public InstructionType? Type { get; set; }
+
     [JsonPropertyName("amount")]
     public Amount? Amount { get; set; }
 

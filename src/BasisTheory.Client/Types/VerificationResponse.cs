@@ -10,6 +10,12 @@ public record VerificationResponse
     [JsonPropertyName("status")]
     public VerificationResponseStatus? Status { get; set; }
 
+    /// <summary>
+    /// Present when status is redirect_required (Mastercard Managed Authentication). The cardholder must be redirected to `redirect.uri` to complete authentication; once they return via the hosted callback the SDK can call `/verify/complete` (enrollment) or `/verify/passkey` (instruction) to finalise.
+    /// </summary>
+    [JsonPropertyName("redirect")]
+    public VerificationResponseRedirect? Redirect { get; set; }
+
     [JsonPropertyName("methods")]
     public IEnumerable<VerificationResponseMethodsItem>? Methods { get; set; }
 

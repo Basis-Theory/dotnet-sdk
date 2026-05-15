@@ -25,6 +25,20 @@ public record CreateEnrollmentRequest
     [JsonPropertyName("agent_ids")]
     public IEnumerable<string>? AgentIds { get; set; }
 
+    /// <summary>
+    /// Display label shown to the cardholder during Mastercard managed-authentication challenges. Defaults to "Agent Wallet" when not provided.
+    /// </summary>
+    [JsonPropertyName("wallet_name")]
+    public string? WalletName { get; set; }
+
+    /// <summary>
+    /// Enrollment type. `agentic` (default) enrolls the card for agent-driven payments and requires verification.
+    /// `autofill` enrolls the card for direct autofill credential retrieval, skips verification, and is currently
+    /// available to test tenants only.
+    /// </summary>
+    [JsonPropertyName("type")]
+    public CreateEnrollmentRequestType? Type { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {
