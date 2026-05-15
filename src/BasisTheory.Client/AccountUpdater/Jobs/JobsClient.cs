@@ -164,9 +164,10 @@ public partial class JobsClient
     /// Returns the created account updater batch job
     /// </summary>
     /// <example><code>
-    /// await client.AccountUpdater.Jobs.CreateAsync();
+    /// await client.AccountUpdater.Jobs.CreateAsync(new CreateAccountUpdaterJobRequest());
     /// </code></example>
     public async Task<AccountUpdaterJob> CreateAsync(
+        CreateAccountUpdaterJobRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
@@ -178,6 +179,8 @@ public partial class JobsClient
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = "account-updater/jobs",
+                    Body = request,
+                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken
