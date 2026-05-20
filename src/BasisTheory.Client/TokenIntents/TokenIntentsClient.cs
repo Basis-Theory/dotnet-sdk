@@ -141,13 +141,7 @@ public partial class TokenIntentsClient
     }
 
     /// <example><code>
-    /// await client.TokenIntents.CreateAsync(
-    ///     new CreateTokenIntentRequest
-    ///     {
-    ///         Type = "x",
-    ///         Data = new Dictionary&lt;object, object?&gt;() { { "key", "value" } },
-    ///     }
-    /// );
+    /// await client.TokenIntents.CreateAsync(new CreateTokenIntentRequest { Type = "type" });
     /// </code></example>
     public async Task<CreateTokenIntentResponse> CreateAsync(
         CreateTokenIntentRequest request,
@@ -198,6 +192,10 @@ public partial class TokenIntentsClient
                         );
                     case 403:
                         throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 422:
+                        throw new UnprocessableEntityError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
                         );
                 }

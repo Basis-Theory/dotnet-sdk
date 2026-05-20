@@ -46,6 +46,12 @@ public record GooglePayToken
     [JsonPropertyName("fingerprint")]
     public string? Fingerprint { get; set; }
 
+    [JsonPropertyName("type")]
+    public string? Type { get; set; }
+
+    [JsonPropertyName("ingest_source")]
+    public string? IngestSource { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>
