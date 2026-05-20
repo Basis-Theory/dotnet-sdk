@@ -10,7 +10,10 @@ public record CreateTokenIntentRequest
     public required string Type { get; set; }
 
     [JsonPropertyName("data")]
-    public required object Data { get; set; }
+    public object? Data { get; set; }
+
+    [JsonPropertyName("encrypted")]
+    public string? Encrypted { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

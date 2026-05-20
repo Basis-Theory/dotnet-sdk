@@ -2560,13 +2560,7 @@ await client.TokenIntents.DeleteAsync("id");
 <dd>
 
 ```csharp
-await client.TokenIntents.CreateAsync(
-    new CreateTokenIntentRequest
-    {
-        Type = "x",
-        Data = new Dictionary<object, object?>() { { "key", "value" } },
-    }
-);
+await client.TokenIntents.CreateAsync(new CreateTokenIntentRequest { Type = "type" });
 ```
 </dd>
 </dl>

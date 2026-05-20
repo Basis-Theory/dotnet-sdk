@@ -10,3 +10,6 @@ yarn.lock
 
 src/BasisTheory.Client.Test/AgenticTests.cs
 src/BasisTheory.Client.Test/TestClient.cs
+.fern/replay.lock
+.fern/replay.yml
+.gitattributes

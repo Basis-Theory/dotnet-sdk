@@ -55,6 +55,9 @@ public record ApplePayToken
     [JsonPropertyName("fingerprint")]
     public string? Fingerprint { get; set; }
 
+    [JsonPropertyName("ingest_source")]
+    public string? IngestSource { get; set; }
+
     /// <summary>
     /// Additional properties received from the response, if any.
     /// </summary>

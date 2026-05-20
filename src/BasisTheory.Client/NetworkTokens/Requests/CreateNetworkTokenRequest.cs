@@ -15,6 +15,12 @@ public record CreateNetworkTokenRequest
     [JsonPropertyName("token_intent_id")]
     public string? TokenIntentId { get; set; }
 
+    [JsonPropertyName("expiration_month")]
+    public int? ExpirationMonth { get; set; }
+
+    [JsonPropertyName("expiration_year")]
+    public int? ExpirationYear { get; set; }
+
     [JsonPropertyName("cardholder_info")]
     public CardholderInfo? CardholderInfo { get; set; }
 
