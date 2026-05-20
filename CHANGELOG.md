@@ -1,3 +1,10 @@
+# [6.9.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.8.0...v6.9.0) (2026-05-20)
+
+
+### Features
+
+* update Vault API spec ([443554f](https://github.com/Basis-Theory/dotnet-sdk/commit/443554fd047c0eaf310316061fbe79c0579e9384))
+
 # [6.8.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.7.0...v6.8.0) (2026-05-15)
 
 
