@@ -37,6 +37,9 @@ public record CardDetails
     [JsonPropertyName("segment")]
     public string? Segment { get; set; }
 
+    [JsonPropertyName("product")]
+    public CardProduct? Product { get; set; }
+
     [JsonPropertyName("additional")]
     public IEnumerable<AdditionalCardDetails>? Additional { get; set; }
 
