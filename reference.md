@@ -5145,6 +5145,47 @@ await client.GooglePay.Merchant.Certificates.CreateAsync(
 </dl>
 </details>
 
+## NetworkTokens Account
+<details><summary><code>client.NetworkTokens.Account.<a href="/src/BasisTheory.Client/NetworkTokens/Account/AccountClient.cs">GetAsync</a>(id) -> NetworkTokenAccount</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.NetworkTokens.Account.GetAsync("id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Reactors Results
 <details><summary><code>client.Reactors.Results.<a href="/src/BasisTheory.Client/Reactors/Results/ResultsClient.cs">GetAsync</a>(id, requestId) -> object</code></summary>
 <dl>
