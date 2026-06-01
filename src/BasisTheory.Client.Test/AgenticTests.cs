@@ -10,6 +10,59 @@ namespace BasisTheory.Client.Test;
 [TestFixture]
 public class AgenticTests
 {
+    private readonly List<string> _createdAgentIds = new();
+    private readonly List<string> _createdEnrollmentIds = new();
+    private readonly List<(string AgentId, string InstructionId)> _createdInstructions = new();
+
+    [TearDown]
+    public async Task CleanUpCreatedResources()
+    {
+        var client = GetClient();
+
+        // Instructions belong to an agent, so delete them before their agents.
+        foreach (var (agentId, instructionId) in _createdInstructions)
+            await TryDelete(() => client.Agentic.Agents.Instructions.DeleteAsync(agentId, instructionId));
+        foreach (var enrollmentId in _createdEnrollmentIds)
+            await TryDelete(() => client.Agentic.Enrollments.DeleteAsync(enrollmentId));
+        foreach (var agentId in _createdAgentIds)
+            await TryDelete(() => client.Agentic.Agents.DeleteAsync(agentId));
+
+        _createdInstructions.Clear();
+        _createdEnrollmentIds.Clear();
+        _createdAgentIds.Clear();
+    }
+
+    private static async Task TryDelete(Func<Task> delete)
+    {
+        try
+        {
+            await delete();
+        }
+        catch (Exception e)
+        {
+            // Best-effort cleanup: an already-deleted or failed resource must not mask the test result.
+            TestContext.Out.WriteLine($"Failed to clean up test resource: {e.Message}");
+        }
+    }
+
+    private void TrackAgent(string? agentId)
+    {
+        if (agentId != null)
+            _createdAgentIds.Add(agentId);
+    }
+
+    private void TrackEnrollment(string? enrollmentId)
+    {
+        if (enrollmentId != null)
+            _createdEnrollmentIds.Add(enrollmentId);
+    }
+
+    private void TrackInstruction(string? agentId, string? instructionId)
+    {
+        if (agentId != null && instructionId != null)
+            _createdInstructions.Add((agentId, instructionId));
+    }
+
     private static BasisTheory GetClient()
     {
         return new BasisTheory(Environment.GetEnvironmentVariable("BT_PVT_TEST_API_KEY"),
@@ -51,7 +104,7 @@ public class AgenticTests
         };
     }
 
-    private static async Task<Enrollment> CreateAndVerifyEnrollment(
+    private async Task<Enrollment> CreateAndVerifyEnrollment(
         BasisTheory client, string cardNumber, string email, IEnumerable<string>? agentIds = null)
     {
         var tokenId = await CreateCardToken(client, cardNumber);
@@ -61,6 +114,7 @@ public class AgenticTests
             Consumer = new Consumer { Email = email },
             AgentIds = agentIds,
         });
+        TrackEnrollment(enrollment.Id);
 
         // Start verification
         var verifyResponse = await client.Agentic.Enrollments.Verify.StartAsync(enrollment.Id!, new StartVerificationRequest
@@ -103,6 +157,7 @@ public class AgenticTests
         {
             Name = agentName,
         });
+        TrackAgent(agent.Id);
         Assert.That(agent.Id, Is.Not.Null);
         Assert.That(agent.Name, Is.EqualTo(agentName));
         Assert.That(agent.Status, Is.EqualTo("active"));
@@ -213,6 +268,7 @@ public class AgenticTests
                 Email = "sdk-test-otp@example.com",
             },
         });
+        TrackEnrollment(enrollment.Id);
         Assert.That(enrollment.Id, Is.Not.Null);
         Assert.That(enrollment.Status, Is.EqualTo(EnrollmentStatus.PendingVerification));
         Assert.That(enrollment.Provider, Is.Not.Null);
@@ -282,6 +338,7 @@ public class AgenticTests
         {
             Name = "(Deletable) dotnet-SDK-instruction-agent-" + Guid.NewGuid(),
         });
+        TrackAgent(agent.Id);
 
         var enrollment = await CreateAndVerifyEnrollment(client, "4000056655665556", "sdk-test-instructions@example.com", [agent.Id!]);
         Assert.That(enrollment.Status, Is.EqualTo(EnrollmentStatus.Active));
@@ -300,6 +357,7 @@ public class AgenticTests
             Description = "(Deletable) dotnet-SDK test purchase",
             ExpiresAt = expiresAt,
         });
+        TrackInstruction(agent.Id, instruction.Id);
         Assert.That(instruction.Id, Is.Not.Null);
         Assert.That(instruction.EnrollmentId, Is.EqualTo(enrollment.Id));
         Assert.That(instruction.Status, Is.EqualTo(InstructionStatus.PendingVerification));
@@ -405,6 +463,7 @@ public class AgenticTests
         {
             Name = "(Deletable) dotnet-SDK-filter-agent-" + Guid.NewGuid(),
         });
+        TrackAgent(agent.Id);
 
         var enrollment = await CreateAndVerifyEnrollment(client, "4000056655665556", "sdk-test-filter@example.com", [agent.Id!]);
 
@@ -417,6 +476,7 @@ public class AgenticTests
             Description = "(Deletable) dotnet-SDK filter test",
             ExpiresAt = expiresAt,
         });
+        TrackInstruction(agent.Id, instruction.Id);
 
         // Verify created instruction fields
         Assert.That(instruction.Id, Is.Not.Null);
