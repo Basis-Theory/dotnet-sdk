@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
 using BasisTheory.Client.Core;
+using BasisTheory.Client.NetworkTokens;
 using global::System.Threading.Tasks;
 
 namespace BasisTheory.Client;
@@ -13,7 +14,10 @@ public partial class NetworkTokensClient
     internal NetworkTokensClient(RawClient client)
     {
         _client = client;
+        Account = new AccountClient(_client);
     }
+
+    public AccountClient Account { get; }
 
     /// <example><code>
     /// await client.NetworkTokens.CreateAsync(new CreateNetworkTokenRequest());
