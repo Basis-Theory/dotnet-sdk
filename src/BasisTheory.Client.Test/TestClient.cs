@@ -8,6 +8,41 @@ namespace BasisTheory.Client.Test;
 [TestFixture]
 public class TestClient
 {
+    private readonly List<string> _createdApplicationIds = new();
+    private readonly List<string> _createdProxyIds = new();
+    private readonly List<string> _createdReactorIds = new();
+
+    [TearDown]
+    public async Task CleanUpCreatedResources()
+    {
+        var managementClient = GetManagementClient();
+
+        // Proxies and reactors reference their backing application, so delete them first.
+        foreach (var proxyId in _createdProxyIds)
+            await TryDelete(() => managementClient.Proxies.DeleteAsync(proxyId));
+        foreach (var reactorId in _createdReactorIds)
+            await TryDelete(() => managementClient.Reactors.DeleteAsync(reactorId));
+        foreach (var applicationId in _createdApplicationIds)
+            await TryDelete(() => managementClient.Applications.DeleteAsync(applicationId));
+
+        _createdProxyIds.Clear();
+        _createdReactorIds.Clear();
+        _createdApplicationIds.Clear();
+    }
+
+    private static async Task TryDelete(Func<Task> delete)
+    {
+        try
+        {
+            await delete();
+        }
+        catch (Exception e)
+        {
+            // Best-effort cleanup: an already-deleted or failed resource must not mask the test result.
+            TestContext.Out.WriteLine($"Failed to clean up test resource: {e.Message}");
+        }
+    }
+
     [Test]
     public async Task ShouldGetTenantSelf()
     {
@@ -21,6 +56,7 @@ public class TestClient
     {
         var client = GetManagementClient();
         var applicationId = await CreateApplication(client);
+        TrackApplication(applicationId);
         var proxy = await client.Proxies.CreateAsync(new CreateProxyRequest
         {
             Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
@@ -62,6 +98,7 @@ public class TestClient
             RequireAuth = true
         });
         var proxyId = proxy.Id;
+        TrackProxy(proxyId);
 
         var updatedProxy = await client.Proxies.UpdateAsync(
             proxyId,
@@ -129,6 +166,7 @@ public class TestClient
     {
         var managementClient = GetManagementClient();
         var applicationId = await CreateApplication(managementClient);
+        TrackApplication(applicationId);
         var reactor = await managementClient.Reactors.CreateAsync(new CreateReactorRequest
         {
             Name = "(Deletable) dotnet-sdk-" + Guid.NewGuid(),
@@ -152,6 +190,7 @@ public class TestClient
             }
         });
         var reactorId = reactor.Id;
+        TrackReactor(reactorId);
 
         var updatedReactor = await managementClient.Reactors.UpdateAsync(
             reactorId,
@@ -238,13 +277,16 @@ public class TestClient
 
         // Create Application
         var applicationId = await CreateApplication(managementClient);
+        TrackApplication(applicationId);
 
         // Proxies
         var proxyId = await CreateProxy(managementClient, applicationId);
+        TrackProxy(proxyId);
         await managementClient.Proxies.DeleteAsync(proxyId);
 
         // Reactors
         var reactorId = await CreateReactor(managementClient, applicationId);
+        TrackReactor(reactorId);
         await React(client, reactorId);
         await managementClient.Reactors.DeleteAsync(reactorId);
 
@@ -857,6 +899,24 @@ public class TestClient
     private static void AssertIsGuid(string? expected)
     {
         Assert.That(Guid.TryParse(expected, out Guid _), Is.True);
+    }
+
+    private void TrackApplication(string? applicationId)
+    {
+        if (applicationId != null)
+            _createdApplicationIds.Add(applicationId);
+    }
+
+    private void TrackProxy(string? proxyId)
+    {
+        if (proxyId != null)
+            _createdProxyIds.Add(proxyId);
+    }
+
+    private void TrackReactor(string? reactorId)
+    {
+        if (reactorId != null)
+            _createdReactorIds.Add(reactorId);
     }
 
     private static async Task<string?> CreateApplication(BasisTheory managementClient)
