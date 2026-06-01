@@ -100,7 +100,9 @@ public partial class EnrollmentsClient
     /// List all enrollments for the current tenant with cursor-based pagination.
     /// </summary>
     /// <example><code>
-    /// await client.Agentic.Enrollments.ListAsync(new EnrollmentsListRequest());
+    /// await client.Agentic.Enrollments.ListAsync(
+    ///     new EnrollmentsListRequest { Limit = 1, Cursor = "cursor" }
+    /// );
     /// </code></example>
     public async Task<Pager<Enrollment>> ListAsync(
         EnrollmentsListRequest request,

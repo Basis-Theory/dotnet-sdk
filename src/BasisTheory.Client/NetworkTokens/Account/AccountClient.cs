@@ -1,43 +1,39 @@
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
+using BasisTheory.Client;
 using BasisTheory.Client.Core;
 
-namespace BasisTheory.Client;
+namespace BasisTheory.Client.NetworkTokens;
 
-public partial class PermissionsClient
+public partial class AccountClient
 {
     private RawClient _client;
 
-    internal PermissionsClient(RawClient client)
+    internal AccountClient(RawClient client)
     {
         _client = client;
     }
 
     /// <example><code>
-    /// await client.Permissions.ListAsync(
-    ///     new PermissionsListRequest { ApplicationType = "application_type" }
-    /// );
+    /// await client.NetworkTokens.Account.GetAsync("id");
     /// </code></example>
-    public async Task<IEnumerable<Permission>> ListAsync(
-        PermissionsListRequest request,
+    public async Task<NetworkTokenAccount> GetAsync(
+        string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        if (request.ApplicationType != null)
-        {
-            _query["application_type"] = request.ApplicationType;
-        }
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
                     BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
-                    Path = "permissions",
-                    Query = _query,
+                    Path = string.Format(
+                        "network-tokens/{0}/account",
+                        ValueConvert.ToPathParameterString(id)
+                    ),
                     Options = options,
                 },
                 cancellationToken
@@ -48,7 +44,7 @@ public partial class PermissionsClient
             var responseBody = await response.Raw.Content.ReadAsStringAsync();
             try
             {
-                return JsonUtils.Deserialize<IEnumerable<Permission>>(responseBody)!;
+                return JsonUtils.Deserialize<NetworkTokenAccount>(responseBody)!;
             }
             catch (JsonException e)
             {
@@ -62,16 +58,18 @@ public partial class PermissionsClient
             {
                 switch (response.StatusCode)
                 {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
                     case 401:
                         throw new UnauthorizedError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
                         );
                     case 403:
                         throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+                    case 500:
+                        throw new InternalServerError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody)
                         );
                 }

@@ -111,7 +111,6 @@ public partial class SessionsClient
                         ValueConvert.ToPathParameterString(sessionId)
                     ),
                     Body = request,
-                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken

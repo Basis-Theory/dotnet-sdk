@@ -94,7 +94,15 @@ public partial class InvitationsClient
     }
 
     /// <example><code>
-    /// await client.Tenants.Invitations.ListAsync(new InvitationsListRequest());
+    /// await client.Tenants.Invitations.ListAsync(
+    ///     new InvitationsListRequest
+    ///     {
+    ///         Status = TenantInvitationStatus.Pending,
+    ///         Page = 1,
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<Pager<TenantInvitationResponse>> ListAsync(
         InvitationsListRequest request,

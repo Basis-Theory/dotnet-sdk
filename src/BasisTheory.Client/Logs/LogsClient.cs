@@ -108,7 +108,18 @@ public partial class LogsClient
     }
 
     /// <example><code>
-    /// await client.Logs.ListAsync(new LogsListRequest());
+    /// await client.Logs.ListAsync(
+    ///     new LogsListRequest
+    ///     {
+    ///         EntityType = "entity_type",
+    ///         EntityId = "entity_id",
+    ///         StartDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///         EndDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    ///         Page = 1,
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<Pager<Log>> ListAsync(
         LogsListRequest request,

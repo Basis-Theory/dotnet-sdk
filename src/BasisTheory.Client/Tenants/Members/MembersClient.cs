@@ -17,7 +17,15 @@ public partial class MembersClient
     }
 
     /// <example><code>
-    /// await client.Tenants.Members.ListAsync(new MembersListRequest());
+    /// await client.Tenants.Members.ListAsync(
+    ///     new MembersListRequest
+    ///     {
+    ///         UserId = [new List&lt;string&gt;() { "user_id" }],
+    ///         Page = 1,
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<TenantMemberResponsePaginatedList> ListAsync(
         MembersListRequest request,
