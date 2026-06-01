@@ -1,3 +1,10 @@
+# [6.10.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.9.0...v6.10.0) (2026-06-01)
+
+
+### Features
+
+* Add network token account endpoint ([ab235b6](https://github.com/Basis-Theory/dotnet-sdk/commit/ab235b647cd6dc4e381fbe0093c9150f60473217))
+
 # [6.9.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.8.0...v6.9.0) (2026-05-20)
 
 
