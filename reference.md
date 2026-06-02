@@ -13,7 +13,16 @@
 <dd>
 
 ```csharp
-await client.Applications.ListAsync(new ApplicationsListRequest());
+await client.Applications.ListAsync(
+    new ApplicationsListRequest
+    {
+        Id = [new List<string>() { "id" }],
+        Type = [new List<string>() { "type" }],
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -249,7 +258,14 @@ await client.Applications.GetByKeyAsync();
 <dd>
 
 ```csharp
-await client.ApplicationKeys.ListAsync("id", new ApplicationKeysListRequest());
+await client.ApplicationKeys.ListAsync(
+    "id",
+    new ApplicationKeysListRequest
+    {
+        Id = [new List<string>() { "id" }],
+        Type = [new List<string>() { "type" }],
+    }
+);
 ```
 </dd>
 </dl>
@@ -1071,7 +1087,16 @@ await client.Tokens.CreateAsync(new CreateTokenRequest());
 <dd>
 
 ```csharp
-await client.Tokens.ListV2Async(new TokensListV2Request());
+await client.Tokens.ListV2Async(
+    new TokensListV2Request
+    {
+        Type = "type",
+        Container = "container",
+        Fingerprint = "fingerprint",
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -1381,7 +1406,18 @@ await client.Keys.DeleteAsync("id");
 <dd>
 
 ```csharp
-await client.Logs.ListAsync(new LogsListRequest());
+await client.Logs.ListAsync(
+    new LogsListRequest
+    {
+        EntityType = "entity_type",
+        EntityId = "entity_id",
+        StartDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        EndDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -1688,7 +1724,9 @@ await client.NetworkTokens.ResumeAsync("id");
 <dd>
 
 ```csharp
-await client.Permissions.ListAsync(new PermissionsListRequest());
+await client.Permissions.ListAsync(
+    new PermissionsListRequest { ApplicationType = "application_type" }
+);
 ```
 </dd>
 </dl>
@@ -1729,7 +1767,16 @@ await client.Permissions.ListAsync(new PermissionsListRequest());
 <dd>
 
 ```csharp
-await client.Proxies.ListAsync(new ProxiesListRequest());
+await client.Proxies.ListAsync(
+    new ProxiesListRequest
+    {
+        Id = [new List<string>() { "id" }],
+        Name = "name",
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -1991,7 +2038,16 @@ await client.Proxies.PatchAsync("id", new PatchProxyRequest());
 <dd>
 
 ```csharp
-await client.Reactors.ListAsync(new ReactorsListRequest());
+await client.Reactors.ListAsync(
+    new ReactorsListRequest
+    {
+        Id = [new List<string>() { "id" }],
+        Name = "name",
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -2987,7 +3043,7 @@ Returns a list of account updater batch jobs
 <dd>
 
 ```csharp
-await client.AccountUpdater.Jobs.ListAsync(new JobsListRequest());
+await client.AccountUpdater.Jobs.ListAsync(new JobsListRequest { Size = 1, Start = "start" });
 ```
 </dd>
 </dl>
@@ -3322,7 +3378,9 @@ List all enrollments for the current tenant with cursor-based pagination.
 <dd>
 
 ```csharp
-await client.Agentic.Enrollments.ListAsync(new EnrollmentsListRequest());
+await client.Agentic.Enrollments.ListAsync(
+    new EnrollmentsListRequest { Limit = 1, Cursor = "cursor" }
+);
 ```
 </dd>
 </dl>
@@ -3585,7 +3643,15 @@ List all purchase instructions for an agent with cursor-based pagination and opt
 <dd>
 
 ```csharp
-await client.Agentic.Agents.Instructions.ListAsync("agent_id", new InstructionsListRequest());
+await client.Agentic.Agents.Instructions.ListAsync(
+    "agent_id",
+    new InstructionsListRequest
+    {
+        EnrollmentId = "enrollment_id",
+        Limit = 1,
+        Cursor = "cursor",
+    }
+);
 ```
 </dd>
 </dl>
@@ -5389,7 +5455,15 @@ await client.Tenants.Connections.DeleteAsync();
 <dd>
 
 ```csharp
-await client.Tenants.Invitations.ListAsync(new InvitationsListRequest());
+await client.Tenants.Invitations.ListAsync(
+    new InvitationsListRequest
+    {
+        Status = TenantInvitationStatus.Pending,
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -5590,7 +5664,15 @@ await client.Tenants.Invitations.DeleteAsync("invitationId");
 <dd>
 
 ```csharp
-await client.Tenants.Members.ListAsync(new MembersListRequest());
+await client.Tenants.Members.ListAsync(
+    new MembersListRequest
+    {
+        UserId = [new List<string>() { "user_id" }],
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -5722,7 +5804,15 @@ await client.Tenants.Members.DeleteAsync("memberId");
 <dd>
 
 ```csharp
-await client.Tenants.Merchants.ListAsync("tenantId", new MerchantsListRequest());
+await client.Tenants.Merchants.ListAsync(
+    "tenantId",
+    new MerchantsListRequest
+    {
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>

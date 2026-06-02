@@ -113,7 +113,15 @@ public partial class InstructionsClient
     /// List all purchase instructions for an agent with cursor-based pagination and optional enrollment filter.
     /// </summary>
     /// <example><code>
-    /// await client.Agentic.Agents.Instructions.ListAsync("agent_id", new InstructionsListRequest());
+    /// await client.Agentic.Agents.Instructions.ListAsync(
+    ///     "agent_id",
+    ///     new InstructionsListRequest
+    ///     {
+    ///         EnrollmentId = "enrollment_id",
+    ///         Limit = 1,
+    ///         Cursor = "cursor",
+    ///     }
+    /// );
     /// </code></example>
     public async Task<Pager<Instruction>> ListAsync(
         string agentId,

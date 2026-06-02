@@ -89,7 +89,7 @@ public partial class JobsClient
     /// Returns a list of account updater batch jobs
     /// </summary>
     /// <example><code>
-    /// await client.AccountUpdater.Jobs.ListAsync(new JobsListRequest());
+    /// await client.AccountUpdater.Jobs.ListAsync(new JobsListRequest { Size = 1, Start = "start" });
     /// </code></example>
     public async Task<AccountUpdaterJobList> ListAsync(
         JobsListRequest request,

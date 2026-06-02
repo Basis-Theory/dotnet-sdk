@@ -59,7 +59,6 @@ public partial class VerifyClient
                         ValueConvert.ToPathParameterString(instructionId)
                     ),
                     Body = request,
-                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken

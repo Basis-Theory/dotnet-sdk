@@ -63,7 +63,16 @@ List endpoints are paginated. The SDK provides an async enumerable so that you c
 using BasisTheory.Client;
 
 var client = new BasisTheory();
-var items = await client.Applications.ListAsync(new ApplicationsListRequest());
+var items = await client.Applications.ListAsync(
+    new ApplicationsListRequest
+    {
+        Id = [new List<string>() { "id" }],
+        Type = [new List<string>() { "type" }],
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 
 await foreach (var item in items)
 {

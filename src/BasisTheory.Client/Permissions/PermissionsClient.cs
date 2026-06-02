@@ -15,7 +15,9 @@ public partial class PermissionsClient
     }
 
     /// <example><code>
-    /// await client.Permissions.ListAsync(new PermissionsListRequest());
+    /// await client.Permissions.ListAsync(
+    ///     new PermissionsListRequest { ApplicationType = "application_type" }
+    /// );
     /// </code></example>
     public async Task<IEnumerable<Permission>> ListAsync(
         PermissionsListRequest request,

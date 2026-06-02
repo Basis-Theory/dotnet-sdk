@@ -16,7 +16,14 @@ public partial class ApplicationKeysClient
     }
 
     /// <example><code>
-    /// await client.ApplicationKeys.ListAsync("id", new ApplicationKeysListRequest());
+    /// await client.ApplicationKeys.ListAsync(
+    ///     "id",
+    ///     new ApplicationKeysListRequest
+    ///     {
+    ///         Id = [new List&lt;string&gt;() { "id" }],
+    ///         Type = [new List&lt;string&gt;() { "type" }],
+    ///     }
+    /// );
     /// </code></example>
     public async Task<IEnumerable<ApplicationKey>> ListAsync(
         string id,

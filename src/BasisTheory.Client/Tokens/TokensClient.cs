@@ -182,7 +182,6 @@ public partial class TokensClient
                     Method = HttpMethod.Post,
                     Path = "detokenize",
                     Body = request,
-                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken
@@ -254,7 +253,6 @@ public partial class TokensClient
                     Method = HttpMethod.Post,
                     Path = "tokenize",
                     Body = request,
-                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken
@@ -524,7 +522,6 @@ public partial class TokensClient
                     Method = HttpMethod.Post,
                     Path = "tokens",
                     Body = request,
-                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken
@@ -580,7 +577,16 @@ public partial class TokensClient
     }
 
     /// <example><code>
-    /// await client.Tokens.ListV2Async(new TokensListV2Request());
+    /// await client.Tokens.ListV2Async(
+    ///     new TokensListV2Request
+    ///     {
+    ///         Type = "type",
+    ///         Container = "container",
+    ///         Fingerprint = "fingerprint",
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<Pager<Token>> ListV2Async(
         TokensListV2Request request,

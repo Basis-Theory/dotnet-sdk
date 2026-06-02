@@ -93,7 +93,16 @@ public partial class ApplicationsClient
     }
 
     /// <example><code>
-    /// await client.Applications.ListAsync(new ApplicationsListRequest());
+    /// await client.Applications.ListAsync(
+    ///     new ApplicationsListRequest
+    ///     {
+    ///         Id = [new List&lt;string&gt;() { "id" }],
+    ///         Type = [new List&lt;string&gt;() { "type" }],
+    ///         Page = 1,
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<Pager<Application>> ListAsync(
         ApplicationsListRequest request,

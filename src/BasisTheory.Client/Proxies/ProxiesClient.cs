@@ -96,7 +96,16 @@ public partial class ProxiesClient
     }
 
     /// <example><code>
-    /// await client.Proxies.ListAsync(new ProxiesListRequest());
+    /// await client.Proxies.ListAsync(
+    ///     new ProxiesListRequest
+    ///     {
+    ///         Id = [new List&lt;string&gt;() { "id" }],
+    ///         Name = "name",
+    ///         Page = 1,
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<Pager<Proxy>> ListAsync(
         ProxiesListRequest request,

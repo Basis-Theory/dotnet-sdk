@@ -91,7 +91,15 @@ public partial class MerchantsClient
     }
 
     /// <example><code>
-    /// await client.Tenants.Merchants.ListAsync("tenantId", new MerchantsListRequest());
+    /// await client.Tenants.Merchants.ListAsync(
+    ///     "tenantId",
+    ///     new MerchantsListRequest
+    ///     {
+    ///         Page = 1,
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<Pager<TenantMerchant>> ListAsync(
         string tenantId,
@@ -155,7 +163,6 @@ public partial class MerchantsClient
                         ValueConvert.ToPathParameterString(tenantId)
                     ),
                     Body = request,
-                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken
@@ -365,7 +372,6 @@ public partial class MerchantsClient
                         ValueConvert.ToPathParameterString(merchantId)
                     ),
                     Body = request,
-                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken

@@ -100,7 +100,16 @@ public partial class ReactorsClient
     }
 
     /// <example><code>
-    /// await client.Reactors.ListAsync(new ReactorsListRequest());
+    /// await client.Reactors.ListAsync(
+    ///     new ReactorsListRequest
+    ///     {
+    ///         Id = [new List&lt;string&gt;() { "id" }],
+    ///         Name = "name",
+    ///         Page = 1,
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
     /// </code></example>
     public async Task<Pager<Reactor>> ListAsync(
         ReactorsListRequest request,
@@ -479,7 +488,6 @@ public partial class ReactorsClient
                         ValueConvert.ToPathParameterString(id)
                     ),
                     Body = request,
-                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken
@@ -560,7 +568,6 @@ public partial class ReactorsClient
                         ValueConvert.ToPathParameterString(id)
                     ),
                     Body = request,
-                    ContentType = "application/json",
                     Options = options,
                 },
                 cancellationToken
