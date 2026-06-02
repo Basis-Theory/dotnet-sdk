@@ -1,10 +1,10 @@
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.AccountUpdater;
 
-public partial class AccountUpdaterClient
+public partial class AccountUpdaterClient : IAccountUpdaterClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal AccountUpdaterClient(RawClient client)
     {
@@ -13,7 +13,7 @@ public partial class AccountUpdaterClient
         RealTime = new RealTimeClient(_client);
     }
 
-    public JobsClient Jobs { get; }
+    public IJobsClient Jobs { get; }
 
-    public RealTimeClient RealTime { get; }
+    public IRealTimeClient RealTime { get; }
 }

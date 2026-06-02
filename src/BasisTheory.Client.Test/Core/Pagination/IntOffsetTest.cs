@@ -1,4 +1,5 @@
 using BasisTheory.Client.Core;
+using global::System.Net;
 using NUnit.Framework;
 using SystemTask = global::System.Threading.Tasks.Task;
 
@@ -29,13 +30,16 @@ public class IntOffsetTest
             (_, _, _) =>
             {
                 responses.MoveNext();
-                return SystemTask.FromResult(responses.Current);
+                return SystemTask.FromResult(Wrap(responses.Current));
             },
-            request => request.Pagination.Page,
+            request => request?.Pagination?.Page ?? 0,
             (request, offset) =>
             {
-                request.Pagination ??= new();
-                request.Pagination.Page = offset;
+                if (request is not null)
+                {
+                    request.Pagination ??= new();
+                    request.Pagination.Page = offset;
+                }
             },
             null,
             response => response?.Data?.Items?.ToList(),
@@ -76,4 +80,16 @@ public class IntOffsetTest
     {
         public IEnumerable<string>? Items { get; set; }
     }
+
+    private static WithRawResponse<Response> Wrap(Response response) =>
+        new()
+        {
+            Data = response,
+            RawResponse = new RawResponse
+            {
+                StatusCode = HttpStatusCode.OK,
+                Url = new Uri("https://localhost"),
+                Headers = default,
+            },
+        };
 }

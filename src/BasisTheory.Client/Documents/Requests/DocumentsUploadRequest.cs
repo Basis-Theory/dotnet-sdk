@@ -1,4 +1,4 @@
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
 
 namespace BasisTheory.Client;
 

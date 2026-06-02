@@ -1,41 +1,42 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client.Reactors;
 
-public partial class ResultsClient
+public partial class ResultsClient : IResultsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal ResultsClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <example><code>
-    /// await client.Reactors.Results.GetAsync("id", "requestId");
-    /// </code></example>
-    public async Task<object> GetAsync(
+    private async Task<WithRawResponse<object>> GetAsyncCore(
         string id,
         string requestId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "reactors/{0}/results/{1}",
                         ValueConvert.ToPathParameterString(id),
                         ValueConvert.ToPathParameterString(requestId)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -43,19 +44,37 @@ public partial class ResultsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<object>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<object>(responseBody)!;
+                return new WithRawResponse<object>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -86,5 +105,20 @@ public partial class ResultsClient
                 responseBody
             );
         }
+    }
+
+    /// <example><code>
+    /// await client.Reactors.Results.GetAsync("id", "requestId");
+    /// </code></example>
+    public WithRawResponseTask<object> GetAsync(
+        string id,
+        string requestId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<object>(
+            GetAsyncCore(id, requestId, options, cancellationToken)
+        );
     }
 }

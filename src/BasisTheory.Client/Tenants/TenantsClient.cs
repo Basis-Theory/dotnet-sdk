@@ -1,14 +1,12 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client.Core;
-using BasisTheory.Client.Tenants;
+using global::BasisTheory.Client.Core;
+using global::BasisTheory.Client.Tenants;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client;
 
-public partial class TenantsClient
+public partial class TenantsClient : ITenantsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal TenantsClient(RawClient client)
     {
@@ -22,37 +20,40 @@ public partial class TenantsClient
         Self = new SelfClient(_client);
     }
 
-    public SecurityContactClient SecurityContact { get; }
+    public ISecurityContactClient SecurityContact { get; }
 
-    public ConnectionsClient Connections { get; }
+    public IConnectionsClient Connections { get; }
 
-    public InvitationsClient Invitations { get; }
+    public IInvitationsClient Invitations { get; }
 
-    public MembersClient Members { get; }
+    public IMembersClient Members { get; }
 
-    public MerchantsClient Merchants { get; }
+    public IMerchantsClient Merchants { get; }
 
-    public OwnerClient Owner { get; }
+    public IOwnerClient Owner { get; }
 
-    public SelfClient Self { get; }
+    public ISelfClient Self { get; }
 
-    /// <example><code>
-    /// await client.Tenants.OwnerTransferAsync(new TransferTenantOwnerRequest { MemberId = "member_id" });
-    /// </code></example>
-    public async Task<TenantMemberResponse> OwnerTransferAsync(
+    private async Task<WithRawResponse<TenantMemberResponse>> OwnerTransferAsyncCore(
         TransferTenantOwnerRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Put,
                     Path = "tenants/self/owner",
                     Body = request,
+                    Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
                 },
@@ -61,19 +62,37 @@ public partial class TenantsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<TenantMemberResponse>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<TenantMemberResponse>(responseBody)!;
+                return new WithRawResponse<TenantMemberResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -104,5 +123,19 @@ public partial class TenantsClient
                 responseBody
             );
         }
+    }
+
+    /// <example><code>
+    /// await client.Tenants.OwnerTransferAsync(new TransferTenantOwnerRequest { MemberId = "member_id" });
+    /// </code></example>
+    public WithRawResponseTask<TenantMemberResponse> OwnerTransferAsync(
+        TransferTenantOwnerRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<TenantMemberResponse>(
+            OwnerTransferAsyncCore(request, options, cancellationToken)
+        );
     }
 }

@@ -1,41 +1,43 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client;
 
-public partial class PermissionsClient
+public partial class PermissionsClient : IPermissionsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal PermissionsClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <example><code>
-    /// await client.Permissions.ListAsync(new PermissionsListRequest());
-    /// </code></example>
-    public async Task<IEnumerable<Permission>> ListAsync(
+    private async Task<WithRawResponse<IEnumerable<Permission>>> ListAsyncCore(
         PermissionsListRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        if (request.ApplicationType != null)
-        {
-            _query["application_type"] = request.ApplicationType;
-        }
+        var _queryString = new global::BasisTheory.Client.Core.QueryStringBuilder.Builder(
+            capacity: 1
+        )
+            .Add("application_type", request.ApplicationType)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = "permissions",
-                    Query = _query,
+                    QueryString = _queryString,
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -43,19 +45,37 @@ public partial class PermissionsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<IEnumerable<Permission>>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<IEnumerable<Permission>>(responseBody)!;
+                return new WithRawResponse<IEnumerable<Permission>>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -84,5 +104,21 @@ public partial class PermissionsClient
                 responseBody
             );
         }
+    }
+
+    /// <example><code>
+    /// await client.Permissions.ListAsync(
+    ///     new PermissionsListRequest { ApplicationType = "application_type" }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<IEnumerable<Permission>> ListAsync(
+        PermissionsListRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<IEnumerable<Permission>>(
+            ListAsyncCore(request, options, cancellationToken)
+        );
     }
 }

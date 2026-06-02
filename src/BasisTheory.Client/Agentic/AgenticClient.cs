@@ -1,10 +1,10 @@
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.Agentic;
 
-public partial class AgenticClient
+public partial class AgenticClient : IAgenticClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal AgenticClient(RawClient client)
     {
@@ -13,7 +13,7 @@ public partial class AgenticClient
         Enrollments = new EnrollmentsClient(_client);
     }
 
-    public AgentsClient Agents { get; }
+    public IAgentsClient Agents { get; }
 
-    public EnrollmentsClient Enrollments { get; }
+    public IEnrollmentsClient Enrollments { get; }
 }

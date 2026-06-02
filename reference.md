@@ -1,6 +1,6 @@
 # Reference
 ## Applications
-<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">ListAsync</a>(ApplicationsListRequest { ... }) -> Core.Pager&lt;Application&gt;</code></summary>
+<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">ListAsync</a>(ApplicationsListRequest { ... }) -> Pager&lt;Application&gt;</code></summary>
 <dl>
 <dd>
 
@@ -13,7 +13,16 @@
 <dd>
 
 ```csharp
-await client.Applications.ListAsync(new ApplicationsListRequest());
+await client.Applications.ListAsync(
+    new ApplicationsListRequest
+    {
+        Id = new List<string>() { "id" },
+        Type = new List<string>() { "type" },
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -40,7 +49,7 @@ await client.Applications.ListAsync(new ApplicationsListRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">CreateAsync</a>(CreateApplicationRequest { ... }) -> Application</code></summary>
+<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">CreateAsync</a>(CreateApplicationRequest { ... }) -> WithRawResponseTask&lt;Application&gt;</code></summary>
 <dl>
 <dd>
 
@@ -82,7 +91,7 @@ await client.Applications.CreateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">GetAsync</a>(id) -> Application</code></summary>
+<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;Application&gt;</code></summary>
 <dl>
 <dd>
 
@@ -122,7 +131,7 @@ await client.Applications.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">UpdateAsync</a>(id, UpdateApplicationRequest { ... }) -> Application</code></summary>
+<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">UpdateAsync</a>(id, UpdateApplicationRequest { ... }) -> WithRawResponseTask&lt;Application&gt;</code></summary>
 <dl>
 <dd>
 
@@ -210,7 +219,7 @@ await client.Applications.DeleteAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">GetByKeyAsync</a>() -> Application</code></summary>
+<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">GetByKeyAsync</a>() -> WithRawResponseTask&lt;Application&gt;</code></summary>
 <dl>
 <dd>
 
@@ -236,7 +245,7 @@ await client.Applications.GetByKeyAsync();
 </details>
 
 ## ApplicationKeys
-<details><summary><code>client.ApplicationKeys.<a href="/src/BasisTheory.Client/ApplicationKeys/ApplicationKeysClient.cs">ListAsync</a>(id, ApplicationKeysListRequest { ... }) -> IEnumerable&lt;ApplicationKey&gt;</code></summary>
+<details><summary><code>client.ApplicationKeys.<a href="/src/BasisTheory.Client/ApplicationKeys/ApplicationKeysClient.cs">ListAsync</a>(id, ApplicationKeysListRequest { ... }) -> WithRawResponseTask&lt;IEnumerable&lt;ApplicationKey&gt;&gt;</code></summary>
 <dl>
 <dd>
 
@@ -249,7 +258,14 @@ await client.Applications.GetByKeyAsync();
 <dd>
 
 ```csharp
-await client.ApplicationKeys.ListAsync("id", new ApplicationKeysListRequest());
+await client.ApplicationKeys.ListAsync(
+    "id",
+    new ApplicationKeysListRequest
+    {
+        Id = new List<string>() { "id" },
+        Type = new List<string>() { "type" },
+    }
+);
 ```
 </dd>
 </dl>
@@ -284,7 +300,7 @@ await client.ApplicationKeys.ListAsync("id", new ApplicationKeysListRequest());
 </dl>
 </details>
 
-<details><summary><code>client.ApplicationKeys.<a href="/src/BasisTheory.Client/ApplicationKeys/ApplicationKeysClient.cs">CreateAsync</a>(id) -> ApplicationKey</code></summary>
+<details><summary><code>client.ApplicationKeys.<a href="/src/BasisTheory.Client/ApplicationKeys/ApplicationKeysClient.cs">CreateAsync</a>(id) -> WithRawResponseTask&lt;ApplicationKey&gt;</code></summary>
 <dl>
 <dd>
 
@@ -324,7 +340,7 @@ await client.ApplicationKeys.CreateAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.ApplicationKeys.<a href="/src/BasisTheory.Client/ApplicationKeys/ApplicationKeysClient.cs">GetAsync</a>(id, keyId) -> ApplicationKey</code></summary>
+<details><summary><code>client.ApplicationKeys.<a href="/src/BasisTheory.Client/ApplicationKeys/ApplicationKeysClient.cs">GetAsync</a>(id, keyId) -> WithRawResponseTask&lt;ApplicationKey&gt;</code></summary>
 <dl>
 <dd>
 
@@ -421,7 +437,7 @@ await client.ApplicationKeys.DeleteAsync("id", "keyId");
 </details>
 
 ## ApplicationTemplates
-<details><summary><code>client.ApplicationTemplates.<a href="/src/BasisTheory.Client/ApplicationTemplates/ApplicationTemplatesClient.cs">ListAsync</a>() -> IEnumerable&lt;ApplicationTemplate&gt;</code></summary>
+<details><summary><code>client.ApplicationTemplates.<a href="/src/BasisTheory.Client/ApplicationTemplates/ApplicationTemplatesClient.cs">ListAsync</a>() -> WithRawResponseTask&lt;IEnumerable&lt;ApplicationTemplate&gt;&gt;</code></summary>
 <dl>
 <dd>
 
@@ -446,7 +462,7 @@ await client.ApplicationTemplates.ListAsync();
 </dl>
 </details>
 
-<details><summary><code>client.ApplicationTemplates.<a href="/src/BasisTheory.Client/ApplicationTemplates/ApplicationTemplatesClient.cs">GetAsync</a>(id) -> ApplicationTemplate</code></summary>
+<details><summary><code>client.ApplicationTemplates.<a href="/src/BasisTheory.Client/ApplicationTemplates/ApplicationTemplatesClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;ApplicationTemplate&gt;</code></summary>
 <dl>
 <dd>
 
@@ -487,7 +503,7 @@ await client.ApplicationTemplates.GetAsync("id");
 </details>
 
 ## ApplePay
-<details><summary><code>client.ApplePay.<a href="/src/BasisTheory.Client/ApplePay/ApplePayClient.cs">CreateAsync</a>(ApplePayCreateRequest { ... }) -> ApplePayCreateResponse</code></summary>
+<details><summary><code>client.ApplePay.<a href="/src/BasisTheory.Client/ApplePay/ApplePayClient.cs">CreateAsync</a>(ApplePayCreateRequest { ... }) -> WithRawResponseTask&lt;ApplePayCreateResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -527,7 +543,7 @@ await client.ApplePay.CreateAsync(new ApplePayCreateRequest());
 </dl>
 </details>
 
-<details><summary><code>client.ApplePay.<a href="/src/BasisTheory.Client/ApplePay/ApplePayClient.cs">GetAsync</a>(id) -> ApplePayToken</code></summary>
+<details><summary><code>client.ApplePay.<a href="/src/BasisTheory.Client/ApplePay/ApplePayClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;ApplePayToken&gt;</code></summary>
 <dl>
 <dd>
 
@@ -567,7 +583,7 @@ await client.ApplePay.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.ApplePay.<a href="/src/BasisTheory.Client/ApplePay/ApplePayClient.cs">DeleteAsync</a>(id) -> string</code></summary>
+<details><summary><code>client.ApplePay.<a href="/src/BasisTheory.Client/ApplePay/ApplePayClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask&lt;string&gt;</code></summary>
 <dl>
 <dd>
 
@@ -608,7 +624,7 @@ await client.ApplePay.DeleteAsync("id");
 </details>
 
 ## GooglePay
-<details><summary><code>client.GooglePay.<a href="/src/BasisTheory.Client/GooglePay/GooglePayClient.cs">CreateAsync</a>(GooglePayCreateRequest { ... }) -> GooglePayCreateResponse</code></summary>
+<details><summary><code>client.GooglePay.<a href="/src/BasisTheory.Client/GooglePay/GooglePayClient.cs">CreateAsync</a>(GooglePayCreateRequest { ... }) -> WithRawResponseTask&lt;GooglePayCreateResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -648,7 +664,7 @@ await client.GooglePay.CreateAsync(new GooglePayCreateRequest());
 </dl>
 </details>
 
-<details><summary><code>client.GooglePay.<a href="/src/BasisTheory.Client/GooglePay/GooglePayClient.cs">GetAsync</a>(id) -> GooglePayToken</code></summary>
+<details><summary><code>client.GooglePay.<a href="/src/BasisTheory.Client/GooglePay/GooglePayClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;GooglePayToken&gt;</code></summary>
 <dl>
 <dd>
 
@@ -688,7 +704,7 @@ await client.GooglePay.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.GooglePay.<a href="/src/BasisTheory.Client/GooglePay/GooglePayClient.cs">DeleteAsync</a>(id) -> string</code></summary>
+<details><summary><code>client.GooglePay.<a href="/src/BasisTheory.Client/GooglePay/GooglePayClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask&lt;string&gt;</code></summary>
 <dl>
 <dd>
 
@@ -729,7 +745,47 @@ await client.GooglePay.DeleteAsync("id");
 </details>
 
 ## Documents
-<details><summary><code>client.Documents.<a href="/src/BasisTheory.Client/Documents/DocumentsClient.cs">GetAsync</a>(id) -> Document</code></summary>
+<details><summary><code>client.Documents.<a href="/src/BasisTheory.Client/Documents/DocumentsClient.cs">UploadAsync</a>(DocumentsUploadRequest { ... }) -> WithRawResponseTask&lt;Document&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Documents.UploadAsync(new DocumentsUploadRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `DocumentsUploadRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Documents.<a href="/src/BasisTheory.Client/Documents/DocumentsClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;Document&gt;</code></summary>
 <dl>
 <dd>
 
@@ -810,7 +866,7 @@ await client.Documents.DeleteAsync("id");
 </details>
 
 ## Tokens
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">DetokenizeAsync</a>(object { ... }) -> object</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">DetokenizeAsync</a>(object { ... }) -> WithRawResponseTask&lt;object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -850,7 +906,7 @@ await client.Tokens.DetokenizeAsync(new Dictionary<object, object?>() { { "key",
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">TokenizeAsync</a>(object { ... }) -> object</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">TokenizeAsync</a>(object { ... }) -> WithRawResponseTask&lt;object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -890,7 +946,7 @@ await client.Tokens.TokenizeAsync(new Dictionary<object, object?>() { { "key", "
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">GetAsync</a>(id) -> Token</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;Token&gt;</code></summary>
 <dl>
 <dd>
 
@@ -970,7 +1026,7 @@ await client.Tokens.DeleteAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">UpdateAsync</a>(id, UpdateTokenRequest { ... }) -> Token</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">UpdateAsync</a>(id, UpdateTokenRequest { ... }) -> WithRawResponseTask&lt;Token&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1018,7 +1074,7 @@ await client.Tokens.UpdateAsync("id", new UpdateTokenRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">CreateAsync</a>(CreateTokenRequest { ... }) -> Token</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">CreateAsync</a>(CreateTokenRequest { ... }) -> WithRawResponseTask&lt;Token&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1058,7 +1114,7 @@ await client.Tokens.CreateAsync(new CreateTokenRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">ListV2Async</a>(TokensListV2Request { ... }) -> Core.Pager&lt;Token&gt;</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">ListV2Async</a>(TokensListV2Request { ... }) -> Pager&lt;Token&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1071,7 +1127,16 @@ await client.Tokens.CreateAsync(new CreateTokenRequest());
 <dd>
 
 ```csharp
-await client.Tokens.ListV2Async(new TokensListV2Request());
+await client.Tokens.ListV2Async(
+    new TokensListV2Request
+    {
+        Type = "type",
+        Container = "container",
+        Fingerprint = "fingerprint",
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -1098,7 +1163,7 @@ await client.Tokens.ListV2Async(new TokensListV2Request());
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">SearchV2Async</a>(SearchTokensRequestV2 { ... }) -> Core.Pager&lt;Token&gt;</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">SearchV2Async</a>(SearchTokensRequestV2 { ... }) -> Pager&lt;Token&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1139,7 +1204,7 @@ await client.Tokens.SearchV2Async(new SearchTokensRequestV2());
 </details>
 
 ## Enrichments
-<details><summary><code>client.Enrichments.<a href="/src/BasisTheory.Client/Enrichments/EnrichmentsClient.cs">BankAccountVerifyAsync</a>(BankVerificationRequest { ... }) -> BankVerificationResponse</code></summary>
+<details><summary><code>client.Enrichments.<a href="/src/BasisTheory.Client/Enrichments/EnrichmentsClient.cs">BankAccountVerifyAsync</a>(BankVerificationRequest { ... }) -> WithRawResponseTask&lt;BankVerificationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1181,7 +1246,7 @@ await client.Enrichments.BankAccountVerifyAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Enrichments.<a href="/src/BasisTheory.Client/Enrichments/EnrichmentsClient.cs">GetcarddetailsAsync</a>(EnrichmentsGetCardDetailsRequest { ... }) -> CardDetailsResponse</code></summary>
+<details><summary><code>client.Enrichments.<a href="/src/BasisTheory.Client/Enrichments/EnrichmentsClient.cs">GetcarddetailsAsync</a>(EnrichmentsGetCardDetailsRequest { ... }) -> WithRawResponseTask&lt;CardDetailsResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1222,7 +1287,7 @@ await client.Enrichments.GetcarddetailsAsync(new EnrichmentsGetCardDetailsReques
 </details>
 
 ## Keys
-<details><summary><code>client.Keys.<a href="/src/BasisTheory.Client/Keys/KeysClient.cs">ListAsync</a>() -> IEnumerable&lt;ClientEncryptionKeyMetadataResponse&gt;</code></summary>
+<details><summary><code>client.Keys.<a href="/src/BasisTheory.Client/Keys/KeysClient.cs">ListAsync</a>() -> WithRawResponseTask&lt;IEnumerable&lt;ClientEncryptionKeyMetadataResponse&gt;&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1247,7 +1312,7 @@ await client.Keys.ListAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Keys.<a href="/src/BasisTheory.Client/Keys/KeysClient.cs">CreateAsync</a>(ClientEncryptionKeyRequest { ... }) -> ClientEncryptionKeyResponse</code></summary>
+<details><summary><code>client.Keys.<a href="/src/BasisTheory.Client/Keys/KeysClient.cs">CreateAsync</a>(ClientEncryptionKeyRequest { ... }) -> WithRawResponseTask&lt;ClientEncryptionKeyResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1287,7 +1352,7 @@ await client.Keys.CreateAsync(new ClientEncryptionKeyRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Keys.<a href="/src/BasisTheory.Client/Keys/KeysClient.cs">GetAsync</a>(id) -> ClientEncryptionKeyMetadataResponse</code></summary>
+<details><summary><code>client.Keys.<a href="/src/BasisTheory.Client/Keys/KeysClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;ClientEncryptionKeyMetadataResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1368,7 +1433,7 @@ await client.Keys.DeleteAsync("id");
 </details>
 
 ## Logs
-<details><summary><code>client.Logs.<a href="/src/BasisTheory.Client/Logs/LogsClient.cs">ListAsync</a>(LogsListRequest { ... }) -> Core.Pager&lt;Log&gt;</code></summary>
+<details><summary><code>client.Logs.<a href="/src/BasisTheory.Client/Logs/LogsClient.cs">ListAsync</a>(LogsListRequest { ... }) -> Pager&lt;Log&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1381,7 +1446,18 @@ await client.Keys.DeleteAsync("id");
 <dd>
 
 ```csharp
-await client.Logs.ListAsync(new LogsListRequest());
+await client.Logs.ListAsync(
+    new LogsListRequest
+    {
+        EntityType = "entity_type",
+        EntityId = "entity_id",
+        StartDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        EndDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -1408,7 +1484,7 @@ await client.Logs.ListAsync(new LogsListRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Logs.<a href="/src/BasisTheory.Client/Logs/LogsClient.cs">GetEntityTypesAsync</a>() -> IEnumerable&lt;LogEntityType&gt;</code></summary>
+<details><summary><code>client.Logs.<a href="/src/BasisTheory.Client/Logs/LogsClient.cs">GetEntityTypesAsync</a>() -> WithRawResponseTask&lt;IEnumerable&lt;LogEntityType&gt;&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1434,7 +1510,7 @@ await client.Logs.GetEntityTypesAsync();
 </details>
 
 ## NetworkTokens
-<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">CreateAsync</a>(CreateNetworkTokenRequest { ... }) -> NetworkToken</code></summary>
+<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">CreateAsync</a>(CreateNetworkTokenRequest { ... }) -> WithRawResponseTask&lt;NetworkToken&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1474,7 +1550,7 @@ await client.NetworkTokens.CreateAsync(new CreateNetworkTokenRequest());
 </dl>
 </details>
 
-<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">CryptogramAsync</a>(id) -> NetworkTokenCryptogram</code></summary>
+<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">CryptogramAsync</a>(id) -> WithRawResponseTask&lt;NetworkTokenCryptogram&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1514,7 +1590,7 @@ await client.NetworkTokens.CryptogramAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">GetAsync</a>(id) -> NetworkToken</code></summary>
+<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;NetworkToken&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1594,7 +1670,7 @@ await client.NetworkTokens.DeleteAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">SuspendAsync</a>(id) -> NetworkToken</code></summary>
+<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">SuspendAsync</a>(id) -> WithRawResponseTask&lt;NetworkToken&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1634,7 +1710,7 @@ await client.NetworkTokens.SuspendAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">ResumeAsync</a>(id) -> NetworkToken</code></summary>
+<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">ResumeAsync</a>(id) -> WithRawResponseTask&lt;NetworkToken&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1675,7 +1751,7 @@ await client.NetworkTokens.ResumeAsync("id");
 </details>
 
 ## Permissions
-<details><summary><code>client.Permissions.<a href="/src/BasisTheory.Client/Permissions/PermissionsClient.cs">ListAsync</a>(PermissionsListRequest { ... }) -> IEnumerable&lt;Permission&gt;</code></summary>
+<details><summary><code>client.Permissions.<a href="/src/BasisTheory.Client/Permissions/PermissionsClient.cs">ListAsync</a>(PermissionsListRequest { ... }) -> WithRawResponseTask&lt;IEnumerable&lt;Permission&gt;&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1688,7 +1764,9 @@ await client.NetworkTokens.ResumeAsync("id");
 <dd>
 
 ```csharp
-await client.Permissions.ListAsync(new PermissionsListRequest());
+await client.Permissions.ListAsync(
+    new PermissionsListRequest { ApplicationType = "application_type" }
+);
 ```
 </dd>
 </dl>
@@ -1716,7 +1794,7 @@ await client.Permissions.ListAsync(new PermissionsListRequest());
 </details>
 
 ## Proxies
-<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">ListAsync</a>(ProxiesListRequest { ... }) -> Core.Pager&lt;Proxy&gt;</code></summary>
+<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">ListAsync</a>(ProxiesListRequest { ... }) -> Pager&lt;Proxy&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1729,7 +1807,16 @@ await client.Permissions.ListAsync(new PermissionsListRequest());
 <dd>
 
 ```csharp
-await client.Proxies.ListAsync(new ProxiesListRequest());
+await client.Proxies.ListAsync(
+    new ProxiesListRequest
+    {
+        Id = new List<string>() { "id" },
+        Name = "name",
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -1756,7 +1843,7 @@ await client.Proxies.ListAsync(new ProxiesListRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">CreateAsync</a>(CreateProxyRequest { ... }) -> Proxy</code></summary>
+<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">CreateAsync</a>(CreateProxyRequest { ... }) -> WithRawResponseTask&lt;Proxy&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1798,7 +1885,7 @@ await client.Proxies.CreateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">GetAsync</a>(id) -> Proxy</code></summary>
+<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;Proxy&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1838,7 +1925,7 @@ await client.Proxies.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">UpdateAsync</a>(id, UpdateProxyRequest { ... }) -> Proxy</code></summary>
+<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">UpdateAsync</a>(id, UpdateProxyRequest { ... }) -> WithRawResponseTask&lt;Proxy&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1978,7 +2065,7 @@ await client.Proxies.PatchAsync("id", new PatchProxyRequest());
 </details>
 
 ## Reactors
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ListAsync</a>(ReactorsListRequest { ... }) -> Core.Pager&lt;Reactor&gt;</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ListAsync</a>(ReactorsListRequest { ... }) -> Pager&lt;Reactor&gt;</code></summary>
 <dl>
 <dd>
 
@@ -1991,7 +2078,16 @@ await client.Proxies.PatchAsync("id", new PatchProxyRequest());
 <dd>
 
 ```csharp
-await client.Reactors.ListAsync(new ReactorsListRequest());
+await client.Reactors.ListAsync(
+    new ReactorsListRequest
+    {
+        Id = new List<string>() { "id" },
+        Name = "name",
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -2018,7 +2114,7 @@ await client.Reactors.ListAsync(new ReactorsListRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">CreateAsync</a>(CreateReactorRequest { ... }) -> Reactor</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">CreateAsync</a>(CreateReactorRequest { ... }) -> WithRawResponseTask&lt;Reactor&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2058,7 +2154,7 @@ await client.Reactors.CreateAsync(new CreateReactorRequest { Name = "name", Code
 </dl>
 </details>
 
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">GetAsync</a>(id) -> Reactor</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;Reactor&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2098,7 +2194,7 @@ await client.Reactors.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">UpdateAsync</a>(id, UpdateReactorRequest { ... }) -> Reactor</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">UpdateAsync</a>(id, UpdateReactorRequest { ... }) -> WithRawResponseTask&lt;Reactor&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2234,7 +2330,7 @@ await client.Reactors.PatchAsync("id", new PatchReactorRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsync</a>(id, object { ... }) -> ReactResponse</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsync</a>(id, object { ... }) -> WithRawResponseTask&lt;ReactResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2282,7 +2378,7 @@ await client.Reactors.ReactAsync("id", new Dictionary<object, object?>() { { "ke
 </dl>
 </details>
 
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsyncAsync</a>(id, object { ... }) -> AsyncReactResponse</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ReactAsyncAsync</a>(id, object { ... }) -> WithRawResponseTask&lt;AsyncReactResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2334,7 +2430,7 @@ await client.Reactors.ReactAsyncAsync(
 </details>
 
 ## Roles
-<details><summary><code>client.Roles.<a href="/src/BasisTheory.Client/Roles/RolesClient.cs">ListAsync</a>() -> IEnumerable&lt;Role&gt;</code></summary>
+<details><summary><code>client.Roles.<a href="/src/BasisTheory.Client/Roles/RolesClient.cs">ListAsync</a>() -> WithRawResponseTask&lt;IEnumerable&lt;Role&gt;&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2360,7 +2456,7 @@ await client.Roles.ListAsync();
 </details>
 
 ## Sessions
-<details><summary><code>client.Sessions.<a href="/src/BasisTheory.Client/Sessions/SessionsClient.cs">CreateAsync</a>() -> CreateSessionResponse</code></summary>
+<details><summary><code>client.Sessions.<a href="/src/BasisTheory.Client/Sessions/SessionsClient.cs">CreateAsync</a>() -> WithRawResponseTask&lt;CreateSessionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2426,7 +2522,7 @@ await client.Sessions.AuthorizeAsync(new AuthorizeSessionRequest { Nonce = "nonc
 </details>
 
 ## Tenants
-<details><summary><code>client.Tenants.<a href="/src/BasisTheory.Client/Tenants/TenantsClient.cs">OwnerTransferAsync</a>(TransferTenantOwnerRequest { ... }) -> TenantMemberResponse</code></summary>
+<details><summary><code>client.Tenants.<a href="/src/BasisTheory.Client/Tenants/TenantsClient.cs">OwnerTransferAsync</a>(TransferTenantOwnerRequest { ... }) -> WithRawResponseTask&lt;TenantMemberResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2467,7 +2563,7 @@ await client.Tenants.OwnerTransferAsync(new TransferTenantOwnerRequest { MemberI
 </details>
 
 ## TokenIntents
-<details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">GetAsync</a>(id) -> TokenIntent</code></summary>
+<details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;TokenIntent&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2547,7 +2643,7 @@ await client.TokenIntents.DeleteAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">CreateAsync</a>(CreateTokenIntentRequest { ... }) -> CreateTokenIntentResponse</code></summary>
+<details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">CreateAsync</a>(CreateTokenIntentRequest { ... }) -> WithRawResponseTask&lt;CreateTokenIntentResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2627,7 +2723,7 @@ await client.Webhooks.PingAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">GetAsync</a>(id) -> Webhook</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;Webhook&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2681,7 +2777,7 @@ await client.Webhooks.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">UpdateAsync</a>(id, UpdateWebhookRequest { ... }) -> Webhook</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">UpdateAsync</a>(id, UpdateWebhookRequest { ... }) -> WithRawResponseTask&lt;Webhook&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2805,7 +2901,7 @@ await client.Webhooks.DeleteAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">ListAsync</a>() -> WebhookList</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">ListAsync</a>() -> WithRawResponseTask&lt;WebhookList&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2844,7 +2940,7 @@ await client.Webhooks.ListAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">CreateAsync</a>(CreateWebhookRequest { ... }) -> Webhook</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">CreateAsync</a>(CreateWebhookRequest { ... }) -> WithRawResponseTask&lt;Webhook&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2906,7 +3002,7 @@ await client.Webhooks.CreateAsync(
 </details>
 
 ## AccountUpdater Jobs
-<details><summary><code>client.AccountUpdater.Jobs.<a href="/src/BasisTheory.Client/AccountUpdater/Jobs/JobsClient.cs">GetAsync</a>(id) -> AccountUpdaterJob</code></summary>
+<details><summary><code>client.AccountUpdater.Jobs.<a href="/src/BasisTheory.Client/AccountUpdater/Jobs/JobsClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;AccountUpdaterJob&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2960,7 +3056,7 @@ await client.AccountUpdater.Jobs.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.AccountUpdater.Jobs.<a href="/src/BasisTheory.Client/AccountUpdater/Jobs/JobsClient.cs">ListAsync</a>(AccountUpdater.JobsListRequest { ... }) -> AccountUpdaterJobList</code></summary>
+<details><summary><code>client.AccountUpdater.Jobs.<a href="/src/BasisTheory.Client/AccountUpdater/Jobs/JobsClient.cs">ListAsync</a>(JobsListRequest { ... }) -> WithRawResponseTask&lt;AccountUpdaterJobList&gt;</code></summary>
 <dl>
 <dd>
 
@@ -2987,7 +3083,7 @@ Returns a list of account updater batch jobs
 <dd>
 
 ```csharp
-await client.AccountUpdater.Jobs.ListAsync(new JobsListRequest());
+await client.AccountUpdater.Jobs.ListAsync(new JobsListRequest { Size = 1, Start = "start" });
 ```
 </dd>
 </dl>
@@ -3002,7 +3098,7 @@ await client.AccountUpdater.Jobs.ListAsync(new JobsListRequest());
 <dl>
 <dd>
 
-**request:** `AccountUpdater.JobsListRequest` 
+**request:** `JobsListRequest` 
     
 </dd>
 </dl>
@@ -3014,7 +3110,7 @@ await client.AccountUpdater.Jobs.ListAsync(new JobsListRequest());
 </dl>
 </details>
 
-<details><summary><code>client.AccountUpdater.Jobs.<a href="/src/BasisTheory.Client/AccountUpdater/Jobs/JobsClient.cs">CreateAsync</a>(AccountUpdater.CreateAccountUpdaterJobRequest { ... }) -> AccountUpdaterJob</code></summary>
+<details><summary><code>client.AccountUpdater.Jobs.<a href="/src/BasisTheory.Client/AccountUpdater/Jobs/JobsClient.cs">CreateAsync</a>(CreateAccountUpdaterJobRequest { ... }) -> WithRawResponseTask&lt;AccountUpdaterJob&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3056,7 +3152,7 @@ await client.AccountUpdater.Jobs.CreateAsync(new CreateAccountUpdaterJobRequest(
 <dl>
 <dd>
 
-**request:** `AccountUpdater.CreateAccountUpdaterJobRequest` 
+**request:** `CreateAccountUpdaterJobRequest` 
     
 </dd>
 </dl>
@@ -3069,7 +3165,7 @@ await client.AccountUpdater.Jobs.CreateAsync(new CreateAccountUpdaterJobRequest(
 </details>
 
 ## AccountUpdater RealTime
-<details><summary><code>client.AccountUpdater.RealTime.<a href="/src/BasisTheory.Client/AccountUpdater/RealTime/RealTimeClient.cs">InvokeAsync</a>(AccountUpdater.AccountUpdaterRealTimeRequest { ... }) -> AccountUpdaterRealTimeResponse</code></summary>
+<details><summary><code>client.AccountUpdater.RealTime.<a href="/src/BasisTheory.Client/AccountUpdater/RealTime/RealTimeClient.cs">InvokeAsync</a>(AccountUpdaterRealTimeRequest { ... }) -> WithRawResponseTask&lt;AccountUpdaterRealTimeResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3113,7 +3209,7 @@ await client.AccountUpdater.RealTime.InvokeAsync(
 <dl>
 <dd>
 
-**request:** `AccountUpdater.AccountUpdaterRealTimeRequest` 
+**request:** `AccountUpdaterRealTimeRequest` 
     
 </dd>
 </dl>
@@ -3126,7 +3222,7 @@ await client.AccountUpdater.RealTime.InvokeAsync(
 </details>
 
 ## Agentic Agents
-<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">CreateAsync</a>(Agentic.CreateAgentRequest { ... }) -> Agent</code></summary>
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">CreateAsync</a>(CreateAgentRequest { ... }) -> WithRawResponseTask&lt;Agent&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3154,7 +3250,7 @@ await client.Agentic.Agents.CreateAsync(new CreateAgentRequest { Name = "name" }
 <dl>
 <dd>
 
-**request:** `Agentic.CreateAgentRequest` 
+**request:** `CreateAgentRequest` 
     
 </dd>
 </dl>
@@ -3166,7 +3262,7 @@ await client.Agentic.Agents.CreateAsync(new CreateAgentRequest { Name = "name" }
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">GetAsync</a>(agentId) -> Agent</code></summary>
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">GetAsync</a>(agentId) -> WithRawResponseTask&lt;Agent&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3246,7 +3342,7 @@ await client.Agentic.Agents.DeleteAsync("agent_id");
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">UpdateAsync</a>(agentId, Agentic.UpdateAgentRequest { ... }) -> Agent</code></summary>
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">UpdateAsync</a>(agentId, UpdateAgentRequest { ... }) -> WithRawResponseTask&lt;Agent&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3282,7 +3378,7 @@ await client.Agentic.Agents.UpdateAsync("agent_id", new UpdateAgentRequest());
 <dl>
 <dd>
 
-**request:** `Agentic.UpdateAgentRequest` 
+**request:** `UpdateAgentRequest` 
     
 </dd>
 </dl>
@@ -3295,7 +3391,7 @@ await client.Agentic.Agents.UpdateAsync("agent_id", new UpdateAgentRequest());
 </details>
 
 ## Agentic Enrollments
-<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">ListAsync</a>(Agentic.EnrollmentsListRequest { ... }) -> Core.Pager&lt;Enrollment&gt;</code></summary>
+<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">ListAsync</a>(EnrollmentsListRequest { ... }) -> Pager&lt;Enrollment&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3322,7 +3418,9 @@ List all enrollments for the current tenant with cursor-based pagination.
 <dd>
 
 ```csharp
-await client.Agentic.Enrollments.ListAsync(new EnrollmentsListRequest());
+await client.Agentic.Enrollments.ListAsync(
+    new EnrollmentsListRequest { Limit = 1, Cursor = "cursor" }
+);
 ```
 </dd>
 </dl>
@@ -3337,7 +3435,7 @@ await client.Agentic.Enrollments.ListAsync(new EnrollmentsListRequest());
 <dl>
 <dd>
 
-**request:** `Agentic.EnrollmentsListRequest` 
+**request:** `EnrollmentsListRequest` 
     
 </dd>
 </dl>
@@ -3349,7 +3447,7 @@ await client.Agentic.Enrollments.ListAsync(new EnrollmentsListRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">CreateAsync</a>(Agentic.CreateEnrollmentRequest { ... }) -> Enrollment</code></summary>
+<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">CreateAsync</a>(CreateEnrollmentRequest { ... }) -> WithRawResponseTask&lt;Enrollment&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3397,7 +3495,7 @@ await client.Agentic.Enrollments.CreateAsync(
 <dl>
 <dd>
 
-**request:** `Agentic.CreateEnrollmentRequest` 
+**request:** `CreateEnrollmentRequest` 
     
 </dd>
 </dl>
@@ -3409,7 +3507,7 @@ await client.Agentic.Enrollments.CreateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">GetAsync</a>(enrollmentId) -> Enrollment</code></summary>
+<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">GetAsync</a>(enrollmentId) -> WithRawResponseTask&lt;Enrollment&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3503,7 +3601,7 @@ await client.Agentic.Enrollments.DeleteAsync("enrollment_id");
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">RetryAsync</a>(enrollmentId) -> Enrollment</code></summary>
+<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">RetryAsync</a>(enrollmentId) -> WithRawResponseTask&lt;Enrollment&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3558,7 +3656,7 @@ await client.Agentic.Enrollments.RetryAsync("enrollment_id");
 </details>
 
 ## Agentic Agents Instructions
-<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">ListAsync</a>(agentId, Agentic.Agents.InstructionsListRequest { ... }) -> Core.Pager&lt;Instruction&gt;</code></summary>
+<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">ListAsync</a>(agentId, InstructionsListRequest { ... }) -> Pager&lt;Instruction&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3585,7 +3683,15 @@ List all purchase instructions for an agent with cursor-based pagination and opt
 <dd>
 
 ```csharp
-await client.Agentic.Agents.Instructions.ListAsync("agent_id", new InstructionsListRequest());
+await client.Agentic.Agents.Instructions.ListAsync(
+    "agent_id",
+    new InstructionsListRequest
+    {
+        EnrollmentId = "enrollment_id",
+        Limit = 1,
+        Cursor = "cursor",
+    }
+);
 ```
 </dd>
 </dl>
@@ -3608,7 +3714,7 @@ await client.Agentic.Agents.Instructions.ListAsync("agent_id", new InstructionsL
 <dl>
 <dd>
 
-**request:** `Agentic.Agents.InstructionsListRequest` 
+**request:** `InstructionsListRequest` 
     
 </dd>
 </dl>
@@ -3620,7 +3726,7 @@ await client.Agentic.Agents.Instructions.ListAsync("agent_id", new InstructionsL
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">CreateAsync</a>(agentId, Agentic.Agents.CreateInstructionRequest { ... }) -> Instruction</code></summary>
+<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">CreateAsync</a>(agentId, CreateInstructionRequest { ... }) -> WithRawResponseTask&lt;Instruction&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3679,7 +3785,7 @@ await client.Agentic.Agents.Instructions.CreateAsync(
 <dl>
 <dd>
 
-**request:** `Agentic.Agents.CreateInstructionRequest` 
+**request:** `CreateInstructionRequest` 
     
 </dd>
 </dl>
@@ -3691,7 +3797,7 @@ await client.Agentic.Agents.Instructions.CreateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">GetAsync</a>(agentId, instructionId) -> Instruction</code></summary>
+<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">GetAsync</a>(agentId, instructionId) -> WithRawResponseTask&lt;Instruction&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3787,7 +3893,7 @@ await client.Agentic.Agents.Instructions.DeleteAsync("agent_id", "instruction_id
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">UpdateAsync</a>(agentId, instructionId, Agentic.Agents.UpdateInstructionRequest { ... }) -> Instruction</code></summary>
+<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">UpdateAsync</a>(agentId, instructionId, UpdateInstructionRequest { ... }) -> WithRawResponseTask&lt;Instruction&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3835,7 +3941,7 @@ await client.Agentic.Agents.Instructions.UpdateAsync(
 <dl>
 <dd>
 
-**request:** `Agentic.Agents.UpdateInstructionRequest` 
+**request:** `UpdateInstructionRequest` 
     
 </dd>
 </dl>
@@ -3848,7 +3954,7 @@ await client.Agentic.Agents.Instructions.UpdateAsync(
 </details>
 
 ## Agentic Agents Instructions Credentials
-<details><summary><code>client.Agentic.Agents.Instructions.Credentials.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/Credentials/CredentialsClient.cs">CreateAsync</a>(agentId, instructionId, Agentic.Agents.Instructions.GetCredentialsRequest { ... }) -> Credentials</code></summary>
+<details><summary><code>client.Agentic.Agents.Instructions.Credentials.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/Credentials/CredentialsClient.cs">CreateAsync</a>(agentId, instructionId, GetCredentialsRequest { ... }) -> WithRawResponseTask&lt;Credentials&gt;</code></summary>
 <dl>
 <dd>
 
@@ -3918,7 +4024,7 @@ await client.Agentic.Agents.Instructions.Credentials.CreateAsync(
 <dl>
 <dd>
 
-**request:** `Agentic.Agents.Instructions.GetCredentialsRequest` 
+**request:** `GetCredentialsRequest` 
     
 </dd>
 </dl>
@@ -3931,7 +4037,7 @@ await client.Agentic.Agents.Instructions.Credentials.CreateAsync(
 </details>
 
 ## Agentic Agents Instructions Verify
-<details><summary><code>client.Agentic.Agents.Instructions.Verify.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/Verify/VerifyClient.cs">StartAsync</a>(agentId, instructionId, StartVerificationRequest { ... }) -> VerificationResponse</code></summary>
+<details><summary><code>client.Agentic.Agents.Instructions.Verify.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/Verify/VerifyClient.cs">StartAsync</a>(agentId, instructionId, StartVerificationRequest { ... }) -> WithRawResponseTask&lt;VerificationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4019,7 +4125,7 @@ await client.Agentic.Agents.Instructions.Verify.StartAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Agents.Instructions.Verify.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/Verify/VerifyClient.cs">PasskeyAsync</a>(agentId, instructionId, Agentic.Agents.Instructions.SubmitPasskeyRequest { ... }) -> Instruction</code></summary>
+<details><summary><code>client.Agentic.Agents.Instructions.Verify.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/Verify/VerifyClient.cs">PasskeyAsync</a>(agentId, instructionId, SubmitPasskeyRequest { ... }) -> WithRawResponseTask&lt;Instruction&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4051,7 +4157,7 @@ await client.Agentic.Agents.Instructions.Verify.PasskeyAsync(
     "instruction_id",
     new SubmitPasskeyRequest
     {
-        AssuranceData = new Dictionary<string, object>() { { "key", "value" } },
+        AssuranceData = new Dictionary<string, object?>() { { "key", "value" } },
     }
 );
 ```
@@ -4084,7 +4190,7 @@ await client.Agentic.Agents.Instructions.Verify.PasskeyAsync(
 <dl>
 <dd>
 
-**request:** `Agentic.Agents.Instructions.SubmitPasskeyRequest` 
+**request:** `SubmitPasskeyRequest` 
     
 </dd>
 </dl>
@@ -4097,7 +4203,7 @@ await client.Agentic.Agents.Instructions.Verify.PasskeyAsync(
 </details>
 
 ## Agentic Enrollments Verify
-<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">StartAsync</a>(enrollmentId, StartVerificationRequest { ... }) -> VerificationResponse</code></summary>
+<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">StartAsync</a>(enrollmentId, StartVerificationRequest { ... }) -> WithRawResponseTask&lt;VerificationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4176,7 +4282,7 @@ await client.Agentic.Enrollments.Verify.StartAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">MethodAsync</a>(enrollmentId, Agentic.Enrollments.SelectMethodRequest { ... }) -> VerificationResponse</code></summary>
+<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">MethodAsync</a>(enrollmentId, SelectMethodRequest { ... }) -> WithRawResponseTask&lt;VerificationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4229,7 +4335,7 @@ await client.Agentic.Enrollments.Verify.MethodAsync(
 <dl>
 <dd>
 
-**request:** `Agentic.Enrollments.SelectMethodRequest` 
+**request:** `SelectMethodRequest` 
     
 </dd>
 </dl>
@@ -4241,7 +4347,7 @@ await client.Agentic.Enrollments.Verify.MethodAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">OtpAsync</a>(enrollmentId, Agentic.Enrollments.SubmitOtpRequest { ... }) -> VerificationResponse</code></summary>
+<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">OtpAsync</a>(enrollmentId, SubmitOtpRequest { ... }) -> WithRawResponseTask&lt;VerificationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4294,7 +4400,7 @@ await client.Agentic.Enrollments.Verify.OtpAsync(
 <dl>
 <dd>
 
-**request:** `Agentic.Enrollments.SubmitOtpRequest` 
+**request:** `SubmitOtpRequest` 
     
 </dd>
 </dl>
@@ -4306,7 +4412,7 @@ await client.Agentic.Enrollments.Verify.OtpAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">CompleteAsync</a>(enrollmentId, Agentic.Enrollments.CompleteVerificationRequest { ... }) -> VerificationResponse</code></summary>
+<details><summary><code>client.Agentic.Enrollments.Verify.<a href="/src/BasisTheory.Client/Agentic/Enrollments/Verify/VerifyClient.cs">CompleteAsync</a>(enrollmentId, CompleteVerificationRequest { ... }) -> WithRawResponseTask&lt;VerificationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4359,7 +4465,7 @@ await client.Agentic.Enrollments.Verify.CompleteAsync(
 <dl>
 <dd>
 
-**request:** `Agentic.Enrollments.CompleteVerificationRequest` 
+**request:** `CompleteVerificationRequest` 
     
 </dd>
 </dl>
@@ -4372,7 +4478,7 @@ await client.Agentic.Enrollments.Verify.CompleteAsync(
 </details>
 
 ## ApplePay Merchant
-<details><summary><code>client.ApplePay.Merchant.<a href="/src/BasisTheory.Client/ApplePay/Merchant/MerchantClient.cs">GetAsync</a>(id) -> ApplePayMerchant</code></summary>
+<details><summary><code>client.ApplePay.Merchant.<a href="/src/BasisTheory.Client/ApplePay/Merchant/MerchantClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;ApplePayMerchant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4452,7 +4558,7 @@ await client.ApplePay.Merchant.DeleteAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.ApplePay.Merchant.<a href="/src/BasisTheory.Client/ApplePay/Merchant/MerchantClient.cs">CreateAsync</a>(ApplePay.ApplePayMerchantRegisterRequest { ... }) -> ApplePayMerchant</code></summary>
+<details><summary><code>client.ApplePay.Merchant.<a href="/src/BasisTheory.Client/ApplePay/Merchant/MerchantClient.cs">CreateAsync</a>(ApplePayMerchantRegisterRequest { ... }) -> WithRawResponseTask&lt;ApplePayMerchant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4480,7 +4586,7 @@ await client.ApplePay.Merchant.CreateAsync(new ApplePayMerchantRegisterRequest()
 <dl>
 <dd>
 
-**request:** `ApplePay.ApplePayMerchantRegisterRequest` 
+**request:** `ApplePayMerchantRegisterRequest` 
     
 </dd>
 </dl>
@@ -4493,7 +4599,7 @@ await client.ApplePay.Merchant.CreateAsync(new ApplePayMerchantRegisterRequest()
 </details>
 
 ## ApplePay Domain
-<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">DeregisterAsync</a>(ApplePay.ApplePayDomainDeregistrationRequest { ... })</code></summary>
+<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">DeregisterAsync</a>(ApplePayDomainDeregistrationRequest { ... })</code></summary>
 <dl>
 <dd>
 
@@ -4523,7 +4629,7 @@ await client.ApplePay.Domain.DeregisterAsync(
 <dl>
 <dd>
 
-**request:** `ApplePay.ApplePayDomainDeregistrationRequest` 
+**request:** `ApplePayDomainDeregistrationRequest` 
     
 </dd>
 </dl>
@@ -4535,7 +4641,7 @@ await client.ApplePay.Domain.DeregisterAsync(
 </dl>
 </details>
 
-<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">GetAsync</a>() -> ApplePayDomainRegistrationResponse</code></summary>
+<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">GetAsync</a>() -> WithRawResponseTask&lt;ApplePayDomainRegistrationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4560,7 +4666,7 @@ await client.ApplePay.Domain.GetAsync();
 </dl>
 </details>
 
-<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">RegisterAsync</a>(ApplePay.ApplePayDomainRegistrationRequest { ... }) -> ApplePayDomainRegistrationResponse</code></summary>
+<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">RegisterAsync</a>(ApplePayDomainRegistrationRequest { ... }) -> WithRawResponseTask&lt;ApplePayDomainRegistrationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4590,7 +4696,7 @@ await client.ApplePay.Domain.RegisterAsync(
 <dl>
 <dd>
 
-**request:** `ApplePay.ApplePayDomainRegistrationRequest` 
+**request:** `ApplePayDomainRegistrationRequest` 
     
 </dd>
 </dl>
@@ -4602,7 +4708,7 @@ await client.ApplePay.Domain.RegisterAsync(
 </dl>
 </details>
 
-<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">RegisterAllAsync</a>(ApplePay.ApplePayDomainRegistrationListRequest { ... }) -> ApplePayDomainRegistrationResponse</code></summary>
+<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">RegisterAllAsync</a>(ApplePayDomainRegistrationListRequest { ... }) -> WithRawResponseTask&lt;ApplePayDomainRegistrationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4630,7 +4736,7 @@ await client.ApplePay.Domain.RegisterAllAsync(new ApplePayDomainRegistrationList
 <dl>
 <dd>
 
-**request:** `ApplePay.ApplePayDomainRegistrationListRequest` 
+**request:** `ApplePayDomainRegistrationListRequest` 
     
 </dd>
 </dl>
@@ -4643,7 +4749,7 @@ await client.ApplePay.Domain.RegisterAllAsync(new ApplePayDomainRegistrationList
 </details>
 
 ## ApplePay Session
-<details><summary><code>client.ApplePay.Session.<a href="/src/BasisTheory.Client/ApplePay/Session/SessionClient.cs">CreateAsync</a>(ApplePay.ApplePaySessionRequest { ... }) -> string</code></summary>
+<details><summary><code>client.ApplePay.Session.<a href="/src/BasisTheory.Client/ApplePay/Session/SessionClient.cs">CreateAsync</a>(ApplePaySessionRequest { ... }) -> WithRawResponseTask&lt;string&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4671,7 +4777,7 @@ await client.ApplePay.Session.CreateAsync(new ApplePaySessionRequest());
 <dl>
 <dd>
 
-**request:** `ApplePay.ApplePaySessionRequest` 
+**request:** `ApplePaySessionRequest` 
     
 </dd>
 </dl>
@@ -4684,7 +4790,7 @@ await client.ApplePay.Session.CreateAsync(new ApplePaySessionRequest());
 </details>
 
 ## ApplePay Merchant Certificates
-<details><summary><code>client.ApplePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/ApplePay/Merchant/Certificates/CertificatesClient.cs">GetAsync</a>(merchantId, id) -> ApplePayMerchantCertificates</code></summary>
+<details><summary><code>client.ApplePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/ApplePay/Merchant/Certificates/CertificatesClient.cs">GetAsync</a>(merchantId, id) -> WithRawResponseTask&lt;ApplePayMerchantCertificates&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4780,7 +4886,7 @@ await client.ApplePay.Merchant.Certificates.DeleteAsync("merchantId", "id");
 </dl>
 </details>
 
-<details><summary><code>client.ApplePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/ApplePay/Merchant/Certificates/CertificatesClient.cs">CreateAsync</a>(merchantId, ApplePay.Merchant.ApplePayMerchantCertificatesRegisterRequest { ... }) -> ApplePayMerchantCertificates</code></summary>
+<details><summary><code>client.ApplePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/ApplePay/Merchant/Certificates/CertificatesClient.cs">CreateAsync</a>(merchantId, ApplePayMerchantCertificatesRegisterRequest { ... }) -> WithRawResponseTask&lt;ApplePayMerchantCertificates&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4823,7 +4929,7 @@ await client.ApplePay.Merchant.Certificates.CreateAsync(
 <dl>
 <dd>
 
-**request:** `ApplePay.Merchant.ApplePayMerchantCertificatesRegisterRequest` 
+**request:** `ApplePayMerchantCertificatesRegisterRequest` 
     
 </dd>
 </dl>
@@ -4836,7 +4942,7 @@ await client.ApplePay.Merchant.Certificates.CreateAsync(
 </details>
 
 ## Documents Data
-<details><summary><code>client.Documents.Data.<a href="/src/BasisTheory.Client/Documents/Data/DataClient.cs">GetAsync</a>(documentId) -> System.IO.Stream</code></summary>
+<details><summary><code>client.Documents.Data.<a href="/src/BasisTheory.Client/Documents/Data/DataClient.cs">GetAsync</a>(documentId) -> WithRawResponseTask&lt;Stream&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4877,7 +4983,7 @@ await client.Documents.Data.GetAsync("documentId");
 </details>
 
 ## GooglePay Merchant
-<details><summary><code>client.GooglePay.Merchant.<a href="/src/BasisTheory.Client/GooglePay/Merchant/MerchantClient.cs">GetAsync</a>(id) -> GooglePayMerchant</code></summary>
+<details><summary><code>client.GooglePay.Merchant.<a href="/src/BasisTheory.Client/GooglePay/Merchant/MerchantClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;GooglePayMerchant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4957,7 +5063,7 @@ await client.GooglePay.Merchant.DeleteAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.GooglePay.Merchant.<a href="/src/BasisTheory.Client/GooglePay/Merchant/MerchantClient.cs">CreateAsync</a>(GooglePay.GooglePayMerchantRegisterRequest { ... }) -> GooglePayMerchant</code></summary>
+<details><summary><code>client.GooglePay.Merchant.<a href="/src/BasisTheory.Client/GooglePay/Merchant/MerchantClient.cs">CreateAsync</a>(GooglePayMerchantRegisterRequest { ... }) -> WithRawResponseTask&lt;GooglePayMerchant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -4985,7 +5091,7 @@ await client.GooglePay.Merchant.CreateAsync(new GooglePayMerchantRegisterRequest
 <dl>
 <dd>
 
-**request:** `GooglePay.GooglePayMerchantRegisterRequest` 
+**request:** `GooglePayMerchantRegisterRequest` 
     
 </dd>
 </dl>
@@ -4998,7 +5104,7 @@ await client.GooglePay.Merchant.CreateAsync(new GooglePayMerchantRegisterRequest
 </details>
 
 ## GooglePay Merchant Certificates
-<details><summary><code>client.GooglePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/GooglePay/Merchant/Certificates/CertificatesClient.cs">GetAsync</a>(merchantId, id) -> GooglePayMerchantCertificates</code></summary>
+<details><summary><code>client.GooglePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/GooglePay/Merchant/Certificates/CertificatesClient.cs">GetAsync</a>(merchantId, id) -> WithRawResponseTask&lt;GooglePayMerchantCertificates&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5094,7 +5200,7 @@ await client.GooglePay.Merchant.Certificates.DeleteAsync("merchantId", "id");
 </dl>
 </details>
 
-<details><summary><code>client.GooglePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/GooglePay/Merchant/Certificates/CertificatesClient.cs">CreateAsync</a>(merchantId, GooglePay.Merchant.GooglePayMerchantCertificatesRegisterRequest { ... }) -> GooglePayMerchantCertificates</code></summary>
+<details><summary><code>client.GooglePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/GooglePay/Merchant/Certificates/CertificatesClient.cs">CreateAsync</a>(merchantId, GooglePayMerchantCertificatesRegisterRequest { ... }) -> WithRawResponseTask&lt;GooglePayMerchantCertificates&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5133,7 +5239,7 @@ await client.GooglePay.Merchant.Certificates.CreateAsync(
 <dl>
 <dd>
 
-**request:** `GooglePay.Merchant.GooglePayMerchantCertificatesRegisterRequest` 
+**request:** `GooglePayMerchantCertificatesRegisterRequest` 
     
 </dd>
 </dl>
@@ -5146,7 +5252,7 @@ await client.GooglePay.Merchant.Certificates.CreateAsync(
 </details>
 
 ## NetworkTokens Account
-<details><summary><code>client.NetworkTokens.Account.<a href="/src/BasisTheory.Client/NetworkTokens/Account/AccountClient.cs">GetAsync</a>(id) -> NetworkTokenAccount</code></summary>
+<details><summary><code>client.NetworkTokens.Account.<a href="/src/BasisTheory.Client/NetworkTokens/Account/AccountClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;NetworkTokenAccount&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5187,7 +5293,7 @@ await client.NetworkTokens.Account.GetAsync("id");
 </details>
 
 ## Reactors Results
-<details><summary><code>client.Reactors.Results.<a href="/src/BasisTheory.Client/Reactors/Results/ResultsClient.cs">GetAsync</a>(id, requestId) -> object</code></summary>
+<details><summary><code>client.Reactors.Results.<a href="/src/BasisTheory.Client/Reactors/Results/ResultsClient.cs">GetAsync</a>(id, requestId) -> WithRawResponseTask&lt;object&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5236,7 +5342,7 @@ await client.Reactors.Results.GetAsync("id", "requestId");
 </details>
 
 ## Tenants SecurityContact
-<details><summary><code>client.Tenants.SecurityContact.<a href="/src/BasisTheory.Client/Tenants/SecurityContact/SecurityContactClient.cs">GetAsync</a>() -> SecurityContactEmailResponse</code></summary>
+<details><summary><code>client.Tenants.SecurityContact.<a href="/src/BasisTheory.Client/Tenants/SecurityContact/SecurityContactClient.cs">GetAsync</a>() -> WithRawResponseTask&lt;SecurityContactEmailResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5261,7 +5367,7 @@ await client.Tenants.SecurityContact.GetAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.SecurityContact.<a href="/src/BasisTheory.Client/Tenants/SecurityContact/SecurityContactClient.cs">UpdateAsync</a>(Tenants.SecurityContactEmailRequest { ... }) -> SecurityContactEmailResponse</code></summary>
+<details><summary><code>client.Tenants.SecurityContact.<a href="/src/BasisTheory.Client/Tenants/SecurityContact/SecurityContactClient.cs">UpdateAsync</a>(SecurityContactEmailRequest { ... }) -> WithRawResponseTask&lt;SecurityContactEmailResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5291,7 +5397,7 @@ await client.Tenants.SecurityContact.UpdateAsync(
 <dl>
 <dd>
 
-**request:** `Tenants.SecurityContactEmailRequest` 
+**request:** `SecurityContactEmailRequest` 
     
 </dd>
 </dl>
@@ -5304,7 +5410,7 @@ await client.Tenants.SecurityContact.UpdateAsync(
 </details>
 
 ## Tenants Connections
-<details><summary><code>client.Tenants.Connections.<a href="/src/BasisTheory.Client/Tenants/Connections/ConnectionsClient.cs">CreateAsync</a>(Tenants.CreateTenantConnectionRequest { ... }) -> CreateTenantConnectionResponse</code></summary>
+<details><summary><code>client.Tenants.Connections.<a href="/src/BasisTheory.Client/Tenants/Connections/ConnectionsClient.cs">CreateAsync</a>(CreateTenantConnectionRequest { ... }) -> WithRawResponseTask&lt;CreateTenantConnectionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5338,7 +5444,7 @@ await client.Tenants.Connections.CreateAsync(
 <dl>
 <dd>
 
-**request:** `Tenants.CreateTenantConnectionRequest` 
+**request:** `CreateTenantConnectionRequest` 
     
 </dd>
 </dl>
@@ -5350,7 +5456,7 @@ await client.Tenants.Connections.CreateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Connections.<a href="/src/BasisTheory.Client/Tenants/Connections/ConnectionsClient.cs">DeleteAsync</a>() -> CreateTenantConnectionResponse</code></summary>
+<details><summary><code>client.Tenants.Connections.<a href="/src/BasisTheory.Client/Tenants/Connections/ConnectionsClient.cs">DeleteAsync</a>() -> WithRawResponseTask&lt;CreateTenantConnectionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5376,7 +5482,7 @@ await client.Tenants.Connections.DeleteAsync();
 </details>
 
 ## Tenants Invitations
-<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">ListAsync</a>(Tenants.InvitationsListRequest { ... }) -> Core.Pager&lt;TenantInvitationResponse&gt;</code></summary>
+<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">ListAsync</a>(InvitationsListRequest { ... }) -> Pager&lt;TenantInvitationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5389,7 +5495,15 @@ await client.Tenants.Connections.DeleteAsync();
 <dd>
 
 ```csharp
-await client.Tenants.Invitations.ListAsync(new InvitationsListRequest());
+await client.Tenants.Invitations.ListAsync(
+    new InvitationsListRequest
+    {
+        Status = TenantInvitationStatus.Pending,
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -5404,7 +5518,7 @@ await client.Tenants.Invitations.ListAsync(new InvitationsListRequest());
 <dl>
 <dd>
 
-**request:** `Tenants.InvitationsListRequest` 
+**request:** `InvitationsListRequest` 
     
 </dd>
 </dl>
@@ -5416,7 +5530,7 @@ await client.Tenants.Invitations.ListAsync(new InvitationsListRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">CreateAsync</a>(Tenants.CreateTenantInvitationRequest { ... }) -> TenantInvitationResponse</code></summary>
+<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">CreateAsync</a>(CreateTenantInvitationRequest { ... }) -> WithRawResponseTask&lt;TenantInvitationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5444,7 +5558,7 @@ await client.Tenants.Invitations.CreateAsync(new CreateTenantInvitationRequest {
 <dl>
 <dd>
 
-**request:** `Tenants.CreateTenantInvitationRequest` 
+**request:** `CreateTenantInvitationRequest` 
     
 </dd>
 </dl>
@@ -5456,7 +5570,7 @@ await client.Tenants.Invitations.CreateAsync(new CreateTenantInvitationRequest {
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">ResendAsync</a>(invitationId) -> TenantInvitationResponse</code></summary>
+<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">ResendAsync</a>(invitationId) -> WithRawResponseTask&lt;TenantInvitationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5496,7 +5610,7 @@ await client.Tenants.Invitations.ResendAsync("invitationId");
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">GetAsync</a>(invitationId) -> TenantInvitationResponse</code></summary>
+<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">GetAsync</a>(invitationId) -> WithRawResponseTask&lt;TenantInvitationResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5577,7 +5691,7 @@ await client.Tenants.Invitations.DeleteAsync("invitationId");
 </details>
 
 ## Tenants Members
-<details><summary><code>client.Tenants.Members.<a href="/src/BasisTheory.Client/Tenants/Members/MembersClient.cs">ListAsync</a>(Tenants.MembersListRequest { ... }) -> TenantMemberResponsePaginatedList</code></summary>
+<details><summary><code>client.Tenants.Members.<a href="/src/BasisTheory.Client/Tenants/Members/MembersClient.cs">ListAsync</a>(MembersListRequest { ... }) -> WithRawResponseTask&lt;TenantMemberResponsePaginatedList&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5590,7 +5704,15 @@ await client.Tenants.Invitations.DeleteAsync("invitationId");
 <dd>
 
 ```csharp
-await client.Tenants.Members.ListAsync(new MembersListRequest());
+await client.Tenants.Members.ListAsync(
+    new MembersListRequest
+    {
+        UserId = new List<string>() { "user_id" },
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -5605,7 +5727,7 @@ await client.Tenants.Members.ListAsync(new MembersListRequest());
 <dl>
 <dd>
 
-**request:** `Tenants.MembersListRequest` 
+**request:** `MembersListRequest` 
     
 </dd>
 </dl>
@@ -5617,7 +5739,7 @@ await client.Tenants.Members.ListAsync(new MembersListRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Members.<a href="/src/BasisTheory.Client/Tenants/Members/MembersClient.cs">UpdateAsync</a>(memberId, Tenants.UpdateTenantMemberRequest { ... }) -> TenantMemberResponse</code></summary>
+<details><summary><code>client.Tenants.Members.<a href="/src/BasisTheory.Client/Tenants/Members/MembersClient.cs">UpdateAsync</a>(memberId, UpdateTenantMemberRequest { ... }) -> WithRawResponseTask&lt;TenantMemberResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5656,7 +5778,7 @@ await client.Tenants.Members.UpdateAsync(
 <dl>
 <dd>
 
-**request:** `Tenants.UpdateTenantMemberRequest` 
+**request:** `UpdateTenantMemberRequest` 
     
 </dd>
 </dl>
@@ -5709,7 +5831,7 @@ await client.Tenants.Members.DeleteAsync("memberId");
 </details>
 
 ## Tenants Merchants
-<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">ListAsync</a>(tenantId, Tenants.MerchantsListRequest { ... }) -> Core.Pager&lt;TenantMerchant&gt;</code></summary>
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">ListAsync</a>(tenantId, MerchantsListRequest { ... }) -> Pager&lt;TenantMerchant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5722,7 +5844,15 @@ await client.Tenants.Members.DeleteAsync("memberId");
 <dd>
 
 ```csharp
-await client.Tenants.Merchants.ListAsync("tenantId", new MerchantsListRequest());
+await client.Tenants.Merchants.ListAsync(
+    "tenantId",
+    new MerchantsListRequest
+    {
+        Page = 1,
+        Start = "start",
+        Size = 1,
+    }
+);
 ```
 </dd>
 </dl>
@@ -5745,7 +5875,7 @@ await client.Tenants.Merchants.ListAsync("tenantId", new MerchantsListRequest())
 <dl>
 <dd>
 
-**request:** `Tenants.MerchantsListRequest` 
+**request:** `MerchantsListRequest` 
     
 </dd>
 </dl>
@@ -5757,7 +5887,7 @@ await client.Tenants.Merchants.ListAsync("tenantId", new MerchantsListRequest())
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">CreateAsync</a>(tenantId, TenantMerchantRequest { ... }) -> TenantMerchant</code></summary>
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">CreateAsync</a>(tenantId, TenantMerchantRequest { ... }) -> WithRawResponseTask&lt;TenantMerchant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5808,7 +5938,7 @@ await client.Tenants.Merchants.CreateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">GetAsync</a>(tenantId, merchantId) -> TenantMerchant</code></summary>
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">GetAsync</a>(tenantId, merchantId) -> WithRawResponseTask&lt;TenantMerchant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5856,7 +5986,7 @@ await client.Tenants.Merchants.GetAsync("tenantId", "merchantId");
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">DeleteAsync</a>(tenantId, merchantId) -> TenantMerchant</code></summary>
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">DeleteAsync</a>(tenantId, merchantId) -> WithRawResponseTask&lt;TenantMerchant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5904,7 +6034,7 @@ await client.Tenants.Merchants.DeleteAsync("tenantId", "merchantId");
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">UpdateAsync</a>(tenantId, merchantId, TenantMerchantRequest { ... }) -> TenantMerchant</code></summary>
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">UpdateAsync</a>(tenantId, merchantId, TenantMerchantRequest { ... }) -> WithRawResponseTask&lt;TenantMerchant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -5964,7 +6094,7 @@ await client.Tenants.Merchants.UpdateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">RequestOnboardingAsync</a>(tenantId, merchantId, Tenants.ServiceOnboardingRequest { ... }) -> TenantMerchant</code></summary>
+<details><summary><code>client.Tenants.Merchants.<a href="/src/BasisTheory.Client/Tenants/Merchants/MerchantsClient.cs">RequestOnboardingAsync</a>(tenantId, merchantId, ServiceOnboardingRequest { ... }) -> WithRawResponseTask&lt;TenantMerchant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6012,7 +6142,7 @@ await client.Tenants.Merchants.RequestOnboardingAsync(
 <dl>
 <dd>
 
-**request:** `Tenants.ServiceOnboardingRequest` 
+**request:** `ServiceOnboardingRequest` 
     
 </dd>
 </dl>
@@ -6025,7 +6155,7 @@ await client.Tenants.Merchants.RequestOnboardingAsync(
 </details>
 
 ## Tenants Owner
-<details><summary><code>client.Tenants.Owner.<a href="/src/BasisTheory.Client/Tenants/Owner/OwnerClient.cs">GetAsync</a>() -> TenantMemberResponse</code></summary>
+<details><summary><code>client.Tenants.Owner.<a href="/src/BasisTheory.Client/Tenants/Owner/OwnerClient.cs">GetAsync</a>() -> WithRawResponseTask&lt;TenantMemberResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6051,7 +6181,7 @@ await client.Tenants.Owner.GetAsync();
 </details>
 
 ## Tenants Self
-<details><summary><code>client.Tenants.Self.<a href="/src/BasisTheory.Client/Tenants/Self/SelfClient.cs">GetUsageReportsAsync</a>() -> TenantUsageReport</code></summary>
+<details><summary><code>client.Tenants.Self.<a href="/src/BasisTheory.Client/Tenants/Self/SelfClient.cs">GetUsageReportsAsync</a>() -> WithRawResponseTask&lt;TenantUsageReport&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6076,7 +6206,7 @@ await client.Tenants.Self.GetUsageReportsAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Self.<a href="/src/BasisTheory.Client/Tenants/Self/SelfClient.cs">GetAsync</a>() -> Tenant</code></summary>
+<details><summary><code>client.Tenants.Self.<a href="/src/BasisTheory.Client/Tenants/Self/SelfClient.cs">GetAsync</a>() -> WithRawResponseTask&lt;Tenant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6101,7 +6231,7 @@ await client.Tenants.Self.GetAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Self.<a href="/src/BasisTheory.Client/Tenants/Self/SelfClient.cs">UpdateAsync</a>(Tenants.UpdateTenantRequest { ... }) -> Tenant</code></summary>
+<details><summary><code>client.Tenants.Self.<a href="/src/BasisTheory.Client/Tenants/Self/SelfClient.cs">UpdateAsync</a>(UpdateTenantRequest { ... }) -> WithRawResponseTask&lt;Tenant&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6129,7 +6259,7 @@ await client.Tenants.Self.UpdateAsync(new UpdateTenantRequest { Name = "name" })
 <dl>
 <dd>
 
-**request:** `Tenants.UpdateTenantRequest` 
+**request:** `UpdateTenantRequest` 
     
 </dd>
 </dl>
@@ -6167,7 +6297,7 @@ await client.Tenants.Self.DeleteAsync();
 </details>
 
 ## Threeds Sessions
-<details><summary><code>client.Threeds.Sessions.<a href="/src/BasisTheory.Client/Threeds/Sessions/SessionsClient.cs">CreateAsync</a>(Threeds.CreateThreeDsSessionRequest { ... }) -> CreateThreeDsSessionResponse</code></summary>
+<details><summary><code>client.Threeds.Sessions.<a href="/src/BasisTheory.Client/Threeds/Sessions/SessionsClient.cs">CreateAsync</a>(CreateThreeDsSessionRequest { ... }) -> WithRawResponseTask&lt;CreateThreeDsSessionResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6195,7 +6325,7 @@ await client.Threeds.Sessions.CreateAsync(new CreateThreeDsSessionRequest());
 <dl>
 <dd>
 
-**request:** `Threeds.CreateThreeDsSessionRequest` 
+**request:** `CreateThreeDsSessionRequest` 
     
 </dd>
 </dl>
@@ -6207,7 +6337,7 @@ await client.Threeds.Sessions.CreateAsync(new CreateThreeDsSessionRequest());
 </dl>
 </details>
 
-<details><summary><code>client.Threeds.Sessions.<a href="/src/BasisTheory.Client/Threeds/Sessions/SessionsClient.cs">AuthenticateAsync</a>(sessionId, AuthenticateThreeDsSessionRequest { ... }) -> ThreeDsAuthentication</code></summary>
+<details><summary><code>client.Threeds.Sessions.<a href="/src/BasisTheory.Client/Threeds/Sessions/SessionsClient.cs">AuthenticateAsync</a>(sessionId, AuthenticateThreeDsSessionRequest { ... }) -> WithRawResponseTask&lt;ThreeDsAuthentication&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6262,7 +6392,7 @@ await client.Threeds.Sessions.AuthenticateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Threeds.Sessions.<a href="/src/BasisTheory.Client/Threeds/Sessions/SessionsClient.cs">GetChallengeResultAsync</a>(sessionId) -> ThreeDsAuthentication</code></summary>
+<details><summary><code>client.Threeds.Sessions.<a href="/src/BasisTheory.Client/Threeds/Sessions/SessionsClient.cs">GetChallengeResultAsync</a>(sessionId) -> WithRawResponseTask&lt;ThreeDsAuthentication&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6302,7 +6432,7 @@ await client.Threeds.Sessions.GetChallengeResultAsync("sessionId");
 </dl>
 </details>
 
-<details><summary><code>client.Threeds.Sessions.<a href="/src/BasisTheory.Client/Threeds/Sessions/SessionsClient.cs">GetAsync</a>(id) -> ThreeDsSession</code></summary>
+<details><summary><code>client.Threeds.Sessions.<a href="/src/BasisTheory.Client/Threeds/Sessions/SessionsClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;ThreeDsSession&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6343,7 +6473,7 @@ await client.Threeds.Sessions.GetAsync("id");
 </details>
 
 ## Webhooks Events
-<details><summary><code>client.Webhooks.Events.<a href="/src/BasisTheory.Client/Webhooks/Events/EventsClient.cs">ListAsync</a>() -> IEnumerable&lt;string&gt;</code></summary>
+<details><summary><code>client.Webhooks.Events.<a href="/src/BasisTheory.Client/Webhooks/Events/EventsClient.cs">ListAsync</a>() -> WithRawResponseTask&lt;IEnumerable&lt;string&gt;&gt;</code></summary>
 <dl>
 <dd>
 
@@ -6381,3 +6511,4 @@ await client.Webhooks.Events.ListAsync();
 </dd>
 </dl>
 </details>
+

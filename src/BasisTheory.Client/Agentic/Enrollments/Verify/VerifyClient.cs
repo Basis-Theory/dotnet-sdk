@@ -1,62 +1,42 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client.Agentic.Enrollments;
 
-public partial class VerifyClient
+public partial class VerifyClient : IVerifyClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal VerifyClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <summary>
-    /// Initiates the cardholder verification flow for a pending enrollment.
-    /// </summary>
-    /// <example><code>
-    /// await client.Agentic.Enrollments.Verify.StartAsync(
-    ///     "enrollment_id",
-    ///     new StartVerificationRequest
-    ///     {
-    ///         DeviceContext = new DeviceContext
-    ///         {
-    ///             ScreenHeight = 1,
-    ///             ScreenWidth = 1,
-    ///             UserAgentString = "user_agent_string",
-    ///             LanguageCode = "language_code",
-    ///             TimeZone = "time_zone",
-    ///             JavaScriptEnabled = true,
-    ///             ClientDeviceId = "client_device_id",
-    ///             ClientReferenceId = "client_reference_id",
-    ///             PlatformType = DeviceContextPlatformType.Web,
-    ///         },
-    ///     }
-    /// );
-    /// </code></example>
-    public async Task<VerificationResponse> StartAsync(
+    private async Task<WithRawResponse<VerificationResponse>> StartAsyncCore(
         string enrollmentId,
         StartVerificationRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = string.Format(
                         "agentic/enrollments/{0}/verify",
                         ValueConvert.ToPathParameterString(enrollmentId)
                     ),
                     Body = request,
-                    ContentType = "application/json",
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -64,19 +44,37 @@ public partial class VerifyClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<VerificationResponse>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<VerificationResponse>(responseBody)!;
+                return new WithRawResponse<VerificationResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -121,33 +119,30 @@ public partial class VerifyClient
         }
     }
 
-    /// <summary>
-    /// Choose the OTP delivery method (SMS, email, etc.) for enrollment verification.
-    /// </summary>
-    /// <example><code>
-    /// await client.Agentic.Enrollments.Verify.MethodAsync(
-    ///     "enrollment_id",
-    ///     new SelectMethodRequest { MethodId = "method_id" }
-    /// );
-    /// </code></example>
-    public async Task<VerificationResponse> MethodAsync(
+    private async Task<WithRawResponse<VerificationResponse>> MethodAsyncCore(
         string enrollmentId,
         SelectMethodRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = string.Format(
                         "agentic/enrollments/{0}/verify/method",
                         ValueConvert.ToPathParameterString(enrollmentId)
                     ),
                     Body = request,
+                    Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
                 },
@@ -156,19 +151,37 @@ public partial class VerifyClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<VerificationResponse>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<VerificationResponse>(responseBody)!;
+                return new WithRawResponse<VerificationResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -207,6 +220,268 @@ public partial class VerifyClient
                 responseBody
             );
         }
+    }
+
+    private async Task<WithRawResponse<VerificationResponse>> OtpAsyncCore(
+        string enrollmentId,
+        SubmitOtpRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = string.Format(
+                        "agentic/enrollments/{0}/verify/otp",
+                        ValueConvert.ToPathParameterString(enrollmentId)
+                    ),
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<VerificationResponse>(responseBody)!;
+                return new WithRawResponse<VerificationResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+                    case 422:
+                        throw new UnprocessableEntityError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<VerificationResponse>> CompleteAsyncCore(
+        string enrollmentId,
+        CompleteVerificationRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = string.Format(
+                        "agentic/enrollments/{0}/verify/complete",
+                        ValueConvert.ToPathParameterString(enrollmentId)
+                    ),
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<VerificationResponse>(responseBody)!;
+                return new WithRawResponse<VerificationResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 404:
+                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
+                    case 422:
+                        throw new UnprocessableEntityError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody
+            );
+        }
+    }
+
+    /// <summary>
+    /// Initiates the cardholder verification flow for a pending enrollment.
+    /// </summary>
+    /// <example><code>
+    /// await client.Agentic.Enrollments.Verify.StartAsync(
+    ///     "enrollment_id",
+    ///     new StartVerificationRequest
+    ///     {
+    ///         DeviceContext = new DeviceContext
+    ///         {
+    ///             ScreenHeight = 1,
+    ///             ScreenWidth = 1,
+    ///             UserAgentString = "user_agent_string",
+    ///             LanguageCode = "language_code",
+    ///             TimeZone = "time_zone",
+    ///             JavaScriptEnabled = true,
+    ///             ClientDeviceId = "client_device_id",
+    ///             ClientReferenceId = "client_reference_id",
+    ///             PlatformType = DeviceContextPlatformType.Web,
+    ///         },
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<VerificationResponse> StartAsync(
+        string enrollmentId,
+        StartVerificationRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<VerificationResponse>(
+            StartAsyncCore(enrollmentId, request, options, cancellationToken)
+        );
+    }
+
+    /// <summary>
+    /// Choose the OTP delivery method (SMS, email, etc.) for enrollment verification.
+    /// </summary>
+    /// <example><code>
+    /// await client.Agentic.Enrollments.Verify.MethodAsync(
+    ///     "enrollment_id",
+    ///     new SelectMethodRequest { MethodId = "method_id" }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<VerificationResponse> MethodAsync(
+        string enrollmentId,
+        SelectMethodRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<VerificationResponse>(
+            MethodAsyncCore(enrollmentId, request, options, cancellationToken)
+        );
     }
 
     /// <summary>
@@ -218,83 +493,16 @@ public partial class VerifyClient
     ///     new SubmitOtpRequest { OtpCode = "otp_code" }
     /// );
     /// </code></example>
-    public async Task<VerificationResponse> OtpAsync(
+    public WithRawResponseTask<VerificationResponse> OtpAsync(
         string enrollmentId,
         SubmitOtpRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = string.Format(
-                        "agentic/enrollments/{0}/verify/otp",
-                        ValueConvert.ToPathParameterString(enrollmentId)
-                    ),
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<VerificationResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-                    case 422:
-                        throw new UnprocessableEntityError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<VerificationResponse>(
+            OtpAsyncCore(enrollmentId, request, options, cancellationToken)
+        );
     }
 
     /// <summary>
@@ -306,82 +514,15 @@ public partial class VerifyClient
     ///     new CompleteVerificationRequest()
     /// );
     /// </code></example>
-    public async Task<VerificationResponse> CompleteAsync(
+    public WithRawResponseTask<VerificationResponse> CompleteAsync(
         string enrollmentId,
         CompleteVerificationRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var response = await _client
-            .SendRequestAsync(
-                new JsonRequest
-                {
-                    BaseUrl = _client.Options.BaseUrl,
-                    Method = HttpMethod.Post,
-                    Path = string.Format(
-                        "agentic/enrollments/{0}/verify/complete",
-                        ValueConvert.ToPathParameterString(enrollmentId)
-                    ),
-                    Body = request,
-                    ContentType = "application/json",
-                    Options = options,
-                },
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        if (response.StatusCode is >= 200 and < 400)
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                return JsonUtils.Deserialize<VerificationResponse>(responseBody)!;
-            }
-            catch (JsonException e)
-            {
-                throw new BasisTheoryException("Failed to deserialize response", e);
-            }
-        }
-
-        {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
-            try
-            {
-                switch (response.StatusCode)
-                {
-                    case 400:
-                        throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody)
-                        );
-                    case 401:
-                        throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 403:
-                        throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 404:
-                        throw new NotFoundError(JsonUtils.Deserialize<object>(responseBody));
-                    case 422:
-                        throw new UnprocessableEntityError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                    case 500:
-                        throw new InternalServerError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody)
-                        );
-                }
-            }
-            catch (JsonException)
-            {
-                // unable to map error response, throwing generic error
-            }
-            throw new BasisTheoryApiException(
-                $"Error with status code {response.StatusCode}",
-                response.StatusCode,
-                responseBody
-            );
-        }
+        return new WithRawResponseTask<VerificationResponse>(
+            CompleteAsyncCore(enrollmentId, request, options, cancellationToken)
+        );
     }
 }
