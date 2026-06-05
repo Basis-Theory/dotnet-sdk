@@ -1,39 +1,40 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client.NetworkTokens;
 
-public partial class AccountClient
+public partial class AccountClient : IAccountClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal AccountClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <example><code>
-    /// await client.NetworkTokens.Account.GetAsync("id");
-    /// </code></example>
-    public async Task<NetworkTokenAccount> GetAsync(
+    private async Task<WithRawResponse<NetworkTokenAccount>> GetAsyncCore(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "network-tokens/{0}/account",
                         ValueConvert.ToPathParameterString(id)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -41,19 +42,37 @@ public partial class AccountClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<NetworkTokenAccount>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<NetworkTokenAccount>(responseBody)!;
+                return new WithRawResponse<NetworkTokenAccount>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -84,5 +103,19 @@ public partial class AccountClient
                 responseBody
             );
         }
+    }
+
+    /// <example><code>
+    /// await client.NetworkTokens.Account.GetAsync("id");
+    /// </code></example>
+    public WithRawResponseTask<NetworkTokenAccount> GetAsync(
+        string id,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<NetworkTokenAccount>(
+            GetAsyncCore(id, options, cancellationToken)
+        );
     }
 }

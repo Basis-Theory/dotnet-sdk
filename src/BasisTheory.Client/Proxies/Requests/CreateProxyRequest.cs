@@ -1,5 +1,5 @@
-using System.Text.Json.Serialization;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client;
 
@@ -34,7 +34,7 @@ public record CreateProxyRequest
     public Application? Application { get; set; }
 
     [JsonPropertyName("configuration")]
-    public Dictionary<string, string?>? Configuration { get; set; }
+    public Dictionary<string, string>? Configuration { get; set; }
 
     [JsonPropertyName("require_auth")]
     public bool? RequireAuth { get; set; }

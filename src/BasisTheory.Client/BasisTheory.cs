@@ -1,11 +1,12 @@
-using BasisTheory.Client.AccountUpdater;
-using BasisTheory.Client.Agentic;
-using BasisTheory.Client.Core;
-using BasisTheory.Client.Threeds;
+using global::BasisTheory.Client.AccountUpdater;
+using global::BasisTheory.Client.Agentic;
+using global::BasisTheory.Client.Core;
+using global::BasisTheory.Client.Tenants;
+using global::BasisTheory.Client.Threeds;
 
 namespace BasisTheory.Client;
 
-public partial class BasisTheory
+public partial class BasisTheory : IBasisTheory
 {
     private readonly RawClient _client;
 
@@ -19,26 +20,36 @@ public partial class BasisTheory
             "BT-API-KEY",
             "Please pass in apiKey or set the environment variable BT-API-KEY."
         );
-        var defaultHeaders = new Headers(
+        clientOptions ??= new ClientOptions();
+        var platformHeaders = new Headers(
             new Dictionary<string, string>()
             {
-                { "BT-API-KEY", apiKey },
-                { "BT-TRACE-ID", correlationId },
                 { "X-Fern-Language", "C#" },
                 { "X-Fern-SDK-Name", "BasisTheory.Client" },
                 { "X-Fern-SDK-Version", Version.Current },
                 { "User-Agent", "BasisTheory/0.0.1" },
             }
         );
-        clientOptions ??= new ClientOptions();
-        foreach (var header in defaultHeaders)
+        foreach (var header in platformHeaders)
         {
             if (!clientOptions.Headers.ContainsKey(header.Key))
             {
                 clientOptions.Headers[header.Key] = header.Value;
             }
         }
-        _client = new RawClient(clientOptions);
+        var clientOptionsWithAuth = clientOptions.Clone();
+        var authHeaders = new Headers(
+            new Dictionary<string, string>()
+            {
+                { "BT-API-KEY", apiKey ?? "" },
+                { "BT-TRACE-ID", correlationId ?? "" },
+            }
+        );
+        foreach (var header in authHeaders)
+        {
+            clientOptionsWithAuth.Headers[header.Key] = header.Value;
+        }
+        _client = new RawClient(clientOptionsWithAuth);
         Applications = new ApplicationsClient(_client);
         ApplicationKeys = new ApplicationKeysClient(_client);
         ApplicationTemplates = new ApplicationTemplatesClient(_client);
@@ -55,57 +66,57 @@ public partial class BasisTheory
         Reactors = new ReactorsClient(_client);
         Roles = new RolesClient(_client);
         Sessions = new SessionsClient(_client);
-        Tenants = new TenantsClient(_client);
         TokenIntents = new TokenIntentsClient(_client);
         Webhooks = new WebhooksClient(_client);
         AccountUpdater = new AccountUpdaterClient(_client);
         Agentic = new AgenticClient(_client);
+        Tenants = new TenantsClient(_client);
         Threeds = new ThreedsClient(_client);
     }
 
-    public ApplicationsClient Applications { get; }
+    public IApplicationsClient Applications { get; }
 
-    public ApplicationKeysClient ApplicationKeys { get; }
+    public IApplicationKeysClient ApplicationKeys { get; }
 
-    public ApplicationTemplatesClient ApplicationTemplates { get; }
+    public IApplicationTemplatesClient ApplicationTemplates { get; }
 
-    public ApplePayClient ApplePay { get; }
+    public IApplePayClient ApplePay { get; }
 
-    public GooglePayClient GooglePay { get; }
+    public IGooglePayClient GooglePay { get; }
 
-    public DocumentsClient Documents { get; }
+    public IDocumentsClient Documents { get; }
 
-    public TokensClient Tokens { get; }
+    public ITokensClient Tokens { get; }
 
-    public EnrichmentsClient Enrichments { get; }
+    public IEnrichmentsClient Enrichments { get; }
 
-    public KeysClient Keys { get; }
+    public IKeysClient Keys { get; }
 
-    public LogsClient Logs { get; }
+    public ILogsClient Logs { get; }
 
-    public NetworkTokensClient NetworkTokens { get; }
+    public INetworkTokensClient NetworkTokens { get; }
 
-    public PermissionsClient Permissions { get; }
+    public IPermissionsClient Permissions { get; }
 
-    public ProxiesClient Proxies { get; }
+    public IProxiesClient Proxies { get; }
 
-    public ReactorsClient Reactors { get; }
+    public IReactorsClient Reactors { get; }
 
-    public RolesClient Roles { get; }
+    public IRolesClient Roles { get; }
 
-    public SessionsClient Sessions { get; }
+    public ISessionsClient Sessions { get; }
 
-    public TenantsClient Tenants { get; }
+    public ITokenIntentsClient TokenIntents { get; }
 
-    public TokenIntentsClient TokenIntents { get; }
+    public IWebhooksClient Webhooks { get; }
 
-    public WebhooksClient Webhooks { get; }
+    public IAccountUpdaterClient AccountUpdater { get; }
 
-    public AccountUpdaterClient AccountUpdater { get; }
+    public IAgenticClient Agentic { get; }
 
-    public AgenticClient Agentic { get; }
+    public ITenantsClient Tenants { get; }
 
-    public ThreedsClient Threeds { get; }
+    public IThreedsClient Threeds { get; }
 
     private static string GetFromEnvironmentOrThrow(string env, string message)
     {

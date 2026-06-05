@@ -9,5 +9,5 @@ internal interface IIdempotentRequestOptions : IRequestOptions
         set;
 #endif
     }
-    internal Headers GetIdempotencyHeaders();
+    internal Dictionary<string, string> GetIdempotencyHeaders();
 }

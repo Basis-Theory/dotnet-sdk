@@ -1,12 +1,16 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client;
 
 [Serializable]
-public record ThreeDsCardholderAccountInfo
+public record ThreeDsCardholderAccountInfo : IJsonOnDeserialized
 {
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
     [JsonPropertyName("account_age")]
     public string? AccountAge { get; set; }
 
@@ -52,15 +56,11 @@ public record ThreeDsCardholderAccountInfo
     [JsonPropertyName("suspicious_activity_observed")]
     public bool? SuspiciousActivityObserved { get; set; }
 
-    /// <summary>
-    /// Additional properties received from the response, if any.
-    /// </summary>
-    /// <remarks>
-    /// [EXPERIMENTAL] This API is experimental and may change in future releases.
-    /// </remarks>
-    [JsonExtensionData]
-    public IDictionary<string, JsonElement> AdditionalProperties { get; internal set; } =
-        new Dictionary<string, JsonElement>();
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
 
     /// <inheritdoc />
     public override string ToString()

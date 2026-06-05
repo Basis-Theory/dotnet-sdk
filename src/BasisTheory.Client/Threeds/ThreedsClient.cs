@@ -1,10 +1,10 @@
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.Threeds;
 
-public partial class ThreedsClient
+public partial class ThreedsClient : IThreedsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal ThreedsClient(RawClient client)
     {
@@ -12,5 +12,5 @@ public partial class ThreedsClient
         Sessions = new SessionsClient(_client);
     }
 
-    public SessionsClient Sessions { get; }
+    public ISessionsClient Sessions { get; }
 }

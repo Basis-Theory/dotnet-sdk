@@ -1,4 +1,5 @@
 using BasisTheory.Client.Core;
+using global::System.Net;
 using NUnit.Framework;
 using SystemTask = global::System.Threading.Tasks.Task;
 
@@ -45,12 +46,15 @@ public class NoRequestCursorTest
             (_, _, _) =>
             {
                 responses.MoveNext();
-                return SystemTask.FromResult(responses.Current);
+                return SystemTask.FromResult(Wrap(responses.Current));
             },
             (request, cursor) =>
             {
-                request.Cursor = cursor;
-                cursorCopy = cursor;
+                if (request is not null)
+                {
+                    request.Cursor = cursor;
+                    cursorCopy = cursor;
+                }
             },
             response => response?.Cursor?.Next,
             response => response?.Data?.Items?.ToList()
@@ -100,4 +104,16 @@ public class NoRequestCursorTest
     {
         public required string? Next { get; set; }
     }
+
+    private static WithRawResponse<Response> Wrap(Response response) =>
+        new()
+        {
+            Data = response,
+            RawResponse = new RawResponse
+            {
+                StatusCode = HttpStatusCode.OK,
+                Url = new Uri("https://localhost"),
+                Headers = default,
+            },
+        };
 }
