@@ -1,3 +1,46 @@
+# [7.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.10.0...v7.0.0) (2026-06-05)
+
+
+* feat!: Major updates ([#136](https://github.com/Basis-Theory/dotnet-sdk/issues/136)) ([a3dbf5b](https://github.com/Basis-Theory/dotnet-sdk/commit/a3dbf5befcd93180b87384fae8728925b87ce027))
+
+
+### BREAKING CHANGES
+
+* See below
+
+#### Method return types: `Task<T>` → `WithRawResponseTask<T>`
+
+All async methods now return `WithRawResponseTask<T>` instead of `Task<T>`. Fern includes compatibility shims so that `await client.Tokens.GetAsync(id)` continues to compile and behave identically. However, patterns that reference the return type explicitly will break:
+
+- **`Task.WhenAll(...)` and similar combinators** — `var t = client.Tokens.GetAsync(id)` now infers `WithRawResponseTask<Token>`, which is not directly accepted where `Task<Token>` is expected. Wrap with an explicit `await` or cast.
+- **Binary compatibility** — assemblies compiled against 6.x will throw `MissingMethodException` at runtime against this version.
+
+Methods that return non-generic `Task` (e.g. `DeleteAsync`) are unaffected.
+
+#### `AdditionalProperties` is now read-only
+
+The `AdditionalProperties` property on model types changed from `IDictionary<string, JsonElement>` to `ReadOnlyAdditionalProperties`, which implements `IReadOnlyDictionary`. Read operations (`ContainsKey`, `TryGetValue`, indexer get, `foreach`) continue to work. Mutation calls (`.Add`, `.Remove`, `["key"] = value`) will no longer compile.
+
+#### `ApplicationKeys.ListAsync` — key filter parameter renamed
+
+The query parameter for filtering by key ID was renamed from `Id` to `KeyId` to resolve a naming collision with the `Id` path parameter. Update any `ApplicationKeysListRequest` instances that set `Id` to use `KeyId` instead.
+
+#### `Tenants.Connections.DeleteAsync` — no longer returns a response body
+
+`DeleteAsync` now returns `Task` (void). Remove any code that reads a return value from this call.
+
+#### `Tenants.Members.ListAsync` — now returns a pager
+
+The method now returns `Pager<TenantMemberResponse>` instead of a flat response object. Update iteration code to consume the pager rather than accessing a `.Data` array directly.
+
+#### `Enrichments.CardDetailsAsync` — method renamed
+
+The method name is now explicitly `CardDetailsAsync`. If you were calling the previously auto-derived name, update your call sites to `CardDetailsAsync`.
+
+#### `Tenants.Owner.TransferAsync` — method renamed
+
+The method name is now explicitly `TransferAsync`. If you were calling the previously auto-derived name, update your call sites to `TransferAsync`.
+
 # [6.10.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.9.0...v6.10.0) (2026-06-01)
 
 
