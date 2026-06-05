@@ -1,5 +1,5 @@
-using System.Text.Json.Serialization;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client;
 
@@ -16,7 +16,7 @@ public record UpdateReactorRequest
     public required string Code { get; set; }
 
     [JsonPropertyName("configuration")]
-    public Dictionary<string, string?>? Configuration { get; set; }
+    public Dictionary<string, string>? Configuration { get; set; }
 
     [JsonPropertyName("runtime")]
     public Runtime? Runtime { get; set; }

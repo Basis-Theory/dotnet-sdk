@@ -10,35 +10,31 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 8.x
+          dotnet-version: 9.x
 
       - name: Install tools
         run: |
           dotnet tool restore
 
       - name: Build Release
-        run: dotnet build src -c Release /p:ContinuousIntegrationBuild=true
+        run: dotnet build BasisTheory.Client.slnx -c Release /p:ContinuousIntegrationBuild=true
 
   tests:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 8.x
+          dotnet-version: 9.x
 
       - name: Install tools
         run: |
@@ -46,7 +42,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          dotnet test src
+          dotnet test BasisTheory.Client.slnx
         env:
           BT_API_URL: https://api.flock-dev.com
           BT_MGT_API_KEY: ${{ secrets.BT_SDK_INT_TEST_MGT_API_KEY }}

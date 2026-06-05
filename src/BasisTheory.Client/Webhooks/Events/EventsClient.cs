@@ -1,38 +1,36 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client.Webhooks;
 
-public partial class EventsClient
+public partial class EventsClient : IEventsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal EventsClient(RawClient client)
     {
         _client = client;
     }
 
-    /// <summary>
-    /// Return a list of available event types
-    /// </summary>
-    /// <example><code>
-    /// await client.Webhooks.Events.ListAsync();
-    /// </code></example>
-    public async Task<IEnumerable<string>> ListAsync(
+    private async Task<WithRawResponse<IEnumerable<string>>> ListAsyncCore(
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = "webhooks/event-types",
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -40,19 +38,37 @@ public partial class EventsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<IEnumerable<string>>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<IEnumerable<string>>(responseBody)!;
+                return new WithRawResponse<IEnumerable<string>>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -77,5 +93,21 @@ public partial class EventsClient
                 responseBody
             );
         }
+    }
+
+    /// <summary>
+    /// Return a list of available event types
+    /// </summary>
+    /// <example><code>
+    /// await client.Webhooks.Events.ListAsync();
+    /// </code></example>
+    public WithRawResponseTask<IEnumerable<string>> ListAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<IEnumerable<string>>(
+            ListAsyncCore(options, cancellationToken)
+        );
     }
 }

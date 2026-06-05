@@ -1,51 +1,62 @@
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading;
-using BasisTheory.Client;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
 
 namespace BasisTheory.Client.Tenants;
 
-public partial class MerchantsClient
+public partial class MerchantsClient : IMerchantsClient
 {
-    private RawClient _client;
+    private readonly RawClient _client;
 
     internal MerchantsClient(RawClient client)
     {
         _client = client;
     }
 
-    private async Task<TenantMerchantPaginatedList> ListInternalAsync(
+    private WithRawResponseTask<TenantMerchantPaginatedList> ListInternalAsync(
         string tenantId,
         MerchantsListRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        var _query = new Dictionary<string, object>();
-        if (request.Page != null)
-        {
-            _query["page"] = request.Page.Value.ToString();
-        }
-        if (request.Start != null)
-        {
-            _query["start"] = request.Start;
-        }
-        if (request.Size != null)
-        {
-            _query["size"] = request.Size.Value.ToString();
-        }
+        return new WithRawResponseTask<TenantMerchantPaginatedList>(
+            ListInternalAsyncCore(tenantId, request, options, cancellationToken)
+        );
+    }
+
+    private async Task<WithRawResponse<TenantMerchantPaginatedList>> ListInternalAsyncCore(
+        string tenantId,
+        MerchantsListRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _queryString = new global::BasisTheory.Client.Core.QueryStringBuilder.Builder(
+            capacity: 3
+        )
+            .Add("page", request.Page)
+            .Add("start", request.Start)
+            .Add("size", request.Size)
+            .MergeAdditional(options?.AdditionalQueryParameters)
+            .Build();
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "tenants/{0}/merchants",
                         ValueConvert.ToPathParameterString(tenantId)
                     ),
-                    Query = _query,
+                    QueryString = _queryString,
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -53,19 +64,39 @@ public partial class MerchantsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<TenantMerchantPaginatedList>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<TenantMerchantPaginatedList>(
+                    responseBody
+                )!;
+                return new WithRawResponse<TenantMerchantPaginatedList>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -90,72 +121,30 @@ public partial class MerchantsClient
         }
     }
 
-    /// <example><code>
-    /// await client.Tenants.Merchants.ListAsync("tenantId", new MerchantsListRequest());
-    /// </code></example>
-    public async Task<Pager<TenantMerchant>> ListAsync(
-        string tenantId,
-        MerchantsListRequest request,
-        RequestOptions? options = null,
-        CancellationToken cancellationToken = default
-    )
-    {
-        if (request is not null)
-        {
-            request = request with { };
-        }
-        var pager = await OffsetPager<
-            MerchantsListRequest,
-            RequestOptions?,
-            TenantMerchantPaginatedList,
-            int?,
-            object,
-            TenantMerchant
-        >
-            .CreateInstanceAsync(
-                request,
-                options,
-                (request, options, cancellationToken) =>
-                    ListInternalAsync(tenantId, request, options, cancellationToken),
-                request => request?.Page ?? 0,
-                (request, offset) =>
-                {
-                    request.Page = offset;
-                },
-                null,
-                response => response?.Data?.ToList(),
-                null,
-                cancellationToken
-            )
-            .ConfigureAwait(false);
-        return pager;
-    }
-
-    /// <example><code>
-    /// await client.Tenants.Merchants.CreateAsync(
-    ///     "tenantId",
-    ///     new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
-    /// );
-    /// </code></example>
-    public async Task<TenantMerchant> CreateAsync(
+    private async Task<WithRawResponse<TenantMerchant>> CreateAsyncCore(
         string tenantId,
         TenantMerchantRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = string.Format(
                         "tenants/{0}/merchants",
                         ValueConvert.ToPathParameterString(tenantId)
                     ),
                     Body = request,
-                    ContentType = "application/json",
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -163,19 +152,37 @@ public partial class MerchantsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<TenantMerchant>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<TenantMerchant>(responseBody)!;
+                return new WithRawResponse<TenantMerchant>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -204,27 +211,30 @@ public partial class MerchantsClient
         }
     }
 
-    /// <example><code>
-    /// await client.Tenants.Merchants.GetAsync("tenantId", "merchantId");
-    /// </code></example>
-    public async Task<TenantMerchant> GetAsync(
+    private async Task<WithRawResponse<TenantMerchant>> GetAsyncCore(
         string tenantId,
         string merchantId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Get,
                     Path = string.Format(
                         "tenants/{0}/merchants/{1}",
                         ValueConvert.ToPathParameterString(tenantId),
                         ValueConvert.ToPathParameterString(merchantId)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -232,19 +242,37 @@ public partial class MerchantsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<TenantMerchant>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<TenantMerchant>(responseBody)!;
+                return new WithRawResponse<TenantMerchant>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -269,27 +297,30 @@ public partial class MerchantsClient
         }
     }
 
-    /// <example><code>
-    /// await client.Tenants.Merchants.DeleteAsync("tenantId", "merchantId");
-    /// </code></example>
-    public async Task<TenantMerchant> DeleteAsync(
+    private async Task<WithRawResponse<TenantMerchant>> DeleteAsyncCore(
         string tenantId,
         string merchantId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Delete,
                     Path = string.Format(
                         "tenants/{0}/merchants/{1}",
                         ValueConvert.ToPathParameterString(tenantId),
                         ValueConvert.ToPathParameterString(merchantId)
                     ),
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -297,19 +328,37 @@ public partial class MerchantsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<TenantMerchant>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<TenantMerchant>(responseBody)!;
+                return new WithRawResponse<TenantMerchant>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -338,14 +387,7 @@ public partial class MerchantsClient
         }
     }
 
-    /// <example><code>
-    /// await client.Tenants.Merchants.UpdateAsync(
-    ///     "tenantId",
-    ///     "merchantId",
-    ///     new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
-    /// );
-    /// </code></example>
-    public async Task<TenantMerchant> UpdateAsync(
+    private async Task<WithRawResponse<TenantMerchant>> UpdateAsyncCore(
         string tenantId,
         string merchantId,
         TenantMerchantRequest request,
@@ -353,11 +395,16 @@ public partial class MerchantsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethodExtensions.Patch,
                     Path = string.Format(
                         "tenants/{0}/merchants/{1}",
@@ -365,7 +412,7 @@ public partial class MerchantsClient
                         ValueConvert.ToPathParameterString(merchantId)
                     ),
                     Body = request,
-                    ContentType = "application/json",
+                    Headers = _headers,
                     Options = options,
                 },
                 cancellationToken
@@ -373,19 +420,37 @@ public partial class MerchantsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<TenantMerchant>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<TenantMerchant>(responseBody)!;
+                return new WithRawResponse<TenantMerchant>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -414,14 +479,7 @@ public partial class MerchantsClient
         }
     }
 
-    /// <example><code>
-    /// await client.Tenants.Merchants.RequestOnboardingAsync(
-    ///     "tenantId",
-    ///     "merchantId",
-    ///     new ServiceOnboardingRequest()
-    /// );
-    /// </code></example>
-    public async Task<TenantMerchant> RequestOnboardingAsync(
+    private async Task<WithRawResponse<TenantMerchant>> RequestOnboardingAsyncCore(
         string tenantId,
         string merchantId,
         ServiceOnboardingRequest request,
@@ -429,11 +487,16 @@ public partial class MerchantsClient
         CancellationToken cancellationToken = default
     )
     {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
         var response = await _client
             .SendRequestAsync(
                 new JsonRequest
                 {
-                    BaseUrl = _client.Options.BaseUrl,
                     Method = HttpMethod.Post,
                     Path = string.Format(
                         "tenants/{0}/merchants/{1}/services",
@@ -441,6 +504,7 @@ public partial class MerchantsClient
                         ValueConvert.ToPathParameterString(merchantId)
                     ),
                     Body = request,
+                    Headers = _headers,
                     ContentType = "application/json",
                     Options = options,
                 },
@@ -449,19 +513,37 @@ public partial class MerchantsClient
             .ConfigureAwait(false);
         if (response.StatusCode is >= 200 and < 400)
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
-                return JsonUtils.Deserialize<TenantMerchant>(responseBody)!;
+                var responseData = JsonUtils.Deserialize<TenantMerchant>(responseBody)!;
+                return new WithRawResponse<TenantMerchant>()
+                {
+                    Data = responseData,
+                    RawResponse = new RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
             }
             catch (JsonException e)
             {
-                throw new BasisTheoryException("Failed to deserialize response", e);
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e
+                );
             }
         }
-
         {
-            var responseBody = await response.Raw.Content.ReadAsStringAsync();
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
             try
             {
                 switch (response.StatusCode)
@@ -496,5 +578,140 @@ public partial class MerchantsClient
                 responseBody
             );
         }
+    }
+
+    /// <example><code>
+    /// await client.Tenants.Merchants.ListAsync(
+    ///     "tenantId",
+    ///     new MerchantsListRequest
+    ///     {
+    ///         Page = 1,
+    ///         Start = "start",
+    ///         Size = 1,
+    ///     }
+    /// );
+    /// </code></example>
+    public async Task<Pager<TenantMerchant>> ListAsync(
+        string tenantId,
+        MerchantsListRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        request = request with { };
+        var pager = await OffsetPager<
+            MerchantsListRequest,
+            RequestOptions?,
+            TenantMerchantPaginatedList,
+            int,
+            object,
+            TenantMerchant
+        >
+            .CreateInstanceAsync(
+                request,
+                options,
+                async (request, options, cancellationToken) =>
+                    await ListInternalAsync(tenantId, request, options, cancellationToken)
+                        .WithRawResponse(),
+                request => request.Page ?? 0,
+                (request, offset) =>
+                {
+                    request.Page = offset;
+                },
+                null,
+                response => response.Data?.ToList(),
+                null,
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        return pager;
+    }
+
+    /// <example><code>
+    /// await client.Tenants.Merchants.CreateAsync(
+    ///     "tenantId",
+    ///     new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<TenantMerchant> CreateAsync(
+        string tenantId,
+        TenantMerchantRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<TenantMerchant>(
+            CreateAsyncCore(tenantId, request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Tenants.Merchants.GetAsync("tenantId", "merchantId");
+    /// </code></example>
+    public WithRawResponseTask<TenantMerchant> GetAsync(
+        string tenantId,
+        string merchantId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<TenantMerchant>(
+            GetAsyncCore(tenantId, merchantId, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Tenants.Merchants.DeleteAsync("tenantId", "merchantId");
+    /// </code></example>
+    public WithRawResponseTask<TenantMerchant> DeleteAsync(
+        string tenantId,
+        string merchantId,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<TenantMerchant>(
+            DeleteAsyncCore(tenantId, merchantId, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Tenants.Merchants.UpdateAsync(
+    ///     "tenantId",
+    ///     "merchantId",
+    ///     new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<TenantMerchant> UpdateAsync(
+        string tenantId,
+        string merchantId,
+        TenantMerchantRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<TenantMerchant>(
+            UpdateAsyncCore(tenantId, merchantId, request, options, cancellationToken)
+        );
+    }
+
+    /// <example><code>
+    /// await client.Tenants.Merchants.RequestOnboardingAsync(
+    ///     "tenantId",
+    ///     "merchantId",
+    ///     new ServiceOnboardingRequest()
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<TenantMerchant> RequestOnboardingAsync(
+        string tenantId,
+        string merchantId,
+        ServiceOnboardingRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<TenantMerchant>(
+            RequestOnboardingAsyncCore(tenantId, merchantId, request, options, cancellationToken)
+        );
     }
 }

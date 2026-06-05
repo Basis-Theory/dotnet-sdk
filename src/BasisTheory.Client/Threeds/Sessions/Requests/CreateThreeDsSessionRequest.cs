@@ -1,6 +1,6 @@
-using System.Text.Json.Serialization;
-using BasisTheory.Client;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client.Threeds;
 
@@ -35,7 +35,7 @@ public record CreateThreeDsSessionRequest
     public ThreeDsCallbackUrls? CallbackUrls { get; set; }
 
     [JsonPropertyName("metadata")]
-    public Dictionary<string, string?>? Metadata { get; set; }
+    public Dictionary<string, string>? Metadata { get; set; }
 
     /// <inheritdoc />
     public override string ToString()

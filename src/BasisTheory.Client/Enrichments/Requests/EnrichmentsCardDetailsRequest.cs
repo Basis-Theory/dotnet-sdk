@@ -1,10 +1,10 @@
-using System.Text.Json.Serialization;
-using BasisTheory.Client.Core;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client;
 
 [Serializable]
-public record EnrichmentsGetCardDetailsRequest
+public record EnrichmentsCardDetailsRequest
 {
     [JsonIgnore]
     public required string Bin { get; set; }
