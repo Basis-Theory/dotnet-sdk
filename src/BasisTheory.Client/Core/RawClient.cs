@@ -98,10 +98,6 @@ internal partial class RawClient(ClientOptions clientOptions)
                     break;
                 default:
                     var bodyStream = new MemoryStream();
-                    // BUG: This throws ObjectDisposedException on retries. The caller passes the
-                    // original request here, but HttpClient.SendAsync (see SendWithRetriesAsync)
-                    // disposes a request's Content once the send completes. So on the first retry
-                    // this CopyToAsync runs against an already-disposed StringContent.
                     await request.Content.CopyToAsync(bodyStream).ConfigureAwait(false);
                     bodyStream.Position = 0;
                     var clonedContent = new StreamContent(bodyStream);
@@ -135,44 +131,48 @@ internal partial class RawClient(ClientOptions clientOptions)
     {
         var httpClient = options?.HttpClient ?? Options.HttpClient;
         var maxRetries = options?.MaxRetries ?? Options.MaxRetries;
-        // BUG: Sending the original request here disposes its Content (HttpClient always
-        // disposes a sent request's Content). Because the retry loop below clones from this
-        // same original request, the first retry hits an already-disposed Content and throws
-        // ObjectDisposedException. Fix: always send a clone (never the original) so the
-        // original's Content stays alive to be re-buffered on each attempt.
-        var response = await httpClient
-            .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
-            .ConfigureAwait(false);
         var isRetryableContent = IsRetryableContent(request);
 
+        // When the content is not retryable (e.g. stream content) send the original request
+        // directly to avoid buffering it into memory.
         if (!isRetryableContent)
         {
+            var nonRetryableResponse = await httpClient
+                .SendAsync(request, HttpCompletionOption.ResponseHeadersRead, cancellationToken)
+                .ConfigureAwait(false);
             return new global::BasisTheory.Client.Core.ApiResponse
             {
-                StatusCode = (int)response.StatusCode,
-                Raw = response,
+                StatusCode = (int)nonRetryableResponse.StatusCode,
+                Raw = nonRetryableResponse,
             };
         }
 
-        for (var i = 0; i < maxRetries; i++)
+        // For retryable content we always send a clone, never the original request.
+        // HttpClient disposes the Content of every request it sends, so sending the original
+        // would dispose its Content and cause an ObjectDisposedException when we clone it for
+        // a subsequent retry. Keeping the original untouched lets us buffer a fresh copy of
+        // its Content on each attempt.
+        HttpResponseMessage response;
+        var attempt = 0;
+        while (true)
         {
-            if (!ShouldRetry(response))
-            {
-                break;
-            }
-
-            var delayMs = GetRetryDelayFromHeaders(response, i);
-            await SystemTask.Delay(delayMs, cancellationToken).ConfigureAwait(false);
-            // BUG: 'request' was already sent above, so HttpClient has disposed its Content.
-            // CloneRequestAsync copies request.Content, which now throws ObjectDisposedException.
-            using var retryRequest = await CloneRequestAsync(request).ConfigureAwait(false);
+            using var attemptRequest = await CloneRequestAsync(request).ConfigureAwait(false);
             response = await httpClient
                 .SendAsync(
-                    retryRequest,
+                    attemptRequest,
                     HttpCompletionOption.ResponseHeadersRead,
                     cancellationToken
                 )
                 .ConfigureAwait(false);
+
+            if (attempt >= maxRetries || !ShouldRetry(response))
+            {
+                break;
+            }
+
+            var delayMs = GetRetryDelayFromHeaders(response, attempt);
+            await SystemTask.Delay(delayMs, cancellationToken).ConfigureAwait(false);
+            attempt++;
         }
 
         return new global::BasisTheory.Client.Core.ApiResponse
