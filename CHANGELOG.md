@@ -1,3 +1,10 @@
+## [7.0.1](https://github.com/Basis-Theory/dotnet-sdk/compare/v7.0.0...v7.0.1) (2026-06-30)
+
+
+### Bug Fixes
+
+* preserve request body across .NET SDK retries ([#139](https://github.com/Basis-Theory/dotnet-sdk/issues/139)) ([2fc9937](https://github.com/Basis-Theory/dotnet-sdk/commit/2fc993766502d147b53e05784e6eae7b503658cb))
+
 # [7.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v6.10.0...v7.0.0) (2026-06-05)
 
 
