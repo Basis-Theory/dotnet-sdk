@@ -9,7 +9,10 @@ public partial interface IWebhooksClient
     /// <summary>
     /// Simple endpoint that can be utilized to verify the application is running
     /// </summary>
-    Task PingAsync(RequestOptions? options = null, CancellationToken cancellationToken = default);
+    WithRawResponseTask PingAsync(
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
 
     /// <summary>
     /// Returns the webhook
@@ -33,7 +36,7 @@ public partial interface IWebhooksClient
     /// <summary>
     /// Delete a new webhook
     /// </summary>
-    Task DeleteAsync(
+    WithRawResponseTask DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

@@ -29,7 +29,7 @@ public partial interface IInvitationsClient
         CancellationToken cancellationToken = default
     );
 
-    Task DeleteAsync(
+    WithRawResponseTask DeleteAsync(
         string invitationId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

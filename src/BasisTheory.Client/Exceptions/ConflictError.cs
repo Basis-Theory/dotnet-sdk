@@ -4,8 +4,10 @@ namespace BasisTheory.Client;
 /// This exception type will be thrown for any non-2XX API responses.
 /// </summary>
 [Serializable]
-public class ConflictError(ProblemDetails body)
-    : BasisTheoryApiException("ConflictError", 409, body)
+public class ConflictError(
+    ProblemDetails body,
+    global::BasisTheory.Client.RawResponse? rawResponse = null
+) : BasisTheoryApiException("ConflictError", 409, body, rawResponse: rawResponse)
 {
     /// <summary>
     /// The body of the response that triggered the exception.

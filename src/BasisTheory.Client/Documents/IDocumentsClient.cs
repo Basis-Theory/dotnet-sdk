@@ -17,7 +17,7 @@ public partial interface IDocumentsClient
         CancellationToken cancellationToken = default
     );
 
-    Task DeleteAsync(
+    WithRawResponseTask DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

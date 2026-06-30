@@ -1,7 +1,7 @@
 {
-  "cliVersion": "5.43.0",
+  "cliVersion": "5.44.14",
   "generatorName": "fernapi/fern-csharp-sdk",
-  "generatorVersion": "2.66.8",
+  "generatorVersion": "2.69.2",
   "generatorConfig": {
     "namespace": "BasisTheory.Client",
     "client-class-name": "BasisTheory",
@@ -12,7 +12,7 @@
     "simplify-object-dictionaries": true,
     "use-discriminated-unions": false
   },
-  "originGitCommit": "653a1ac274c3a576a2273f9bff9371eb0d555ad2",
+  "originGitCommit": "797ea8347e4cf37c530114d688909ff623a17ef4",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
   "requestedVersion": "0.0.1",

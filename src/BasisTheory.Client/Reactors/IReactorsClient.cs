@@ -31,13 +31,13 @@ public partial interface IReactorsClient
         CancellationToken cancellationToken = default
     );
 
-    Task DeleteAsync(
+    WithRawResponseTask DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
 
-    Task PatchAsync(
+    WithRawResponseTask PatchAsync(
         string id,
         PatchReactorRequest request,
         IdempotentRequestOptions? options = null,

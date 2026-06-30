@@ -22,7 +22,7 @@ public partial interface IApplicationKeysClient
         CancellationToken cancellationToken = default
     );
 
-    Task DeleteAsync(
+    WithRawResponseTask DeleteAsync(
         string id,
         string keyId,
         RequestOptions? options = null,

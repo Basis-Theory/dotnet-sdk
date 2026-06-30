@@ -4,7 +4,7 @@ namespace BasisTheory.Client.ApplePay;
 
 public partial interface IDomainClient
 {
-    Task DeregisterAsync(
+    WithRawResponseTask DeregisterAsync(
         ApplePayDomainDeregistrationRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
