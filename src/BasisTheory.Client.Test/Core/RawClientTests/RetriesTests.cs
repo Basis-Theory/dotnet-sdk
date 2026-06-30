@@ -442,7 +442,48 @@ public class RetriesTests
             Assert.That(_server.LogEntries, Has.Count.EqualTo(2));
 
             var retriedEntry = _server.LogEntries.ElementAt(1);
-            using var actualJson = JsonDocument.Parse(retriedEntry.RequestMessage.Body!);
+            using var actualJson = JsonDocument.Parse(retriedEntry.RequestMessage!.Body!);
+            Assert.That(actualJson.RootElement.GetProperty("key").GetString(), Is.EqualTo("value"));
+        }
+    }
+
+    [Test]
+    public async SystemTask ReactAsync_ShouldRetry_WhenHandlerDisposesRequestContent()
+    {
+        _server
+            .Given(WireMockRequest.Create().WithPath("/reactors/reactor-id/react").UsingPost())
+            .InScenario("ReactDisposeContentRetry")
+            .WillSetStateTo("Success")
+            .RespondWith(WireMockResponse.Create().WithStatusCode(500));
+
+        _server
+            .Given(WireMockRequest.Create().WithPath("/reactors/reactor-id/react").UsingPost())
+            .InScenario("ReactDisposeContentRetry")
+            .WhenStateIs("Success")
+            .RespondWith(WireMockResponse.Create().WithStatusCode(200).WithBody("{}"));
+
+        using var disposingClient = new HttpClient(
+            new ContentDisposingHandler(new HttpClientHandler())
+        );
+        var client = new BasisTheory(
+            apiKey: "test-api-key",
+            clientOptions: new ClientOptions
+            {
+                BaseUrl = _baseUrl,
+                HttpClient = disposingClient,
+                MaxRetries = MaxRetries,
+            }
+        );
+
+        var response = await client.Reactors.ReactAsync("reactor-id", new { key = "value" });
+        Assert.That(response, Is.Not.Null);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(_server.LogEntries, Has.Count.EqualTo(2));
+
+            var retriedEntry = _server.LogEntries.ElementAt(1);
+            using var actualJson = JsonDocument.Parse(retriedEntry.RequestMessage!.Body!);
             Assert.That(actualJson.RootElement.GetProperty("key").GetString(), Is.EqualTo("value"));
         }
     }
