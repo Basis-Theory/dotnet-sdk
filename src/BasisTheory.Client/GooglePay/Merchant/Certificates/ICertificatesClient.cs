@@ -11,7 +11,7 @@ public partial interface ICertificatesClient
         CancellationToken cancellationToken = default
     );
 
-    Task DeleteAsync(
+    WithRawResponseTask DeleteAsync(
         string merchantId,
         string id,
         RequestOptions? options = null,

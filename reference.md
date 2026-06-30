@@ -179,7 +179,7 @@ await client.Applications.UpdateAsync("id", new UpdateApplicationRequest { Name 
 </dl>
 </details>
 
-<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">DeleteAsync</a>(id)</code></summary>
+<details><summary><code>client.Applications.<a href="/src/BasisTheory.Client/Applications/ApplicationsClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -388,7 +388,7 @@ await client.ApplicationKeys.GetAsync("id", "keyId");
 </dl>
 </details>
 
-<details><summary><code>client.ApplicationKeys.<a href="/src/BasisTheory.Client/ApplicationKeys/ApplicationKeysClient.cs">DeleteAsync</a>(id, keyId)</code></summary>
+<details><summary><code>client.ApplicationKeys.<a href="/src/BasisTheory.Client/ApplicationKeys/ApplicationKeysClient.cs">DeleteAsync</a>(id, keyId) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -825,7 +825,7 @@ await client.Documents.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Documents.<a href="/src/BasisTheory.Client/Documents/DocumentsClient.cs">DeleteAsync</a>(id)</code></summary>
+<details><summary><code>client.Documents.<a href="/src/BasisTheory.Client/Documents/DocumentsClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -986,7 +986,7 @@ await client.Tokens.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">DeleteAsync</a>(id)</code></summary>
+<details><summary><code>client.Tokens.<a href="/src/BasisTheory.Client/Tokens/TokensClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -1392,7 +1392,7 @@ await client.Keys.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Keys.<a href="/src/BasisTheory.Client/Keys/KeysClient.cs">DeleteAsync</a>(id)</code></summary>
+<details><summary><code>client.Keys.<a href="/src/BasisTheory.Client/Keys/KeysClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -1630,7 +1630,7 @@ await client.NetworkTokens.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">DeleteAsync</a>(id)</code></summary>
+<details><summary><code>client.NetworkTokens.<a href="/src/BasisTheory.Client/NetworkTokens/NetworkTokensClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -1976,7 +1976,7 @@ await client.Proxies.UpdateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">DeleteAsync</a>(id)</code></summary>
+<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -2016,7 +2016,7 @@ await client.Proxies.DeleteAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">PatchAsync</a>(id, PatchProxyRequest { ... })</code></summary>
+<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">PatchAsync</a>(id, PatchProxyRequest { ... }) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -2242,7 +2242,7 @@ await client.Reactors.UpdateAsync("id", new UpdateReactorRequest { Name = "name"
 </dl>
 </details>
 
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">DeleteAsync</a>(id)</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -2282,7 +2282,7 @@ await client.Reactors.DeleteAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">PatchAsync</a>(id, PatchReactorRequest { ... })</code></summary>
+<details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">PatchAsync</a>(id, PatchReactorRequest { ... }) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -2481,7 +2481,7 @@ await client.Sessions.CreateAsync();
 </dl>
 </details>
 
-<details><summary><code>client.Sessions.<a href="/src/BasisTheory.Client/Sessions/SessionsClient.cs">AuthorizeAsync</a>(AuthorizeSessionRequest { ... })</code></summary>
+<details><summary><code>client.Sessions.<a href="/src/BasisTheory.Client/Sessions/SessionsClient.cs">AuthorizeAsync</a>(AuthorizeSessionRequest { ... }) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -2562,7 +2562,7 @@ await client.TokenIntents.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">DeleteAsync</a>(id)</code></summary>
+<details><summary><code>client.TokenIntents.<a href="/src/BasisTheory.Client/TokenIntents/TokenIntentsClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -2643,7 +2643,7 @@ await client.TokenIntents.CreateAsync(new CreateTokenIntentRequest { Type = "typ
 </details>
 
 ## Webhooks
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">PingAsync</a>()</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">PingAsync</a>() -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -2806,7 +2806,7 @@ await client.Webhooks.UpdateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">DeleteAsync</a>(id)</code></summary>
+<details><summary><code>client.Webhooks.<a href="/src/BasisTheory.Client/Webhooks/WebhooksClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -3261,7 +3261,7 @@ await client.Agentic.Agents.GetAsync("agent_id");
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">DeleteAsync</a>(agentId)</code></summary>
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">DeleteAsync</a>(agentId) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -3506,7 +3506,7 @@ await client.Agentic.Enrollments.GetAsync("enrollment_id");
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">DeleteAsync</a>(enrollmentId)</code></summary>
+<details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">DeleteAsync</a>(enrollmentId) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -3804,7 +3804,7 @@ await client.Agentic.Agents.Instructions.GetAsync("agent_id", "instruction_id");
 </dl>
 </details>
 
-<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">DeleteAsync</a>(agentId, instructionId)</code></summary>
+<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">DeleteAsync</a>(agentId, instructionId) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -4477,7 +4477,7 @@ await client.ApplePay.Merchant.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.ApplePay.Merchant.<a href="/src/BasisTheory.Client/ApplePay/Merchant/MerchantClient.cs">DeleteAsync</a>(id)</code></summary>
+<details><summary><code>client.ApplePay.Merchant.<a href="/src/BasisTheory.Client/ApplePay/Merchant/MerchantClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -4558,7 +4558,7 @@ await client.ApplePay.Merchant.CreateAsync(new ApplePayMerchantRegisterRequest()
 </details>
 
 ## ApplePay Domain
-<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">DeregisterAsync</a>(ApplePayDomainDeregistrationRequest { ... })</code></summary>
+<details><summary><code>client.ApplePay.Domain.<a href="/src/BasisTheory.Client/ApplePay/Domain/DomainClient.cs">DeregisterAsync</a>(ApplePayDomainDeregistrationRequest { ... }) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -4797,7 +4797,7 @@ await client.ApplePay.Merchant.Certificates.GetAsync("merchantId", "id");
 </dl>
 </details>
 
-<details><summary><code>client.ApplePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/ApplePay/Merchant/Certificates/CertificatesClient.cs">DeleteAsync</a>(merchantId, id)</code></summary>
+<details><summary><code>client.ApplePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/ApplePay/Merchant/Certificates/CertificatesClient.cs">DeleteAsync</a>(merchantId, id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -4982,7 +4982,7 @@ await client.GooglePay.Merchant.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.GooglePay.Merchant.<a href="/src/BasisTheory.Client/GooglePay/Merchant/MerchantClient.cs">DeleteAsync</a>(id)</code></summary>
+<details><summary><code>client.GooglePay.Merchant.<a href="/src/BasisTheory.Client/GooglePay/Merchant/MerchantClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -5111,7 +5111,7 @@ await client.GooglePay.Merchant.Certificates.GetAsync("merchantId", "id");
 </dl>
 </details>
 
-<details><summary><code>client.GooglePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/GooglePay/Merchant/Certificates/CertificatesClient.cs">DeleteAsync</a>(merchantId, id)</code></summary>
+<details><summary><code>client.GooglePay.Merchant.Certificates.<a href="/src/BasisTheory.Client/GooglePay/Merchant/Certificates/CertificatesClient.cs">DeleteAsync</a>(merchantId, id) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -5415,7 +5415,7 @@ await client.Tenants.Connections.CreateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Connections.<a href="/src/BasisTheory.Client/Tenants/Connections/ConnectionsClient.cs">DeleteAsync</a>()</code></summary>
+<details><summary><code>client.Tenants.Connections.<a href="/src/BasisTheory.Client/Tenants/Connections/ConnectionsClient.cs">DeleteAsync</a>() -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -5609,7 +5609,7 @@ await client.Tenants.Invitations.GetAsync("invitationId");
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">DeleteAsync</a>(invitationId)</code></summary>
+<details><summary><code>client.Tenants.Invitations.<a href="/src/BasisTheory.Client/Tenants/Invitations/InvitationsClient.cs">DeleteAsync</a>(invitationId) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -5749,7 +5749,7 @@ await client.Tenants.Members.UpdateAsync(
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Members.<a href="/src/BasisTheory.Client/Tenants/Members/MembersClient.cs">DeleteAsync</a>(memberId)</code></summary>
+<details><summary><code>client.Tenants.Members.<a href="/src/BasisTheory.Client/Tenants/Members/MembersClient.cs">DeleteAsync</a>(memberId) -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 
@@ -6270,7 +6270,7 @@ await client.Tenants.Self.UpdateAsync(new UpdateTenantRequest { Name = "name" })
 </dl>
 </details>
 
-<details><summary><code>client.Tenants.Self.<a href="/src/BasisTheory.Client/Tenants/Self/SelfClient.cs">DeleteAsync</a>()</code></summary>
+<details><summary><code>client.Tenants.Self.<a href="/src/BasisTheory.Client/Tenants/Self/SelfClient.cs">DeleteAsync</a>() -> WithRawResponseTask</code></summary>
 <dl>
 <dd>
 

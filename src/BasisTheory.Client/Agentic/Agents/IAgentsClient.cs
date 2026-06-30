@@ -18,7 +18,7 @@ public partial interface IAgentsClient
         CancellationToken cancellationToken = default
     );
 
-    Task DeleteAsync(
+    WithRawResponseTask DeleteAsync(
         string agentId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

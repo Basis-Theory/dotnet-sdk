@@ -34,7 +34,7 @@ public partial interface IEnrollmentsClient
     /// <summary>
     /// Soft-deletes the enrollment by marking its status as deleted.
     /// </summary>
-    Task DeleteAsync(
+    WithRawResponseTask DeleteAsync(
         string enrollmentId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

@@ -4,8 +4,10 @@ namespace BasisTheory.Client;
 /// This exception type will be thrown for any non-2XX API responses.
 /// </summary>
 [Serializable]
-public class ServiceUnavailableError(ProblemDetails body)
-    : BasisTheoryApiException("ServiceUnavailableError", 503, body)
+public class ServiceUnavailableError(
+    ProblemDetails body,
+    global::BasisTheory.Client.RawResponse? rawResponse = null
+) : BasisTheoryApiException("ServiceUnavailableError", 503, body, rawResponse: rawResponse)
 {
     /// <summary>
     /// The body of the response that triggered the exception.

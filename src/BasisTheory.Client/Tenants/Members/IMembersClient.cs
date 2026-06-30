@@ -18,7 +18,7 @@ public partial interface IMembersClient
         CancellationToken cancellationToken = default
     );
 
-    Task DeleteAsync(
+    WithRawResponseTask DeleteAsync(
         string memberId,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

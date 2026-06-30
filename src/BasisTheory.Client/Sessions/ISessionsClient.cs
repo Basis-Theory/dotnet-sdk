@@ -7,7 +7,7 @@ public partial interface ISessionsClient
         CancellationToken cancellationToken = default
     );
 
-    Task AuthorizeAsync(
+    WithRawResponseTask AuthorizeAsync(
         AuthorizeSessionRequest request,
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default

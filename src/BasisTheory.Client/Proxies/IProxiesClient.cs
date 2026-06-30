@@ -29,13 +29,13 @@ public partial interface IProxiesClient
         CancellationToken cancellationToken = default
     );
 
-    Task DeleteAsync(
+    WithRawResponseTask DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
 
-    Task PatchAsync(
+    WithRawResponseTask PatchAsync(
         string id,
         PatchProxyRequest request,
         IdempotentRequestOptions? options = null,

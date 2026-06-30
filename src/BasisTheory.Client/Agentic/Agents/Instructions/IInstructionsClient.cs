@@ -36,7 +36,7 @@ public partial interface IInstructionsClient
         CancellationToken cancellationToken = default
     );
 
-    Task DeleteAsync(
+    WithRawResponseTask DeleteAsync(
         string agentId,
         string instructionId,
         RequestOptions? options = null,

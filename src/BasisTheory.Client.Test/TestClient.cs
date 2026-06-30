@@ -618,7 +618,12 @@ public class TestClient
         }
         catch (UnprocessableEntityError e)
         {
-            Assert.That(e.Body.Detail.Contains("Failed to decrypt Google payment request"));
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(e.Body.Title, Is.EqualTo("Unprocessable Google Pay Token"));
+                Assert.That(e.Body.Status, Is.EqualTo(422));
+                Assert.That(e.Body.Detail, Is.Not.Null.And.Not.Empty);
+            }
         }
     }
 

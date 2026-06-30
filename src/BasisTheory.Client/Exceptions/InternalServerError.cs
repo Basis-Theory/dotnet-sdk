@@ -4,8 +4,10 @@ namespace BasisTheory.Client;
 /// This exception type will be thrown for any non-2XX API responses.
 /// </summary>
 [Serializable]
-public class InternalServerError(ProblemDetails body)
-    : BasisTheoryApiException("InternalServerError", 500, body)
+public class InternalServerError(
+    ProblemDetails body,
+    global::BasisTheory.Client.RawResponse? rawResponse = null
+) : BasisTheoryApiException("InternalServerError", 500, body, rawResponse: rawResponse)
 {
     /// <summary>
     /// The body of the response that triggered the exception.
