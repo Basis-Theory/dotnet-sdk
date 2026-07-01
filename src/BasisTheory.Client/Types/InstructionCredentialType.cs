@@ -1,45 +1,45 @@
 using global::System.Runtime.Serialization;
 using global::System.Text.Json.Serialization;
 
-namespace BasisTheory.Client.Agentic;
+namespace BasisTheory.Client;
 
-[JsonConverter(typeof(CreateEnrollmentRequestTypeSerializer))]
-public enum CreateEnrollmentRequestType
+[JsonConverter(typeof(InstructionCredentialTypeSerializer))]
+public enum InstructionCredentialType
 {
-    [EnumMember(Value = "agentic")]
-    Agentic,
-
-    [EnumMember(Value = "autofill")]
-    Autofill,
+    [EnumMember(Value = "card")]
+    Card,
 
     [EnumMember(Value = "spt")]
     Spt,
+
+    [EnumMember(Value = "mpp")]
+    Mpp,
 }
 
-internal class CreateEnrollmentRequestTypeSerializer
-    : global::System.Text.Json.Serialization.JsonConverter<CreateEnrollmentRequestType>
+internal class InstructionCredentialTypeSerializer
+    : global::System.Text.Json.Serialization.JsonConverter<InstructionCredentialType>
 {
     private static readonly global::System.Collections.Generic.Dictionary<
         string,
-        CreateEnrollmentRequestType
+        InstructionCredentialType
     > _stringToEnum = new()
     {
-        { "agentic", CreateEnrollmentRequestType.Agentic },
-        { "autofill", CreateEnrollmentRequestType.Autofill },
-        { "spt", CreateEnrollmentRequestType.Spt },
+        { "card", InstructionCredentialType.Card },
+        { "spt", InstructionCredentialType.Spt },
+        { "mpp", InstructionCredentialType.Mpp },
     };
 
     private static readonly global::System.Collections.Generic.Dictionary<
-        CreateEnrollmentRequestType,
+        InstructionCredentialType,
         string
     > _enumToString = new()
     {
-        { CreateEnrollmentRequestType.Agentic, "agentic" },
-        { CreateEnrollmentRequestType.Autofill, "autofill" },
-        { CreateEnrollmentRequestType.Spt, "spt" },
+        { InstructionCredentialType.Card, "card" },
+        { InstructionCredentialType.Spt, "spt" },
+        { InstructionCredentialType.Mpp, "mpp" },
     };
 
-    public override CreateEnrollmentRequestType Read(
+    public override InstructionCredentialType Read(
         ref global::System.Text.Json.Utf8JsonReader reader,
         global::System.Type typeToConvert,
         global::System.Text.Json.JsonSerializerOptions options
@@ -53,7 +53,7 @@ internal class CreateEnrollmentRequestTypeSerializer
 
     public override void Write(
         global::System.Text.Json.Utf8JsonWriter writer,
-        CreateEnrollmentRequestType value,
+        InstructionCredentialType value,
         global::System.Text.Json.JsonSerializerOptions options
     )
     {
@@ -62,7 +62,7 @@ internal class CreateEnrollmentRequestTypeSerializer
         );
     }
 
-    public override CreateEnrollmentRequestType ReadAsPropertyName(
+    public override InstructionCredentialType ReadAsPropertyName(
         ref global::System.Text.Json.Utf8JsonReader reader,
         global::System.Type typeToConvert,
         global::System.Text.Json.JsonSerializerOptions options
@@ -78,7 +78,7 @@ internal class CreateEnrollmentRequestTypeSerializer
 
     public override void WriteAsPropertyName(
         global::System.Text.Json.Utf8JsonWriter writer,
-        CreateEnrollmentRequestType value,
+        InstructionCredentialType value,
         global::System.Text.Json.JsonSerializerOptions options
     )
     {

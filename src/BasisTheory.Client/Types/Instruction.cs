@@ -23,10 +23,19 @@ public record Instruction : IJsonOnDeserialized
     /// <summary>
     /// Inherited from the parent enrollment. `agentic` instructions require cardholder
     /// verification before credentials can be retrieved; `autofill` instructions are
-    /// auto-approved on creation and credentials can be retrieved immediately.
+    /// auto-approved on creation and credentials can be retrieved immediately; `spt`
+    /// instructions create a shared payment token that is approved on creation.
     /// </summary>
     [JsonPropertyName("type")]
     public InstructionType? Type { get; set; }
+
+    /// <summary>
+    /// Indicates the shape the credentials endpoint returns for this instruction:
+    /// `card` (Visa/Mastercard virtual card credentials), `spt` (Stripe shared payment
+    /// token ID), or `mpp` (MPP credential built from the challenge provided at creation).
+    /// </summary>
+    [JsonPropertyName("credential_type")]
+    public InstructionCredentialType? CredentialType { get; set; }
 
     [JsonPropertyName("amount")]
     public Amount? Amount { get; set; }

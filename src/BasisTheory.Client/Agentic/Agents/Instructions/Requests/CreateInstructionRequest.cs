@@ -28,6 +28,23 @@ public record CreateInstructionRequest
     [JsonPropertyName("instance_details")]
     public InstanceDetails? InstanceDetails { get; set; }
 
+    /// <summary>
+    /// Stripe network business profile identifier (`profile_...`) of the seller allowed to use the
+    /// shared payment token. Maps to Stripe's `seller_details[network_business_profile]`.
+    /// Only valid for `spt` (Stripe) enrollments; required unless an MPP challenge with Stripe
+    /// network details is provided.
+    /// </summary>
+    [JsonPropertyName("network_business_profile")]
+    public string? NetworkBusinessProfile { get; set; }
+
+    /// <summary>
+    /// MPP mode — provide the merchant's MPP challenge to receive an MPP credential from the
+    /// credentials endpoint instead of a raw shared payment token ID. The challenge must carry
+    /// Stripe values (`method: stripe`). Only valid for `spt` (Stripe) enrollments.
+    /// </summary>
+    [JsonPropertyName("mpp")]
+    public CreateInstructionRequestMpp? Mpp { get; set; }
+
     /// <inheritdoc />
     public override string ToString()
     {

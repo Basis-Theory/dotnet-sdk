@@ -11,6 +11,9 @@ public enum EnrollmentType
 
     [EnumMember(Value = "autofill")]
     Autofill,
+
+    [EnumMember(Value = "spt")]
+    Spt,
 }
 
 internal class EnrollmentTypeSerializer
@@ -23,6 +26,7 @@ internal class EnrollmentTypeSerializer
     {
         { "agentic", EnrollmentType.Agentic },
         { "autofill", EnrollmentType.Autofill },
+        { "spt", EnrollmentType.Spt },
     };
 
     private static readonly global::System.Collections.Generic.Dictionary<
@@ -32,6 +36,7 @@ internal class EnrollmentTypeSerializer
     {
         { EnrollmentType.Agentic, "agentic" },
         { EnrollmentType.Autofill, "autofill" },
+        { EnrollmentType.Spt, "spt" },
     };
 
     public override EnrollmentType Read(
