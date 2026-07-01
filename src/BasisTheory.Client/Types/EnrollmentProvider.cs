@@ -12,11 +12,17 @@ public enum EnrollmentProvider
     [EnumMember(Value = "mastercard")]
     Mastercard,
 
+    [EnumMember(Value = "stripe")]
+    Stripe,
+
     [EnumMember(Value = "visa-mock")]
     VisaMock,
 
     [EnumMember(Value = "mastercard-mock")]
     MastercardMock,
+
+    [EnumMember(Value = "stripe-mock")]
+    StripeMock,
 }
 
 internal class EnrollmentProviderSerializer
@@ -29,8 +35,10 @@ internal class EnrollmentProviderSerializer
     {
         { "visa", EnrollmentProvider.Visa },
         { "mastercard", EnrollmentProvider.Mastercard },
+        { "stripe", EnrollmentProvider.Stripe },
         { "visa-mock", EnrollmentProvider.VisaMock },
         { "mastercard-mock", EnrollmentProvider.MastercardMock },
+        { "stripe-mock", EnrollmentProvider.StripeMock },
     };
 
     private static readonly global::System.Collections.Generic.Dictionary<
@@ -40,8 +48,10 @@ internal class EnrollmentProviderSerializer
     {
         { EnrollmentProvider.Visa, "visa" },
         { EnrollmentProvider.Mastercard, "mastercard" },
+        { EnrollmentProvider.Stripe, "stripe" },
         { EnrollmentProvider.VisaMock, "visa-mock" },
         { EnrollmentProvider.MastercardMock, "mastercard-mock" },
+        { EnrollmentProvider.StripeMock, "stripe-mock" },
     };
 
     public override EnrollmentProvider Read(

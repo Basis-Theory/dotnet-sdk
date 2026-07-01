@@ -10,8 +10,12 @@ public record GetCredentialsRequest
     [JsonPropertyName("products")]
     public IEnumerable<Product>? Products { get; set; }
 
+    /// <summary>
+    /// Required for card (Visa/Mastercard) instructions unless provided at instruction
+    /// creation. Not used for `spt` instructions.
+    /// </summary>
     [JsonPropertyName("merchant")]
-    public required AgenticMerchant Merchant { get; set; }
+    public AgenticMerchant? Merchant { get; set; }
 
     [JsonPropertyName("amount")]
     public Amount? Amount { get; set; }

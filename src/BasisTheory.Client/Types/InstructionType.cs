@@ -11,6 +11,9 @@ public enum InstructionType
 
     [EnumMember(Value = "autofill")]
     Autofill,
+
+    [EnumMember(Value = "spt")]
+    Spt,
 }
 
 internal class InstructionTypeSerializer
@@ -23,6 +26,7 @@ internal class InstructionTypeSerializer
     {
         { "agentic", InstructionType.Agentic },
         { "autofill", InstructionType.Autofill },
+        { "spt", InstructionType.Spt },
     };
 
     private static readonly global::System.Collections.Generic.Dictionary<
@@ -32,6 +36,7 @@ internal class InstructionTypeSerializer
     {
         { InstructionType.Agentic, "agentic" },
         { InstructionType.Autofill, "autofill" },
+        { InstructionType.Spt, "spt" },
     };
 
     public override InstructionType Read(

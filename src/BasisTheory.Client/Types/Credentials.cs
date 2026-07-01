@@ -4,6 +4,11 @@ using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client;
 
+/// <summary>
+/// Credential payload for the instruction. Exactly one of `card`, `spt`, or `mpp` is present:
+/// `card` for Visa/Mastercard virtual card credentials, `spt` for Stripe shared payment token
+/// instructions (raw mode), `mpp` for Stripe instructions created with an MPP challenge.
+/// </summary>
 [Serializable]
 public record Credentials : IJsonOnDeserialized
 {
@@ -13,6 +18,18 @@ public record Credentials : IJsonOnDeserialized
 
     [JsonPropertyName("card")]
     public CredentialsCard? Card { get; set; }
+
+    /// <summary>
+    /// Stripe shared payment token (raw mode)
+    /// </summary>
+    [JsonPropertyName("spt")]
+    public CredentialsSpt? Spt { get; set; }
+
+    /// <summary>
+    /// MPP credential (MPP mode)
+    /// </summary>
+    [JsonPropertyName("mpp")]
+    public CredentialsMpp? Mpp { get; set; }
 
     [JsonPropertyName("expires_at")]
     public DateTime? ExpiresAt { get; set; }

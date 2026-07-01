@@ -3943,15 +3943,7 @@ Retrieve payment credentials (card number, expiration, CVC) for a purchase instr
 await client.Agentic.Agents.Instructions.Credentials.CreateAsync(
     "agent_id",
     "instruction_id",
-    new GetCredentialsRequest
-    {
-        Merchant = new AgenticMerchant
-        {
-            Name = "name",
-            Url = "url",
-            CountryCode = "country_code",
-        },
-    }
+    new GetCredentialsRequest()
 );
 ```
 </dd>

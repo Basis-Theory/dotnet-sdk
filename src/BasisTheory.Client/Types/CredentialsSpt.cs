@@ -4,15 +4,18 @@ using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client;
 
+/// <summary>
+/// Stripe shared payment token (raw mode)
+/// </summary>
 [Serializable]
-public record ApplePayTokenizeRequest : IJsonOnDeserialized
+public record CredentialsSpt : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("apple_payment_method_token")]
-    public ApplePayMethodToken? ApplePaymentMethodToken { get; set; }
+    [JsonPropertyName("id")]
+    public string? Id { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -4,15 +4,21 @@ using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client;
 
+/// <summary>
+/// MPP credential (MPP mode)
+/// </summary>
 [Serializable]
-public record GooglePayTokenizeRequest : IJsonOnDeserialized
+public record CredentialsMpp : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("google_payment_method_token")]
-    public GooglePayMethodToken? GooglePaymentMethodToken { get; set; }
+    /// <summary>
+    /// base64url-encoded MPP credential for the merchant's Stripe charge endpoint
+    /// </summary>
+    [JsonPropertyName("credential")]
+    public string? Credential { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

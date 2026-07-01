@@ -39,7 +39,7 @@ public record Enrollment : IJsonOnDeserialized
     public string? WalletName { get; set; }
 
     /// <summary>
-    /// Enrollment type — `agentic` (default) for agent-driven payments, `autofill` for direct credential autofill.
+    /// Enrollment type — `agentic` (default) for agent-driven payments, `autofill` for direct credential autofill, `spt` for shared payment tokens.
     /// </summary>
     [JsonPropertyName("type")]
     public EnrollmentType? Type { get; set; }
