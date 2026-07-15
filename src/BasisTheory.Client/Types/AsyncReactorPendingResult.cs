@@ -5,20 +5,15 @@ using global::System.Text.Json.Serialization;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record PendingReactor : IJsonOnDeserialized
+public record AsyncReactorPendingResult : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("code")]
-    public string? Code { get; set; }
-
-    [JsonPropertyName("runtime")]
-    public ReactorRuntime? Runtime { get; set; }
-
-    [JsonPropertyName("configuration")]
-    public Dictionary<string, string>? Configuration { get; set; }
+    [JsonAccess(JsonAccessType.ReadOnly)]
+    [JsonPropertyName("status")]
+    public string? Status { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

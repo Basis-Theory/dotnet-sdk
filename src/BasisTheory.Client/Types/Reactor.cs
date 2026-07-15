@@ -48,7 +48,7 @@ public record Reactor : IJsonOnDeserialized
     public Dictionary<string, string>? Configuration { get; set; }
 
     [JsonPropertyName("runtime")]
-    public Runtime? Runtime { get; set; }
+    public ReactorRuntime? Runtime { get; set; }
 
     [JsonPropertyName("requested")]
     public RequestedReactor? Requested { get; set; }
