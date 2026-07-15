@@ -1,3 +1,15 @@
+# [8.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v7.0.1...v8.0.0) (2026-07-15)
+
+
+### Features
+
+* add async Reactor SDK contract ([b2077e6](https://github.com/Basis-Theory/dotnet-sdk/commit/b2077e6a4b3acede4fb44f3b7128b752c95b0963))
+
+
+### BREAKING CHANGES
+
+* Reactor request and response models now use ReactorRuntime instead of Runtime for runtime configuration.
+
 ## [7.0.1](https://github.com/Basis-Theory/dotnet-sdk/compare/v7.0.0...v7.0.1) (2026-06-30)
 
 
