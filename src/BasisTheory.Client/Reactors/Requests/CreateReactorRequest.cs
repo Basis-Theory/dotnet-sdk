@@ -19,7 +19,7 @@ public record CreateReactorRequest
     public Dictionary<string, string>? Configuration { get; set; }
 
     [JsonPropertyName("runtime")]
-    public Runtime? Runtime { get; set; }
+    public ReactorRuntime? Runtime { get; set; }
 
     /// <inheritdoc />
     public override string ToString()
