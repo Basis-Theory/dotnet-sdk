@@ -856,10 +856,7 @@ public partial class MerchantsClient : IMerchantsClient
     }
 
     /// <example><code>
-    /// await client.Tenants.Merchants.CreateAsync(
-    ///     "tenantId",
-    ///     new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
-    /// );
+    /// await client.Tenants.Merchants.CreateAsync("tenantId", new TenantMerchantRequest { Name = "name" });
     /// </code></example>
     public WithRawResponseTask<TenantMerchant> CreateAsync(
         string tenantId,
@@ -907,7 +904,7 @@ public partial class MerchantsClient : IMerchantsClient
     /// await client.Tenants.Merchants.UpdateAsync(
     ///     "tenantId",
     ///     "merchantId",
-    ///     new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
+    ///     new TenantMerchantRequest { Name = "name" }
     /// );
     /// </code></example>
     public WithRawResponseTask<TenantMerchant> UpdateAsync(

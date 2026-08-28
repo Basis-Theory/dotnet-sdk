@@ -15,7 +15,7 @@ public record TenantMerchantRequest : IJsonOnDeserialized
     public required string Name { get; set; }
 
     [JsonPropertyName("details")]
-    public required MerchantDetails Details { get; set; }
+    public MerchantDetails? Details { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
