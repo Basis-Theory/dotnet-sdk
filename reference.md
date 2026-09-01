@@ -5851,10 +5851,7 @@ await client.Tenants.Merchants.ListAsync(
 <dd>
 
 ```csharp
-await client.Tenants.Merchants.CreateAsync(
-    "tenantId",
-    new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
-);
+await client.Tenants.Merchants.CreateAsync("tenantId", new TenantMerchantRequest { Name = "name" });
 ```
 </dd>
 </dl>
@@ -6001,7 +5998,7 @@ await client.Tenants.Merchants.DeleteAsync("tenantId", "merchantId");
 await client.Tenants.Merchants.UpdateAsync(
     "tenantId",
     "merchantId",
-    new TenantMerchantRequest { Name = "name", Details = new MerchantDetails() }
+    new TenantMerchantRequest { Name = "name" }
 );
 ```
 </dd>
