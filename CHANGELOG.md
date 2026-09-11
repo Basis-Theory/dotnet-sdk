@@ -1,3 +1,10 @@
+# [8.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.0.0...v8.1.0) (2026-09-11)
+
+
+### Features
+
+* **ENG-11715:** resolve US and EU environments to regional hosts ([#145](https://github.com/Basis-Theory/dotnet-sdk/issues/145)) ([c4cc68c](https://github.com/Basis-Theory/dotnet-sdk/commit/c4cc68cd9079fc22df16fc7494aaf24ecdad9077))
+
 # [8.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v7.0.1...v8.0.0) (2026-07-15)
 
 
