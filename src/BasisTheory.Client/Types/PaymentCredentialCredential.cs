@@ -1,42 +1,28 @@
 using global::BasisTheory.Client.Core;
 using global::System.Text.Json;
 using global::System.Text.Json.Serialization;
+using OneOf;
 
 namespace BasisTheory.Client;
 
 [Serializable]
-public record MppSource : IJsonOnDeserialized
+public record PaymentCredentialCredential : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("type")]
-    public required MppSourceType Type { get; set; }
+    /// <summary>
+    /// card, network-token, and identifier are direct API credentials. mpp is a complete base64url Machine Payments Protocol credential for an Authorization Payment header.
+    /// </summary>
+    [JsonPropertyName("format")]
+    public required PaymentCredentialCredentialFormat Format { get; set; }
 
     /// <summary>
-    /// Token ID (required for token, network_token, apple_pay, google_pay)
+    /// Spendable credential value in the requested format. Returned once and never persisted.
     /// </summary>
-    [JsonPropertyName("id")]
-    public string? Id { get; set; }
-
-    /// <summary>
-    /// Enrollment ID (VIC only, mutually exclusive with id)
-    /// </summary>
-    [JsonPropertyName("enrollment_id")]
-    public string? EnrollmentId { get; set; }
-
-    /// <summary>
-    /// Required for VIC with token id
-    /// </summary>
-    [JsonPropertyName("consumer")]
-    public Consumer? Consumer { get; set; }
-
-    /// <summary>
-    /// Agent ID (VIC only)
-    /// </summary>
-    [JsonPropertyName("agent_id")]
-    public string? AgentId { get; set; }
+    [JsonPropertyName("value")]
+    public required OneOf<object, string> Value { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

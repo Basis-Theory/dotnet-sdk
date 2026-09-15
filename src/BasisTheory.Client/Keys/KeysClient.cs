@@ -81,7 +81,7 @@ public partial class KeysClient : IKeysClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -93,7 +93,7 @@ public partial class KeysClient : IKeysClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -105,7 +105,7 @@ public partial class KeysClient : IKeysClient
                         );
                     case 500:
                         throw new InternalServerError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -208,7 +208,7 @@ public partial class KeysClient : IKeysClient
                 {
                     case 400:
                         throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -220,7 +220,7 @@ public partial class KeysClient : IKeysClient
                         );
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -232,7 +232,7 @@ public partial class KeysClient : IKeysClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -256,7 +256,7 @@ public partial class KeysClient : IKeysClient
                         );
                     case 500:
                         throw new InternalServerError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -357,7 +357,7 @@ public partial class KeysClient : IKeysClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -369,7 +369,7 @@ public partial class KeysClient : IKeysClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -393,7 +393,7 @@ public partial class KeysClient : IKeysClient
                         );
                     case 500:
                         throw new InternalServerError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -466,7 +466,7 @@ public partial class KeysClient : IKeysClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -478,7 +478,7 @@ public partial class KeysClient : IKeysClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -502,7 +502,7 @@ public partial class KeysClient : IKeysClient
                         );
                     case 500:
                         throw new InternalServerError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,

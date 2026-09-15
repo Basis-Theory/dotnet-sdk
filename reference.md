@@ -2064,6 +2064,57 @@ await client.Proxies.PatchAsync("id", new PatchProxyRequest());
 </dl>
 </details>
 
+<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">TransferHostnameAsync</a>(id, TransferProxyHostnameRequest { ... }) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Proxies.TransferHostnameAsync(
+    "id",
+    new TransferProxyHostnameRequest { ProxyHost = "proxy_host" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TransferProxyHostnameRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Reactors
 <details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ListAsync</a>(ReactorsListRequest { ... }) -> Pager&lt;Reactor&gt;</code></summary>
 <dl>
@@ -3180,175 +3231,6 @@ await client.AccountUpdater.RealTime.InvokeAsync(
 </dl>
 </details>
 
-## Agentic Agents
-<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">CreateAsync</a>(CreateAgentRequest { ... }) -> WithRawResponseTask&lt;Agent&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Agentic.Agents.CreateAsync(new CreateAgentRequest { Name = "name" });
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `CreateAgentRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">GetAsync</a>(agentId) -> WithRawResponseTask&lt;Agent&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Agentic.Agents.GetAsync("agent_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**agentId:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">DeleteAsync</a>(agentId) -> WithRawResponseTask</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Agentic.Agents.DeleteAsync("agent_id");
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**agentId:** `string` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">UpdateAsync</a>(agentId, UpdateAgentRequest { ... }) -> WithRawResponseTask&lt;Agent&gt;</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```csharp
-await client.Agentic.Agents.UpdateAsync("agent_id", new UpdateAgentRequest());
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**agentId:** `string` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request:** `UpdateAgentRequest` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
 ## Agentic Enrollments
 <details><summary><code>client.Agentic.Enrollments.<a href="/src/BasisTheory.Client/Agentic/Enrollments/EnrollmentsClient.cs">ListAsync</a>(EnrollmentsListRequest { ... }) -> Pager&lt;Enrollment&gt;</code></summary>
 <dl>
@@ -3603,6 +3485,929 @@ await client.Agentic.Enrollments.RetryAsync("enrollment_id");
 <dd>
 
 **enrollmentId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic Agents
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">CreateAsync</a>(CreateAgentRequest { ... }) -> WithRawResponseTask&lt;Agent&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.CreateAsync(new CreateAgentRequest { Name = "name" });
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateAgentRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">GetAsync</a>(agentId) -> WithRawResponseTask&lt;Agent&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.GetAsync("agent_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">DeleteAsync</a>(agentId) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.DeleteAsync("agent_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Agents.<a href="/src/BasisTheory.Client/Agentic/Agents/AgentsClient.cs">UpdateAsync</a>(agentId, UpdateAgentRequest { ... }) -> WithRawResponseTask&lt;Agent&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.UpdateAsync("agent_id", new UpdateAgentRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `UpdateAgentRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic PaymentMethods
+<details><summary><code>client.Agentic.PaymentMethods.<a href="/src/BasisTheory.Client/Agentic/PaymentMethods/PaymentMethodsClient.cs">ListAsync</a>(PaymentMethodsListRequest { ... }) -> Pager&lt;PaymentMethod&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists shared payment methods for the current tenant. Defaults to active resources; use `status=all` for a complete Portal history. Server-side page filling prevents sparse pages when filtering by status.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.PaymentMethods.ListAsync(
+    new PaymentMethodsListRequest
+    {
+        Size = 1,
+        Start = "start",
+        ConsumerId = "consumer_id",
+        Status = PaymentMethodsListRequestStatus.Active,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `PaymentMethodsListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.PaymentMethods.<a href="/src/BasisTheory.Client/Agentic/PaymentMethods/PaymentMethodsClient.cs">CreateAsync</a>(CreatePaymentMethodRequest { ... }) -> WithRawResponseTask&lt;PaymentMethod&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a shared payment method from a funding source — a Basis Theory card token, or an instrument reached through a source connection — and provision the rails that source is eligible for. Public and private applications may call this operation with `agentic:payment-method:create`. Supply BT-IDEMPOTENCY-KEY to make matching retries return the same resource. Without it, every request is a new create operation.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.PaymentMethods.CreateAsync(
+    new CreatePaymentMethodRequest
+    {
+        Source = new PaymentMethodSourceBasisTheoryCardToken { TokenId = "token_id" },
+        Consumer = new SharedPaymentConsumer { Email = "email" },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreatePaymentMethodRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.PaymentMethods.<a href="/src/BasisTheory.Client/Agentic/PaymentMethods/PaymentMethodsClient.cs">GetAsync</a>(paymentMethodId) -> WithRawResponseTask&lt;PaymentMethod&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.PaymentMethods.GetAsync("payment_method_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paymentMethodId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.PaymentMethods.<a href="/src/BasisTheory.Client/Agentic/PaymentMethods/PaymentMethodsClient.cs">DeleteAsync</a>(paymentMethodId) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete a payment method and revoke everything downstream - every allowance backed by it is cancelled (including network-side purchase instructions) and no further verification or credential minting is possible.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.PaymentMethods.DeleteAsync("payment_method_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paymentMethodId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.PaymentMethods.<a href="/src/BasisTheory.Client/Agentic/PaymentMethods/PaymentMethodsClient.cs">ErrorsAsync</a>(paymentMethodId, PaymentMethodsErrorsRequest { ... }) -> Pager&lt;SharedPaymentProviderError&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists sanitized provider failures for a payment method and its downstream operations. Raw provider bodies and card data are never returned.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.PaymentMethods.ErrorsAsync(
+    "payment_method_id",
+    new PaymentMethodsErrorsRequest { Size = 1, Start = "start" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paymentMethodId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PaymentMethodsErrorsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic PaymentCredentials
+<details><summary><code>client.Agentic.PaymentCredentials.<a href="/src/BasisTheory.Client/Agentic/PaymentCredentials/PaymentCredentialsClient.cs">ListAsync</a>(PaymentCredentialsListRequest { ... }) -> Pager&lt;PaymentCredentialMetadata&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists credential metadata across the tenant for Portal history. Spendable card, SPT, and MPP payloads are never returned.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.PaymentCredentials.ListAsync(
+    new PaymentCredentialsListRequest { Size = 1, Start = "start" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `PaymentCredentialsListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic Allowances
+<details><summary><code>client.Agentic.Allowances.<a href="/src/BasisTheory.Client/Agentic/Allowances/AllowancesClient.cs">ListAsync</a>(AllowancesListRequest { ... }) -> Pager&lt;Allowance&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists allowances for the current tenant. Defaults to active, unexpired resources; use `status=all` for a complete Portal history. Results can be scoped to one payment method, and server-side page filling prevents sparse pages when filtering by status.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Allowances.ListAsync(
+    new AllowancesListRequest
+    {
+        Size = 1,
+        Start = "start",
+        PaymentMethodId = "payment_method_id",
+        Status = AllowancesListRequestStatus.Active,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `AllowancesListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Allowances.<a href="/src/BasisTheory.Client/Agentic/Allowances/AllowancesClient.cs">CreateAsync</a>(CreateAllowanceRequest { ... }) -> WithRawResponseTask&lt;Allowance&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a spending allowance from a payment method. Supply `merchant` to scope the mandate to one merchant, or omit it to leave the allowance open and name a merchant on each credential request instead. The payment method must have at least one enabled rail; otherwise the request returns `NO_ACTIVE_RAILS`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Allowances.CreateAsync(
+    new CreateAllowanceRequest
+    {
+        PaymentMethodId = "payment_method_id",
+        Amount = new SharedPaymentAmount { Value = "100.00", Currency = "USD" },
+        Description = "description",
+        ExpiresAt = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `CreateAllowanceRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Allowances.<a href="/src/BasisTheory.Client/Agentic/Allowances/AllowancesClient.cs">GetAsync</a>(allowanceId) -> WithRawResponseTask&lt;Allowance&gt;</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Allowances.GetAsync("allowance_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**allowanceId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Allowances.<a href="/src/BasisTheory.Client/Agentic/Allowances/AllowancesClient.cs">DeleteAsync</a>(allowanceId) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Cancel an allowance so new credentials cannot be created from it. Network-side purchase instructions held by its rails are cancelled with the provider.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Allowances.DeleteAsync("allowance_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**allowanceId:** `string` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Allowances.<a href="/src/BasisTheory.Client/Agentic/Allowances/AllowancesClient.cs">UpdateAsync</a>(allowanceId, AllowancesUpdateRequest { ... }) -> WithRawResponseTask&lt;Allowance&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates one or more mutable fields by changing the provider-side mandate first, then committing the same amount, prompt, and expiry locally. Mints are blocked while the update is in flight, and an empty request body is rejected.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Allowances.UpdateAsync("allowance_id", new AllowancesUpdateRequest());
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**allowanceId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `AllowancesUpdateRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Allowances.<a href="/src/BasisTheory.Client/Agentic/Allowances/AllowancesClient.cs">ErrorsAsync</a>(allowanceId, AllowancesErrorsRequest { ... }) -> Pager&lt;SharedPaymentProviderError&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lists sanitized provider failures for an allowance, including failed verification and credential attempts. Raw provider bodies and card data are never returned.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Allowances.ErrorsAsync(
+    "allowance_id",
+    new AllowancesErrorsRequest { Size = 1, Start = "start" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**allowanceId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `AllowancesErrorsRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Allowances.<a href="/src/BasisTheory.Client/Agentic/Allowances/AllowancesClient.cs">VerifyAsync</a>(allowanceId, object { ... }) -> WithRawResponseTask&lt;AllowanceVerificationResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Start or continue self-served verification for a rail that requires it. Public and private applications may call this operation with `agentic:allowance:verify`; browser clients should use a public application key. Visa verification is advanced through explicit ceremony actions. Mastercard managed authentication is finalized with `complete` after the hosted ceremony; callback delivery is only a browser signal and is not required.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Allowances.VerifyAsync(
+    "allowance_id",
+    new VerifyAllowanceRequestStart
+    {
+        Rail = VerifyAllowanceRequestStartRail.AgenticToken,
+        Provider = VerifyAllowanceRequestStartProvider.Vic,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**allowanceId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `object` 
     
 </dd>
 </dl>
@@ -3912,6 +4717,90 @@ await client.Agentic.Agents.Instructions.UpdateAsync(
 </dl>
 </details>
 
+<details><summary><code>client.Agentic.Agents.Instructions.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/InstructionsClient.cs">ConfirmationsAsync</a>(agentId, instructionId, PublishConfirmationRequest { ... }) -> WithRawResponseTask&lt;PublishConfirmationResponse&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Report the outcome of a transaction back to the card network.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Agents.Instructions.ConfirmationsAsync(
+    "agent_id",
+    "instruction_id",
+    new PublishConfirmationRequest
+    {
+        ConfirmationData = new List<ConfirmationEntry>()
+        {
+            new ConfirmationEntry
+            {
+                TransactionStatus = TransactionStatus.Approved,
+                TransactionType = TransactionType.Purchase,
+            },
+        },
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**agentId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**instructionId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `PublishConfirmationRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Agentic Agents Instructions Credentials
 <details><summary><code>client.Agentic.Agents.Instructions.Credentials.<a href="/src/BasisTheory.Client/Agentic/Agents/Instructions/Credentials/CredentialsClient.cs">CreateAsync</a>(agentId, instructionId, GetCredentialsRequest { ... }) -> WithRawResponseTask&lt;Credentials&gt;</code></summary>
 <dl>
@@ -4142,6 +5031,274 @@ await client.Agentic.Agents.Instructions.Verify.PasskeyAsync(
 <dd>
 
 **request:** `SubmitPasskeyRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic Allowances Rails
+<details><summary><code>client.Agentic.Allowances.Rails.<a href="/src/BasisTheory.Client/Agentic/Allowances/Rails/RailsClient.cs">RetryAsync</a>(allowanceId, RailsRetryRequest { ... }) -> WithRawResponseTask&lt;Allowance&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Re-run provider setup for one failed allowance rail. Allowance creation keeps rails that failed at the provider, so a transient outage does not require rebuilding the mandate. Only rails with status `error` can be retried, and the payment method's matching rail must still be `enabled`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Allowances.Rails.RetryAsync(
+    "allowance_id",
+    new global::BasisTheory.Client.Agentic.Allowances.RailsRetryRequest
+    {
+        Rail = global::BasisTheory.Client.Agentic.Allowances.RailsRetryRequestRail.AgenticToken,
+        Provider = global::BasisTheory.Client.Agentic.Allowances.RailsRetryRequestProvider.Vic,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**allowanceId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `RailsRetryRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic Allowances Credentials
+<details><summary><code>client.Agentic.Allowances.Credentials.<a href="/src/BasisTheory.Client/Agentic/Allowances/Credentials/CredentialsClient.cs">ListAsync</a>(allowanceId, CredentialsListRequest { ... }) -> Pager&lt;PaymentCredentialMetadata&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+List credential metadata for an allowance. Responses contain metadata only — never card numbers, SPT values, or MPP payloads.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Allowances.Credentials.ListAsync(
+    "allowance_id",
+    new CredentialsListRequest { Size = 1, Start = "start" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**allowanceId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `CredentialsListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Allowances.Credentials.<a href="/src/BasisTheory.Client/Agentic/Allowances/Credentials/CredentialsClient.cs">CreateAsync</a>(allowanceId, CreatePaymentCredentialRequest { ... }) -> WithRawResponseTask&lt;PaymentCredential&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Create a spend credential from an allowance. Supply BT-IDEMPOTENCY-KEY for retry protection. Without it, every request is a new mint and may spend the allowance again.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Allowances.Credentials.CreateAsync(
+    "allowance_id",
+    new CreatePaymentCredentialRequest
+    {
+        Rail = CreatePaymentCredentialRequestRail.AgenticToken,
+        Provider = CreatePaymentCredentialRequestProvider.Vic,
+        Credential = new CreatePaymentCredentialRequestCredentialCard(),
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**allowanceId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `CreatePaymentCredentialRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.Agentic.Allowances.Credentials.<a href="/src/BasisTheory.Client/Agentic/Allowances/Credentials/CredentialsClient.cs">GetAsync</a>(allowanceId, credentialId) -> WithRawResponseTask&lt;PaymentCredentialMetadata&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Get credential metadata. The credential payload itself (card number, SPT, MPP token) is only ever returned by the create call.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.Allowances.Credentials.GetAsync("allowance_id", "credential_id");
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**allowanceId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**credentialId:** `string` 
     
 </dd>
 </dl>
@@ -4417,6 +5574,76 @@ await client.Agentic.Enrollments.Verify.CompleteAsync(
 <dd>
 
 **request:** `CompleteVerificationRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Agentic PaymentMethods Rails
+<details><summary><code>client.Agentic.PaymentMethods.Rails.<a href="/src/BasisTheory.Client/Agentic/PaymentMethods/Rails/RailsClient.cs">RetryAsync</a>(paymentMethodId, RailsRetryRequest { ... }) -> WithRawResponseTask&lt;PaymentMethod&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retry one payment method rail after pending or failed provisioning. Public and private applications may call this operation with `agentic:payment-method:create`.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Agentic.PaymentMethods.Rails.RetryAsync(
+    "payment_method_id",
+    new global::BasisTheory.Client.Agentic.PaymentMethods.RailsRetryRequest
+    {
+        Rail = global::BasisTheory.Client.Agentic.PaymentMethods.RailsRetryRequestRail.AgenticToken,
+        Provider = global::BasisTheory.Client.Agentic.PaymentMethods.RailsRetryRequestProvider.Vic,
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**paymentMethodId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `RailsRetryRequest` 
     
 </dd>
 </dl>

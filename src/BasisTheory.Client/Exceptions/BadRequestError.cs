@@ -5,12 +5,6 @@ namespace BasisTheory.Client;
 /// </summary>
 [Serializable]
 public class BadRequestError(
-    ValidationProblemDetails body,
+    object body,
     global::BasisTheory.Client.RawResponse? rawResponse = null
-) : BasisTheoryApiException("BadRequestError", 400, body, rawResponse: rawResponse)
-{
-    /// <summary>
-    /// The body of the response that triggered the exception.
-    /// </summary>
-    public new ValidationProblemDetails Body => body;
-}
+) : BasisTheoryApiException("BadRequestError", 400, body, rawResponse: rawResponse);

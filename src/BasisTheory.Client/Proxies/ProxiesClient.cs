@@ -103,7 +103,7 @@ public partial class ProxiesClient : IProxiesClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -115,7 +115,7 @@ public partial class ProxiesClient : IProxiesClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -229,7 +229,7 @@ public partial class ProxiesClient : IProxiesClient
                 {
                     case 400:
                         throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -241,7 +241,7 @@ public partial class ProxiesClient : IProxiesClient
                         );
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -253,7 +253,7 @@ public partial class ProxiesClient : IProxiesClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -352,7 +352,7 @@ public partial class ProxiesClient : IProxiesClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -364,7 +364,7 @@ public partial class ProxiesClient : IProxiesClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -479,7 +479,7 @@ public partial class ProxiesClient : IProxiesClient
                 {
                     case 400:
                         throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -491,7 +491,7 @@ public partial class ProxiesClient : IProxiesClient
                         );
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -503,7 +503,7 @@ public partial class ProxiesClient : IProxiesClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -588,7 +588,7 @@ public partial class ProxiesClient : IProxiesClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -600,7 +600,7 @@ public partial class ProxiesClient : IProxiesClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -689,7 +689,7 @@ public partial class ProxiesClient : IProxiesClient
                 {
                     case 400:
                         throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -701,7 +701,7 @@ public partial class ProxiesClient : IProxiesClient
                         );
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -713,7 +713,123 @@ public partial class ProxiesClient : IProxiesClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 404:
+                        throw new NotFoundError(
+                            JsonUtils.Deserialize<object>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody,
+                rawResponse: new global::BasisTheory.Client.RawResponse()
+                {
+                    StatusCode = response.Raw.StatusCode,
+                    Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                    Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                }
+            );
+        }
+    }
+
+    private async Task<RawResponse> TransferHostnameAsyncCore(
+        string id,
+        TransferProxyHostnameRequest request,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(((IIdempotentRequestOptions?)options)?.GetIdempotencyHeaders())
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Put,
+                    Path = string.Format(
+                        "proxies/{0}/hostname",
+                        ValueConvert.ToPathParameterString(id)
+                    ),
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            return new global::BasisTheory.Client.RawResponse()
+            {
+                StatusCode = response.Raw.StatusCode,
+                Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+            };
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<object>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<object>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -868,5 +984,23 @@ public partial class ProxiesClient : IProxiesClient
     )
     {
         return new WithRawResponseTask(PatchAsyncCore(id, request, options, cancellationToken));
+    }
+
+    /// <example><code>
+    /// await client.Proxies.TransferHostnameAsync(
+    ///     "id",
+    ///     new TransferProxyHostnameRequest { ProxyHost = "proxy_host" }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask TransferHostnameAsync(
+        string id,
+        TransferProxyHostnameRequest request,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask(
+            TransferHostnameAsyncCore(id, request, options, cancellationToken)
+        );
     }
 }

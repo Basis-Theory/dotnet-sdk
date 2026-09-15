@@ -32,6 +32,9 @@ public record CreateTokenIntentResponse : IJsonOnDeserialized
     [JsonPropertyName("expires_at")]
     public DateTime? ExpiresAt { get; set; }
 
+    [JsonPropertyName("data")]
+    public object? Data { get; set; }
+
     [JsonPropertyName("card")]
     public CardDetails? Card { get; set; }
 

@@ -20,7 +20,7 @@ public record MppStripeChallenge : IJsonOnDeserialized, IJsonOnSerializing
     /// Payment method of the challenge — must be `stripe`
     /// </summary>
     [JsonPropertyName("method")]
-    public string Method { get; set; } = "stripe";
+    public required string Method { get; set; }
 
     [JsonPropertyName("realm")]
     public string? Realm { get; set; }

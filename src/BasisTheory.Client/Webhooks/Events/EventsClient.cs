@@ -81,7 +81,7 @@ public partial class EventsClient : IEventsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -93,7 +93,7 @@ public partial class EventsClient : IEventsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,

@@ -85,7 +85,7 @@ public partial class JobsClient : IJobsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -97,7 +97,7 @@ public partial class JobsClient : IJobsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -216,7 +216,7 @@ public partial class JobsClient : IJobsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -228,7 +228,7 @@ public partial class JobsClient : IJobsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -265,6 +265,7 @@ public partial class JobsClient : IJobsClient
     )
     {
         var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add("BT-MERCHANT-ID", request.BtMerchantId)
             .Add(_client.Options.Headers)
             .Add(_client.Options.AdditionalHeaders)
             .Add(options?.AdditionalHeaders)
@@ -329,7 +330,7 @@ public partial class JobsClient : IJobsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -341,7 +342,19 @@ public partial class JobsClient : IJobsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 404:
+                        throw new NotFoundError(
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,

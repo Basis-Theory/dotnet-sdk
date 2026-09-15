@@ -1,0 +1,47 @@
+using global::BasisTheory.Client;
+using global::BasisTheory.Client.Core;
+using global::System.Text.Json;
+using global::System.Text.Json.Serialization;
+
+namespace BasisTheory.Client.Agentic.Allowances;
+
+/// <summary>
+/// Billing address included in an MPP Card credential. Required when the card challenge sets billingRequired to true.
+/// </summary>
+[Serializable]
+public record CreatePaymentCredentialRequestCredentialMppPayloadBillingAddress : IJsonOnDeserialized
+{
+    [JsonExtensionData]
+    private readonly IDictionary<string, JsonElement> _extensionData =
+        new Dictionary<string, JsonElement>();
+
+    [JsonPropertyName("line1")]
+    public string? Line1 { get; set; }
+
+    [JsonPropertyName("line2")]
+    public string? Line2 { get; set; }
+
+    [JsonPropertyName("city")]
+    public string? City { get; set; }
+
+    [JsonPropertyName("state")]
+    public string? State { get; set; }
+
+    [JsonPropertyName("zip")]
+    public string? Zip { get; set; }
+
+    [JsonPropertyName("country_code")]
+    public string? CountryCode { get; set; }
+
+    [JsonIgnore]
+    public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
+
+    void IJsonOnDeserialized.OnDeserialized() =>
+        AdditionalProperties.CopyFromExtensionData(_extensionData);
+
+    /// <inheritdoc />
+    public override string ToString()
+    {
+        return JsonUtils.Serialize(this);
+    }
+}

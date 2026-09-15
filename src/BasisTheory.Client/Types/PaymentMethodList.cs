@@ -5,29 +5,17 @@ using global::System.Text.Json.Serialization;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record EncryptionJwk : IJsonOnDeserialized
+public record PaymentMethodList : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("kty")]
-    public string Kty { get; set; } = "RSA";
+    [JsonPropertyName("data")]
+    public IEnumerable<PaymentMethod> Data { get; set; } = new List<PaymentMethod>();
 
-    [JsonPropertyName("kid")]
-    public required string Kid { get; set; }
-
-    [JsonPropertyName("use")]
-    public string Use { get; set; } = "enc";
-
-    [JsonPropertyName("alg")]
-    public string Alg { get; set; } = "RSA-OAEP-256";
-
-    [JsonPropertyName("n")]
-    public required string N { get; set; }
-
-    [JsonPropertyName("e")]
-    public required string E { get; set; }
+    [JsonPropertyName("pagination")]
+    public required PaymentMethodListPagination Pagination { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();

@@ -109,7 +109,7 @@ public partial class MerchantsClient : IMerchantsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -225,7 +225,7 @@ public partial class MerchantsClient : IMerchantsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -237,7 +237,7 @@ public partial class MerchantsClient : IMerchantsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -353,7 +353,7 @@ public partial class MerchantsClient : IMerchantsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -469,7 +469,7 @@ public partial class MerchantsClient : IMerchantsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -481,7 +481,7 @@ public partial class MerchantsClient : IMerchantsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -599,7 +599,7 @@ public partial class MerchantsClient : IMerchantsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -611,7 +611,7 @@ public partial class MerchantsClient : IMerchantsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -623,6 +623,18 @@ public partial class MerchantsClient : IMerchantsClient
                         );
                     case 404:
                         throw new NotFoundError(
+                            JsonUtils.Deserialize<object>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 409:
+                        throw new ConflictError(
                             JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
@@ -730,7 +742,7 @@ public partial class MerchantsClient : IMerchantsClient
                 {
                     case 400:
                         throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -742,7 +754,7 @@ public partial class MerchantsClient : IMerchantsClient
                         );
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -754,7 +766,7 @@ public partial class MerchantsClient : IMerchantsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -778,7 +790,7 @@ public partial class MerchantsClient : IMerchantsClient
                         );
                     case 409:
                         throw new ConflictError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
