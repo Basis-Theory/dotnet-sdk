@@ -3,53 +3,53 @@ using global::System.Text.Json.Serialization;
 
 namespace BasisTheory.Client;
 
-[JsonConverter(typeof(MppSourceTypeSerializer))]
-public enum MppSourceType
+[JsonConverter(typeof(ConnectionStatusSerializer))]
+public enum ConnectionStatus
 {
-    [EnumMember(Value = "token")]
-    Token,
+    [EnumMember(Value = "pending_authorization")]
+    PendingAuthorization,
 
-    [EnumMember(Value = "network_token")]
-    NetworkToken,
+    [EnumMember(Value = "active")]
+    Active,
 
-    [EnumMember(Value = "apple_pay")]
-    ApplePay,
+    [EnumMember(Value = "requires_reauthorization")]
+    RequiresReauthorization,
 
-    [EnumMember(Value = "google_pay")]
-    GooglePay,
+    [EnumMember(Value = "inactive")]
+    Inactive,
 
-    [EnumMember(Value = "visa_intelligent_commerce")]
-    VisaIntelligentCommerce,
+    [EnumMember(Value = "revoked")]
+    Revoked,
 }
 
-internal class MppSourceTypeSerializer
-    : global::System.Text.Json.Serialization.JsonConverter<MppSourceType>
+internal class ConnectionStatusSerializer
+    : global::System.Text.Json.Serialization.JsonConverter<ConnectionStatus>
 {
     private static readonly global::System.Collections.Generic.Dictionary<
         string,
-        MppSourceType
+        ConnectionStatus
     > _stringToEnum = new()
     {
-        { "token", MppSourceType.Token },
-        { "network_token", MppSourceType.NetworkToken },
-        { "apple_pay", MppSourceType.ApplePay },
-        { "google_pay", MppSourceType.GooglePay },
-        { "visa_intelligent_commerce", MppSourceType.VisaIntelligentCommerce },
+        { "pending_authorization", ConnectionStatus.PendingAuthorization },
+        { "active", ConnectionStatus.Active },
+        { "requires_reauthorization", ConnectionStatus.RequiresReauthorization },
+        { "inactive", ConnectionStatus.Inactive },
+        { "revoked", ConnectionStatus.Revoked },
     };
 
     private static readonly global::System.Collections.Generic.Dictionary<
-        MppSourceType,
+        ConnectionStatus,
         string
     > _enumToString = new()
     {
-        { MppSourceType.Token, "token" },
-        { MppSourceType.NetworkToken, "network_token" },
-        { MppSourceType.ApplePay, "apple_pay" },
-        { MppSourceType.GooglePay, "google_pay" },
-        { MppSourceType.VisaIntelligentCommerce, "visa_intelligent_commerce" },
+        { ConnectionStatus.PendingAuthorization, "pending_authorization" },
+        { ConnectionStatus.Active, "active" },
+        { ConnectionStatus.RequiresReauthorization, "requires_reauthorization" },
+        { ConnectionStatus.Inactive, "inactive" },
+        { ConnectionStatus.Revoked, "revoked" },
     };
 
-    public override MppSourceType Read(
+    public override ConnectionStatus Read(
         ref global::System.Text.Json.Utf8JsonReader reader,
         global::System.Type typeToConvert,
         global::System.Text.Json.JsonSerializerOptions options
@@ -63,7 +63,7 @@ internal class MppSourceTypeSerializer
 
     public override void Write(
         global::System.Text.Json.Utf8JsonWriter writer,
-        MppSourceType value,
+        ConnectionStatus value,
         global::System.Text.Json.JsonSerializerOptions options
     )
     {
@@ -72,7 +72,7 @@ internal class MppSourceTypeSerializer
         );
     }
 
-    public override MppSourceType ReadAsPropertyName(
+    public override ConnectionStatus ReadAsPropertyName(
         ref global::System.Text.Json.Utf8JsonReader reader,
         global::System.Type typeToConvert,
         global::System.Text.Json.JsonSerializerOptions options
@@ -88,7 +88,7 @@ internal class MppSourceTypeSerializer
 
     public override void WriteAsPropertyName(
         global::System.Text.Json.Utf8JsonWriter writer,
-        MppSourceType value,
+        ConnectionStatus value,
         global::System.Text.Json.JsonSerializerOptions options
     )
     {

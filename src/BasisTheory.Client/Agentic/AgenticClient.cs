@@ -9,11 +9,20 @@ public partial class AgenticClient : IAgenticClient
     internal AgenticClient(RawClient client)
     {
         _client = client;
-        Agents = new AgentsClient(_client);
         Enrollments = new EnrollmentsClient(_client);
+        Agents = new AgentsClient(_client);
+        PaymentMethods = new PaymentMethodsClient(_client);
+        PaymentCredentials = new PaymentCredentialsClient(_client);
+        Allowances = new AllowancesClient(_client);
     }
+
+    public IEnrollmentsClient Enrollments { get; }
 
     public IAgentsClient Agents { get; }
 
-    public IEnrollmentsClient Enrollments { get; }
+    public IPaymentMethodsClient PaymentMethods { get; }
+
+    public IPaymentCredentialsClient PaymentCredentials { get; }
+
+    public IAllowancesClient Allowances { get; }
 }

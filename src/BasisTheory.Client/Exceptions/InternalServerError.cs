@@ -5,12 +5,6 @@ namespace BasisTheory.Client;
 /// </summary>
 [Serializable]
 public class InternalServerError(
-    ProblemDetails body,
+    object body,
     global::BasisTheory.Client.RawResponse? rawResponse = null
-) : BasisTheoryApiException("InternalServerError", 500, body, rawResponse: rawResponse)
-{
-    /// <summary>
-    /// The body of the response that triggered the exception.
-    /// </summary>
-    public new ProblemDetails Body => body;
-}
+) : BasisTheoryApiException("InternalServerError", 500, body, rawResponse: rawResponse);

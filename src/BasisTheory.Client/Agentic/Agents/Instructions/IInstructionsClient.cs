@@ -1,12 +1,11 @@
 using global::BasisTheory.Client;
-using global::BasisTheory.Client.Agentic.Agents.Instructions;
 using global::BasisTheory.Client.Core;
 
 namespace BasisTheory.Client.Agentic.Agents;
 
 public partial interface IInstructionsClient
 {
-    public ICredentialsClient Credentials { get; }
+    public global::BasisTheory.Client.Agentic.Agents.Instructions.ICredentialsClient Credentials { get; }
     public global::BasisTheory.Client.Agentic.Agents.Instructions.IVerifyClient Verify { get; }
 
     /// <summary>
@@ -47,6 +46,17 @@ public partial interface IInstructionsClient
         string agentId,
         string instructionId,
         UpdateInstructionRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Report the outcome of a transaction back to the card network.
+    /// </summary>
+    WithRawResponseTask<PublishConfirmationResponse> ConfirmationsAsync(
+        string agentId,
+        string instructionId,
+        PublishConfirmationRequest request,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     );

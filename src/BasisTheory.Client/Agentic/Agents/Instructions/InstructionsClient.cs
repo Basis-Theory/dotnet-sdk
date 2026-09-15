@@ -1,5 +1,4 @@
 using global::BasisTheory.Client;
-using global::BasisTheory.Client.Agentic.Agents.Instructions;
 using global::BasisTheory.Client.Core;
 using global::System.Text.Json;
 
@@ -12,11 +11,13 @@ public partial class InstructionsClient : IInstructionsClient
     internal InstructionsClient(RawClient client)
     {
         _client = client;
-        Credentials = new CredentialsClient(_client);
+        Credentials = new global::BasisTheory.Client.Agentic.Agents.Instructions.CredentialsClient(
+            _client
+        );
         Verify = new global::BasisTheory.Client.Agentic.Agents.Instructions.VerifyClient(_client);
     }
 
-    public ICredentialsClient Credentials { get; }
+    public global::BasisTheory.Client.Agentic.Agents.Instructions.ICredentialsClient Credentials { get; }
 
     public global::BasisTheory.Client.Agentic.Agents.Instructions.IVerifyClient Verify { get; }
 
@@ -117,7 +118,7 @@ public partial class InstructionsClient : IInstructionsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -129,7 +130,7 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -153,7 +154,7 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 500:
                         throw new InternalServerError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -258,7 +259,7 @@ public partial class InstructionsClient : IInstructionsClient
                 {
                     case 400:
                         throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -270,7 +271,7 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -282,7 +283,7 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -318,7 +319,7 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 500:
                         throw new InternalServerError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -422,7 +423,7 @@ public partial class InstructionsClient : IInstructionsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -434,7 +435,7 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -458,7 +459,7 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 500:
                         throw new InternalServerError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -536,7 +537,7 @@ public partial class InstructionsClient : IInstructionsClient
                 {
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -548,7 +549,7 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -572,7 +573,7 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 500:
                         throw new InternalServerError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -679,7 +680,7 @@ public partial class InstructionsClient : IInstructionsClient
                 {
                     case 400:
                         throw new BadRequestError(
-                            JsonUtils.Deserialize<ValidationProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -691,7 +692,7 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 401:
                         throw new UnauthorizedError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -703,7 +704,7 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 403:
                         throw new ForbiddenError(
-                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -739,7 +740,176 @@ public partial class InstructionsClient : IInstructionsClient
                         );
                     case 500:
                         throw new InternalServerError(
+                            JsonUtils.Deserialize<object>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                }
+            }
+            catch (JsonException)
+            {
+                // unable to map error response, throwing generic error
+            }
+            throw new BasisTheoryApiException(
+                $"Error with status code {response.StatusCode}",
+                response.StatusCode,
+                responseBody,
+                rawResponse: new global::BasisTheory.Client.RawResponse()
+                {
+                    StatusCode = response.Raw.StatusCode,
+                    Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                    Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                }
+            );
+        }
+    }
+
+    private async Task<WithRawResponse<PublishConfirmationResponse>> ConfirmationsAsyncCore(
+        string agentId,
+        string instructionId,
+        PublishConfirmationRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var _headers = await new global::BasisTheory.Client.Core.HeadersBuilder.Builder()
+            .Add(_client.Options.Headers)
+            .Add(_client.Options.AdditionalHeaders)
+            .Add(options?.AdditionalHeaders)
+            .BuildAsync()
+            .ConfigureAwait(false);
+        var response = await _client
+            .SendRequestAsync(
+                new JsonRequest
+                {
+                    Method = HttpMethod.Post,
+                    Path = string.Format(
+                        "agentic/agents/{0}/instructions/{1}/confirmations",
+                        ValueConvert.ToPathParameterString(agentId),
+                        ValueConvert.ToPathParameterString(instructionId)
+                    ),
+                    Body = request,
+                    Headers = _headers,
+                    ContentType = "application/json",
+                    Options = options,
+                },
+                cancellationToken
+            )
+            .ConfigureAwait(false);
+        if (response.StatusCode is >= 200 and < 400)
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                var responseData = JsonUtils.Deserialize<PublishConfirmationResponse>(
+                    responseBody
+                )!;
+                return new WithRawResponse<PublishConfirmationResponse>()
+                {
+                    Data = responseData,
+                    RawResponse = new global::BasisTheory.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    },
+                };
+            }
+            catch (JsonException e)
+            {
+                throw new BasisTheoryApiException(
+                    "Failed to deserialize response",
+                    response.StatusCode,
+                    responseBody,
+                    e,
+                    rawResponse: new global::BasisTheory.Client.RawResponse()
+                    {
+                        StatusCode = response.Raw.StatusCode,
+                        Url = response.Raw.RequestMessage?.RequestUri ?? new Uri("about:blank"),
+                        Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                    }
+                );
+            }
+        }
+        {
+            var responseBody = await response
+                .Raw.Content.ReadAsStringAsync(cancellationToken)
+                .ConfigureAwait(false);
+            try
+            {
+                switch (response.StatusCode)
+                {
+                    case 400:
+                        throw new BadRequestError(
+                            JsonUtils.Deserialize<object>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 401:
+                        throw new UnauthorizedError(
+                            JsonUtils.Deserialize<object>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 403:
+                        throw new ForbiddenError(
+                            JsonUtils.Deserialize<object>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 404:
+                        throw new NotFoundError(
+                            JsonUtils.Deserialize<object>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 422:
+                        throw new UnprocessableEntityError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
+                    case 500:
+                        throw new InternalServerError(
+                            JsonUtils.Deserialize<object>(responseBody),
                             rawResponse: new global::BasisTheory.Client.RawResponse()
                             {
                                 StatusCode = response.Raw.StatusCode,
@@ -893,6 +1063,39 @@ public partial class InstructionsClient : IInstructionsClient
     {
         return new WithRawResponseTask<Instruction>(
             UpdateAsyncCore(agentId, instructionId, request, options, cancellationToken)
+        );
+    }
+
+    /// <summary>
+    /// Report the outcome of a transaction back to the card network.
+    /// </summary>
+    /// <example><code>
+    /// await client.Agentic.Agents.Instructions.ConfirmationsAsync(
+    ///     "agent_id",
+    ///     "instruction_id",
+    ///     new PublishConfirmationRequest
+    ///     {
+    ///         ConfirmationData = new List&lt;ConfirmationEntry&gt;()
+    ///         {
+    ///             new ConfirmationEntry
+    ///             {
+    ///                 TransactionStatus = TransactionStatus.Approved,
+    ///                 TransactionType = TransactionType.Purchase,
+    ///             },
+    ///         },
+    ///     }
+    /// );
+    /// </code></example>
+    public WithRawResponseTask<PublishConfirmationResponse> ConfirmationsAsync(
+        string agentId,
+        string instructionId,
+        PublishConfirmationRequest request,
+        RequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        return new WithRawResponseTask<PublishConfirmationResponse>(
+            ConfirmationsAsyncCore(agentId, instructionId, request, options, cancellationToken)
         );
     }
 }

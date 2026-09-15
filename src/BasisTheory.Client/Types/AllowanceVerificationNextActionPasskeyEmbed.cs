@@ -5,26 +5,20 @@ using global::System.Text.Json.Serialization;
 namespace BasisTheory.Client;
 
 [Serializable]
-public record MppCredentialsRequest : IJsonOnDeserialized
+public record AllowanceVerificationNextActionPasskeyEmbed : IJsonOnDeserialized
 {
     [JsonExtensionData]
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
-    [JsonPropertyName("challenge")]
-    public required MppChallenge Challenge { get; set; }
+    [JsonPropertyName("iframe_url")]
+    public required string IframeUrl { get; set; }
 
-    /// <summary>
-    /// Mutually exclusive with card_id
-    /// </summary>
-    [JsonPropertyName("source")]
-    public MppSource? Source { get; set; }
+    [JsonPropertyName("api_key")]
+    public required string ApiKey { get; set; }
 
-    /// <summary>
-    /// Mutually exclusive with source
-    /// </summary>
-    [JsonPropertyName("card_id")]
-    public string? CardId { get; set; }
+    [JsonPropertyName("client_app_id")]
+    public required string ClientAppId { get; set; }
 
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
