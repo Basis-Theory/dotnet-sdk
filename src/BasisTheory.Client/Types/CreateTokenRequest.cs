@@ -50,6 +50,9 @@ public record CreateTokenRequest : IJsonOnDeserialized
     [JsonPropertyName("token_intent_id")]
     public string? TokenIntentId { get; set; }
 
+    [JsonPropertyName("owner_merchant_id")]
+    public string? OwnerMerchantId { get; set; }
+
     [JsonIgnore]
     public ReadOnlyAdditionalProperties AdditionalProperties { get; private set; } = new();
 
