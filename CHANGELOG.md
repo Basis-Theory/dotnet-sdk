@@ -1,3 +1,10 @@
+# [8.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.1.0...v8.2.0) (2026-09-16)
+
+
+### Features
+
+* add proxy hostname transfer, runtime log options, and account updater merchant header ([da2ec4b](https://github.com/Basis-Theory/dotnet-sdk/commit/da2ec4b50747f08d91da558f61be2161ce6a770e))
+
 # [8.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.0.0...v8.1.0) (2026-09-11)
 
 
