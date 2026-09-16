@@ -41,4 +41,11 @@ public partial interface IProxiesClient
         IdempotentRequestOptions? options = null,
         CancellationToken cancellationToken = default
     );
+
+    WithRawResponseTask TransferHostnameAsync(
+        string id,
+        TransferProxyHostnameRequest request,
+        IdempotentRequestOptions? options = null,
+        CancellationToken cancellationToken = default
+    );
 }

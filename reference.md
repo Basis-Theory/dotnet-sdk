@@ -2064,6 +2064,57 @@ await client.Proxies.PatchAsync("id", new PatchProxyRequest());
 </dl>
 </details>
 
+<details><summary><code>client.Proxies.<a href="/src/BasisTheory.Client/Proxies/ProxiesClient.cs">TransferHostnameAsync</a>(id, TransferProxyHostnameRequest { ... }) -> WithRawResponseTask</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Proxies.TransferHostnameAsync(
+    "id",
+    new TransferProxyHostnameRequest { ProxyHost = "proxy_host" }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `TransferProxyHostnameRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Reactors
 <details><summary><code>client.Reactors.<a href="/src/BasisTheory.Client/Reactors/ReactorsClient.cs">ListAsync</a>(ReactorsListRequest { ... }) -> Pager&lt;Reactor&gt;</code></summary>
 <dl>
