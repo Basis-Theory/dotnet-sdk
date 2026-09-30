@@ -3011,6 +3011,71 @@ await client.Webhooks.CreateAsync(
 </dl>
 </details>
 
+## Events
+<details><summary><code>client.Events.<a href="/src/BasisTheory.Client/Events/EventsClient.cs">ListAsync</a>(EventsListRequest { ... }) -> Pager&lt;Event&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Requires event:read. Tenant identity comes from trusted API-key authentication. History is limited by log_history_limit (24 hours by default, at most 30 days). Windows reaching outside the visible history are clamped to it rather than rejected. No secondary failover or portal JWT support. SDK callers supply data.<path> filters as literal keys through the SDK's per-request query-parameter options, not as a filters request field.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.Events.ListAsync(
+    new EventsListRequest
+    {
+        StartDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        EndDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        Start = "start",
+        Size = 1,
+        Type = "type",
+        TraceId = "trace_id",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `EventsListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## AccountUpdater Jobs
 <details><summary><code>client.AccountUpdater.Jobs.<a href="/src/BasisTheory.Client/AccountUpdater/Jobs/JobsClient.cs">GetAsync</a>(id) -> WithRawResponseTask&lt;AccountUpdaterJob&gt;</code></summary>
 <dl>

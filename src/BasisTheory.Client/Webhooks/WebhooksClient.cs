@@ -1,5 +1,4 @@
 using global::BasisTheory.Client.Core;
-using global::BasisTheory.Client.Webhooks;
 using global::System.Text.Json;
 
 namespace BasisTheory.Client;
@@ -11,10 +10,10 @@ public partial class WebhooksClient : IWebhooksClient
     internal WebhooksClient(RawClient client)
     {
         _client = client;
-        Events = new EventsClient(_client);
+        Events = new global::BasisTheory.Client.Webhooks.EventsClient(_client);
     }
 
-    public IEventsClient Events { get; }
+    public global::BasisTheory.Client.Webhooks.IEventsClient Events { get; }
 
     private async Task<RawResponse> PingAsyncCore(
         RequestOptions? options = null,
