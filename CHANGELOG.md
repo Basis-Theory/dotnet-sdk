@@ -1,3 +1,10 @@
+# [8.3.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.2.0...v8.3.0) (2026-10-01)
+
+
+### Features
+
+* add Events listing with cursor pagination ([afc8063](https://github.com/Basis-Theory/dotnet-sdk/commit/afc8063e0e35e2c3f44384819427a56fb3dcf0fb))
+
 # [8.2.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.1.0...v8.2.0) (2026-09-16)
 
 
