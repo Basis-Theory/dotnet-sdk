@@ -21,7 +21,7 @@ public class TestClient
         foreach (var proxyId in _createdProxyIds)
             await TryDelete(() => managementClient.Proxies.DeleteAsync(proxyId));
         foreach (var reactorId in _createdReactorIds)
-            await TryDelete(() => managementClient.Reactors.DeleteAsync(reactorId));
+            await TryDelete(() => DeleteReactorWhenCompleted(managementClient, reactorId));
         foreach (var applicationId in _createdApplicationIds)
             await TryDelete(() => managementClient.Applications.DeleteAsync(applicationId));
 
@@ -257,7 +257,7 @@ public class TestClient
         AssertIsGuid(asyncReactResponse.AsyncReactorRequestId);
 
         await WaitForReactorResults(reactorId, asyncReactResponse.AsyncReactorRequestId);
-        await managementClient.Reactors.DeleteAsync(reactorId);
+        await DeleteReactorWhenCompleted(managementClient, reactorId!);
         await managementClient.Applications.DeleteAsync(applicationId);
     }
 
@@ -764,6 +764,43 @@ public class TestClient
             });
         Assert.That(react.Raw.GetJsonElementValue<string>("key1"), Is.EqualTo(args["key1"]));
         Assert.That(react.Raw.GetJsonElementValue<string>("key2"), Is.EqualTo(args["key2"]));
+    }
+
+    private static async Task DeleteReactorWhenCompleted(BasisTheory client, string reactorId)
+    {
+        var timer = System.Diagnostics.Stopwatch.StartNew();
+        var timeout = TimeSpan.FromSeconds(10);
+        var pollInterval = TimeSpan.FromSeconds(1);
+
+        while (true)
+        {
+            try
+            {
+                await client.Reactors.DeleteAsync(reactorId);
+                return;
+            }
+            catch (BasisTheoryApiException e) when (
+                e.StatusCode == 400 &&
+                e.Body is string body &&
+                body.Contains(
+                    "\"Reactor has outstanding async invocations. Please try again later.\"",
+                    StringComparison.Ordinal))
+            {
+                var remaining = timeout - timer.Elapsed;
+                if (remaining <= TimeSpan.Zero)
+                {
+                    string? traceId = null;
+                    e.RawResponse?.Headers.TryGetValue("BT-TRACE-ID", out traceId);
+                    TestContext.Out.WriteLine(
+                        $"Reactor {reactorId} could not be deleted within {timeout.TotalSeconds} seconds. " +
+                        $"Trace ID: {traceId}. Response body: {e.Body}");
+                    throw;
+                }
+
+                // Results can be readable before Vault saves the async completion marker.
+                await Task.Delay(remaining < pollInterval ? remaining : pollInterval);
+            }
+        }
     }
 
     private static async Task WaitForReactorResults(string? reactorId, string? requestId)

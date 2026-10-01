@@ -68,6 +68,7 @@ public partial class BasisTheory : IBasisTheory
         Sessions = new SessionsClient(_client);
         TokenIntents = new TokenIntentsClient(_client);
         Webhooks = new WebhooksClient(_client);
+        Events = new EventsClient(_client);
         AccountUpdater = new AccountUpdaterClient(_client);
         Agentic = new AgenticClient(_client);
         Tenants = new TenantsClient(_client);
@@ -109,6 +110,8 @@ public partial class BasisTheory : IBasisTheory
     public ITokenIntentsClient TokenIntents { get; }
 
     public IWebhooksClient Webhooks { get; }
+
+    public IEventsClient Events { get; }
 
     public IAccountUpdaterClient AccountUpdater { get; }
 

@@ -1,10 +1,8 @@
-using global::BasisTheory.Client.Webhooks;
-
 namespace BasisTheory.Client;
 
 public partial interface IWebhooksClient
 {
-    public IEventsClient Events { get; }
+    public global::BasisTheory.Client.Webhooks.IEventsClient Events { get; }
 
     /// <summary>
     /// Simple endpoint that can be utilized to verify the application is running

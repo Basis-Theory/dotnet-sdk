@@ -25,6 +25,7 @@ public partial interface IBasisTheory
     public ISessionsClient Sessions { get; }
     public ITokenIntentsClient TokenIntents { get; }
     public IWebhooksClient Webhooks { get; }
+    public IEventsClient Events { get; }
     public IAccountUpdaterClient AccountUpdater { get; }
     public IAgenticClient Agentic { get; }
     public ITenantsClient Tenants { get; }
