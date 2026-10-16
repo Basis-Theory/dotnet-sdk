@@ -12,7 +12,7 @@
     "simplify-object-dictionaries": true,
     "use-discriminated-unions": false
   },
-  "originGitCommit": "11ef9978e366b93eabd11bdbcab43f192f485590",
+  "originGitCommit": "688d4630949c9e7d4f4848f10c1728a5857885bf",
   "originGitCommitIsDirty": false,
   "invokedBy": "ci",
   "requestedVersion": "0.0.1",

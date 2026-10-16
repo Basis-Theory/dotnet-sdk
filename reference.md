@@ -3011,6 +3011,167 @@ await client.Webhooks.CreateAsync(
 </dl>
 </details>
 
+## ReactorLogs
+<details><summary><code>client.ReactorLogs.<a href="/src/BasisTheory.Client/ReactorLogs/ReactorLogsClient.cs">ListAsync</a>(reactorId, ReactorLogsListRequest { ... }) -> Pager&lt;RuntimeLog&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Requires log:read. Returns individual Reactor runtime records, not event envelopes or neighboring records from the same batch. Tenant and history entitlement are checked on every request. Date bounds use occurred_at, inclusive at start and exclusive at end, and are clamped to current entitlement, now, and the 30-day maximum. Results are asynchronously visible. Responses include source (origin) and record_type (record kind); both have exact, case-sensitive string filters, with application/log and platform/lifecycle as the supported pairings. error and attributes are complete display-only objects and cannot be filtered or searched. IDs are stable logical record identities for deduplicating polling overlap. Pagination is bounded; follow next even after a short page. No cross-page uniqueness or snapshot is promised. Query parameters must be single strings; repeated, unknown, or operator parameters are 400. There are at most 36 parameters, values are at most 1,024 characters (cursor: 12,000), and combined filters are limited to 4,096 UTF-8 bytes. Word search trims/collapses whitespace and is limited to 256 normalized characters.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.ReactorLogs.ListAsync(
+    "reactor_id",
+    new ReactorLogsListRequest
+    {
+        StartDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        EndDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        Start = "start",
+        Size = 1,
+        Source = "source",
+        RecordType = "record_type",
+        TraceId = "trace_id",
+        Level = "level",
+        Event = "event",
+        Outcome = "outcome",
+        Message = "message",
+        MessageSearchWords = "message[search_words]",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**reactorId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `ReactorLogsListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## ProxyLogs
+<details><summary><code>client.ProxyLogs.<a href="/src/BasisTheory.Client/ProxyLogs/ProxyLogsClient.cs">ListAsync</a>(proxyId, ProxyLogsListRequest { ... }) -> Pager&lt;RuntimeLog&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Requires log:read. Returns individual Proxy runtime records, not event envelopes or neighboring records from the same batch. Tenant and history entitlement are checked on every request. Date bounds use occurred_at, inclusive at start and exclusive at end, and are clamped to current entitlement, now, and the 30-day maximum. Results are asynchronously visible. Responses include source (origin) and record_type (record kind); both have exact, case-sensitive string filters, with application/log and platform/lifecycle as the supported pairings. error and attributes are complete display-only objects and cannot be filtered or searched. IDs are stable logical record identities for deduplicating polling overlap. Pagination is bounded; follow next even after a short page. No cross-page uniqueness or snapshot is promised. Query parameters must be single strings; repeated, unknown, or operator parameters are 400. There are at most 36 parameters, values are at most 1,024 characters (cursor: 12,000), and combined filters are limited to 4,096 UTF-8 bytes. Word search trims/collapses whitespace and is limited to 256 normalized characters.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```csharp
+await client.ProxyLogs.ListAsync(
+    "proxy_id",
+    new ProxyLogsListRequest
+    {
+        StartDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        EndDate = new DateTime(2024, 01, 15, 09, 30, 00, 000),
+        Start = "start",
+        Size = 1,
+        Source = "source",
+        RecordType = "record_type",
+        TraceId = "trace_id",
+        Level = "level",
+        Event = "event",
+        Outcome = "outcome",
+        TransformType = "transform_type",
+        Message = "message",
+        MessageSearchWords = "message[search_words]",
+    }
+);
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**proxyId:** `string` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request:** `ProxyLogsListRequest` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Events
 <details><summary><code>client.Events.<a href="/src/BasisTheory.Client/Events/EventsClient.cs">ListAsync</a>(EventsListRequest { ... }) -> Pager&lt;Event&gt;</code></summary>
 <dl>
@@ -3024,7 +3185,7 @@ await client.Webhooks.CreateAsync(
 <dl>
 <dd>
 
-Requires event:read. Tenant identity comes from trusted API-key authentication. History is limited by log_history_limit (24 hours by default, at most 30 days). Windows reaching outside the visible history are clamped to it rather than rejected. No secondary failover or portal JWT support. SDK callers supply data.<path> filters as literal keys through the SDK's per-request query-parameter options, not as a filters request field.
+Requires event:read. Tenant identity comes from trusted authentication. History is limited by log_history_limit (24 hours by default, at most 30 days). Windows reaching outside the visible history are clamped to it rather than rejected. No secondary failover. SDK callers supply data.<path> filters as literal keys through the SDK's per-request query-parameter options, not as a filters request field.
 </dd>
 </dl>
 </dd>
