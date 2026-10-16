@@ -1,3 +1,10 @@
+# [8.4.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.3.0...v8.4.0) (2026-10-16)
+
+
+### Features
+
+* add Reactor and Proxy runtime log search ([84ae74e](https://github.com/Basis-Theory/dotnet-sdk/commit/84ae74e317fdbb6ee464b2eb55448822c044b010))
+
 # [8.3.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.2.0...v8.3.0) (2026-10-01)
 
 
