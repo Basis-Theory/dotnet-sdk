@@ -1,3 +1,10 @@
+## [8.4.1](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.4.0...v8.4.1) (2026-10-16)
+
+
+### Bug Fixes
+
+* **ENG-13469:** publish to NuGet via trusted publishing ([#150](https://github.com/Basis-Theory/dotnet-sdk/issues/150)) ([df47157](https://github.com/Basis-Theory/dotnet-sdk/commit/df471576c9b97842ac55f898d41f7586f0c96c2b))
+
 # [8.4.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.3.0...v8.4.0) (2026-10-16)
 
 
