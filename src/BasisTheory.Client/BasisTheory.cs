@@ -68,6 +68,8 @@ public partial class BasisTheory : IBasisTheory
         Sessions = new SessionsClient(_client);
         TokenIntents = new TokenIntentsClient(_client);
         Webhooks = new WebhooksClient(_client);
+        ReactorLogs = new ReactorLogsClient(_client);
+        ProxyLogs = new ProxyLogsClient(_client);
         Events = new EventsClient(_client);
         AccountUpdater = new AccountUpdaterClient(_client);
         Agentic = new AgenticClient(_client);
@@ -110,6 +112,10 @@ public partial class BasisTheory : IBasisTheory
     public ITokenIntentsClient TokenIntents { get; }
 
     public IWebhooksClient Webhooks { get; }
+
+    public IReactorLogsClient ReactorLogs { get; }
+
+    public IProxyLogsClient ProxyLogs { get; }
 
     public IEventsClient Events { get; }
 
