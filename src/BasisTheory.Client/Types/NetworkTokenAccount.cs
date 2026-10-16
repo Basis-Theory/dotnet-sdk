@@ -11,6 +11,12 @@ public record NetworkTokenAccount : IJsonOnDeserialized
     private readonly IDictionary<string, JsonElement> _extensionData =
         new Dictionary<string, JsonElement>();
 
+    [JsonPropertyName("short_description")]
+    public string? ShortDescription { get; set; }
+
+    [JsonPropertyName("long_description")]
+    public string? LongDescription { get; set; }
+
     [JsonPropertyName("card_art")]
     public CardArt? CardArt { get; set; }
 
