@@ -1,3 +1,10 @@
+# [8.5.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.4.1...v8.5.0) (2026-10-21)
+
+
+### Features
+
+* **ENG-13226:** expose network token descriptions in .NET SDK ([#151](https://github.com/Basis-Theory/dotnet-sdk/issues/151)) ([cb74227](https://github.com/Basis-Theory/dotnet-sdk/commit/cb7422748bd729969cdba421cdb2cc5004db9b6b))
+
 ## [8.4.1](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.4.0...v8.4.1) (2026-10-16)
 
 
