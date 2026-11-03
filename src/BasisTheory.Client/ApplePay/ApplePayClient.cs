@@ -282,7 +282,7 @@ public partial class ApplePayClient : IApplePayClient
         }
     }
 
-    private async Task<WithRawResponse<string>> DeleteAsyncCore(
+    private async Task<WithRawResponse<ApplePayDeleteResponse>> DeleteAsyncCore(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -313,8 +313,8 @@ public partial class ApplePayClient : IApplePayClient
                 .ConfigureAwait(false);
             try
             {
-                var responseData = JsonUtils.Deserialize<string>(responseBody)!;
-                return new WithRawResponse<string>()
+                var responseData = JsonUtils.Deserialize<ApplePayDeleteResponse>(responseBody)!;
+                return new WithRawResponse<ApplePayDeleteResponse>()
                 {
                     Data = responseData,
                     RawResponse = new global::BasisTheory.Client.RawResponse()
@@ -434,12 +434,14 @@ public partial class ApplePayClient : IApplePayClient
     /// <example><code>
     /// await client.ApplePay.DeleteAsync("id");
     /// </code></example>
-    public WithRawResponseTask<string> DeleteAsync(
+    public WithRawResponseTask<ApplePayDeleteResponse> DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        return new WithRawResponseTask<string>(DeleteAsyncCore(id, options, cancellationToken));
+        return new WithRawResponseTask<ApplePayDeleteResponse>(
+            DeleteAsyncCore(id, options, cancellationToken)
+        );
     }
 }

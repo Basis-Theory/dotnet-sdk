@@ -19,7 +19,7 @@ public partial interface IApplePayClient
         CancellationToken cancellationToken = default
     );
 
-    WithRawResponseTask<string> DeleteAsync(
+    WithRawResponseTask<ApplePayDeleteResponse> DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
