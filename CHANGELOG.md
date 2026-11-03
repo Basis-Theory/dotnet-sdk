@@ -1,3 +1,13 @@
+# [9.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.5.0...v9.0.0) (2026-11-03)
+
+
+* feat(ENG-14143)!: return typed objects from applePay.delete and googlePay.delete ([#152](https://github.com/Basis-Theory/dotnet-sdk/issues/152)) ([f3ce888](https://github.com/Basis-Theory/dotnet-sdk/commit/f3ce88876eff94fd287e178c0bb233fa70c7e015))
+
+
+### BREAKING CHANGES
+
+* applePay.delete and googlePay.delete now return ApplePayDeleteResponse and GooglePayDeleteResponse instead of string.
+
 # [8.5.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.4.1...v8.5.0) (2026-10-21)
 
 
