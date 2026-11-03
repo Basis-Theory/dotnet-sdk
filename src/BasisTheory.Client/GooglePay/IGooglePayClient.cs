@@ -15,7 +15,7 @@ public partial interface IGooglePayClient
         CancellationToken cancellationToken = default
     );
 
-    WithRawResponseTask<string> DeleteAsync(
+    WithRawResponseTask<GooglePayDeleteResponse> DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default

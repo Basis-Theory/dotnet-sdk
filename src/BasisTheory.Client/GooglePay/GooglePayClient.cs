@@ -287,7 +287,7 @@ public partial class GooglePayClient : IGooglePayClient
         }
     }
 
-    private async Task<WithRawResponse<string>> DeleteAsyncCore(
+    private async Task<WithRawResponse<GooglePayDeleteResponse>> DeleteAsyncCore(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
@@ -318,8 +318,8 @@ public partial class GooglePayClient : IGooglePayClient
                 .ConfigureAwait(false);
             try
             {
-                var responseData = JsonUtils.Deserialize<string>(responseBody)!;
-                return new WithRawResponse<string>()
+                var responseData = JsonUtils.Deserialize<GooglePayDeleteResponse>(responseBody)!;
+                return new WithRawResponse<GooglePayDeleteResponse>()
                 {
                     Data = responseData,
                     RawResponse = new global::BasisTheory.Client.RawResponse()
@@ -441,12 +441,14 @@ public partial class GooglePayClient : IGooglePayClient
     /// <example><code>
     /// await client.GooglePay.DeleteAsync("id");
     /// </code></example>
-    public WithRawResponseTask<string> DeleteAsync(
+    public WithRawResponseTask<GooglePayDeleteResponse> DeleteAsync(
         string id,
         RequestOptions? options = null,
         CancellationToken cancellationToken = default
     )
     {
-        return new WithRawResponseTask<string>(DeleteAsyncCore(id, options, cancellationToken));
+        return new WithRawResponseTask<GooglePayDeleteResponse>(
+            DeleteAsyncCore(id, options, cancellationToken)
+        );
     }
 }

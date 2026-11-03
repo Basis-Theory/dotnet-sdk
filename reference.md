@@ -583,7 +583,7 @@ await client.ApplePay.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.ApplePay.<a href="/src/BasisTheory.Client/ApplePay/ApplePayClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask&lt;string&gt;</code></summary>
+<details><summary><code>client.ApplePay.<a href="/src/BasisTheory.Client/ApplePay/ApplePayClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask&lt;ApplePayDeleteResponse&gt;</code></summary>
 <dl>
 <dd>
 
@@ -704,7 +704,7 @@ await client.GooglePay.GetAsync("id");
 </dl>
 </details>
 
-<details><summary><code>client.GooglePay.<a href="/src/BasisTheory.Client/GooglePay/GooglePayClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask&lt;string&gt;</code></summary>
+<details><summary><code>client.GooglePay.<a href="/src/BasisTheory.Client/GooglePay/GooglePayClient.cs">DeleteAsync</a>(id) -> WithRawResponseTask&lt;GooglePayDeleteResponse&gt;</code></summary>
 <dl>
 <dd>
 
