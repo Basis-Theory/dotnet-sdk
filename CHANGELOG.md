@@ -1,3 +1,10 @@
+# [9.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v9.0.0...v9.1.0) (2026-11-17)
+
+
+### Features
+
+* add runtime.execution_role to Reactors and Proxy code transforms ([#156](https://github.com/Basis-Theory/dotnet-sdk/issues/156)) ([1dda33b](https://github.com/Basis-Theory/dotnet-sdk/commit/1dda33b8a5780b3e544e145655a9e66861d8d143))
+
 # [9.0.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v8.5.0...v9.0.0) (2026-11-03)
 
 
