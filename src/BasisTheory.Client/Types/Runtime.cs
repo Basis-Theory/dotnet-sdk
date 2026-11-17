@@ -32,6 +32,9 @@ public record Runtime : IJsonOnDeserialized
     [JsonPropertyName("permissions")]
     public IEnumerable<string>? Permissions { get; set; }
 
+    [JsonPropertyName("execution_role")]
+    public ExecutionRole? ExecutionRole { get; set; }
+
     [JsonPropertyName("logs")]
     public RuntimeLogOptions? Logs { get; set; }
 
