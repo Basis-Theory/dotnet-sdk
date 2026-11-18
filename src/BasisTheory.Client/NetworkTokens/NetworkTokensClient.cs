@@ -533,6 +533,18 @@ public partial class NetworkTokensClient : INetworkTokensClient
                                 Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
                             }
                         );
+                    case 409:
+                        throw new ConflictError(
+                            JsonUtils.Deserialize<ProblemDetails>(responseBody),
+                            rawResponse: new global::BasisTheory.Client.RawResponse()
+                            {
+                                StatusCode = response.Raw.StatusCode,
+                                Url =
+                                    response.Raw.RequestMessage?.RequestUri
+                                    ?? new Uri("about:blank"),
+                                Headers = ResponseHeaders.FromHttpResponseMessage(response.Raw),
+                            }
+                        );
                     case 500:
                         throw new InternalServerError(
                             JsonUtils.Deserialize<ProblemDetails>(responseBody),
