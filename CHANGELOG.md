@@ -1,3 +1,10 @@
+## [9.1.1](https://github.com/Basis-Theory/dotnet-sdk/compare/v9.1.0...v9.1.1) (2026-11-19)
+
+
+### Bug Fixes
+
+* **ENG-13022:** type network token delete conflicts in .NET SDK ([#157](https://github.com/Basis-Theory/dotnet-sdk/issues/157)) ([fe395a2](https://github.com/Basis-Theory/dotnet-sdk/commit/fe395a21407a48d4067e0c53ff929aa2b0e1ecb3))
+
 # [9.1.0](https://github.com/Basis-Theory/dotnet-sdk/compare/v9.0.0...v9.1.0) (2026-11-17)
 
 
